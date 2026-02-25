@@ -2,14 +2,42 @@
 
 #Include <FindText>
 ;#Include <GuiCtrlTips>
+#Include <Nikke\processcatch>
 
-mainGuiTitle := "Doro私有化 By Conch(KK)"
+
+nikkeWindowsInfoRefresh(){
+    global mainGuiProcessStatus 
+    global mainGuiProcessPos 
+    global processHWND 
+    global nikkePosX 
+    global nikkePosY 
+    global nikkePosW 
+    global nikkePosH
+    getNikkeHWND()
+    getNikkePos()
+    mainGuiProcessStatus.Text := "检查运行环境：" . (processHWND ? "游戏运行" : "未找到进程")
+    mainGuiProcessPos.Text := "X="  nikkePosX "   Y=" nikkePosY "`nW=" nikkePosW "   H=" nikkePosH
+}
+stopNikkeWindowsInfoRefresh(thisGui){
+    SetTimer nikkeWindowsInfoRefresh, 0, 0
+    return 0
+}
+
+
+mainGuiTitle := "Doro Conch(KK)"
 mainGuiDefaultOpt := "+Resize +DPIScale +OwnDialogs"
 mainGui := Gui(mainGuiDefaultOpt, mainGuiTitle)
 
 mainGui.SetFont('s12', 'Microsoft YaHei UI')
 
-mainGui_Info := mainGui.AddGroupBox("x10 y10 w250 h210 ", "信息")
+mainGuiInfo := mainGui.AddGroupBox("X10 Y10 W250 R3 ", "信息")
+mainGui.Add("Text","XP+5 YP+20 WP-10 HP-25" , "该版本为测试版本，目前只提供商店相关的功能，用于测试脚本国服&国际服相互兼容性。")
 
+mainGuiProcessStatus := mainGui.Add("Text","W250 R1","")
+mainGuiProcessPos :=  mainGui.Add("Text","W250 R2","")
+SetTimer nikkeWindowsInfoRefresh, 500, 0
+mainGui.OnEvent("Close", stopNikkeWindowsInfoRefresh)
+
+mainGui.AddGroupBox("W250 R10 ", "功能测试")
 
 mainGui.Show()
