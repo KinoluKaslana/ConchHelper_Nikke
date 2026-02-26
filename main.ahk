@@ -1,9 +1,8 @@
 #Requires AutoHotkey v2.0
 
 #Include <3rd\FindText>
-;#Include <GuiCtrlTips>
 #Include <Nikke\processcatch>
-
+#Include <mainFunc>
 
 nikkeWindowsInfoRefresh(){
     global mainGuiProcessStatus, mainGuiProcessPos, processHWND 
@@ -14,7 +13,7 @@ nikkeWindowsInfoRefresh(){
     mainGuiProcessPos.Text := "X="  nikkePosX "   Y=" nikkePosY "`nW=" nikkePosW "   H=" nikkePosH
 }
 stopNikkeWindowsInfoRefresh(thisGui){
-    SetTimer nikkeWindowsInfoRefresh, 0, 0
+    ;SetTimer nikkeWindowsInfoRefresh, 0, 0
     return 0
 }
 
@@ -30,11 +29,15 @@ mainGui.Add("Text","XP+5 YP+20 WP-10 HP-25" , "该版本为测试版本，目前
 
 mainGuiProcessStatus := mainGui.Add("Text","X10 W250 R1","")
 mainGuiProcessPos :=  mainGui.Add("Text","W250 R2","")
-SetTimer nikkeWindowsInfoRefresh, 500, 0
-mainGui.OnEvent("Close", stopNikkeWindowsInfoRefresh)
+;SetTimer nikkeWindowsInfoRefresh, 500, 0
+;mainGui.OnEvent("Close", stopNikkeWindowsInfoRefresh)
 
-mainGuiFuncBox := mainGui.AddGroupBox("W250 R10 ", "功能测试")
-mainGuiSubfuncBox := mainGui.AddGroupBox("W250 Y10 R17.348 X+10", "详细功能")
+mainGuiFuncBox := mainGui.AddGroupBox("W250 R10 Section", "功能测试")
 
+mainFuncObj := mainFunc().regFunc(mainGui, 200, "XS+5 YS+20 R1.2 W180")
 
+mainGuiDoroBtn := mainGui.Add("Button", "W70 YS350 H20 XS", "DORO!")
+mainGuiDoroBtn.OnEvent("Click", (mainGui, eventInfo) => mainFuncObj.action())
+
+mainGuiSubfuncBox := mainGui.AddGroupBox("W250 Y10 R17.348 X270", "详细功能")
 mainGui.Show()
