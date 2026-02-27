@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-class baseFunc {
+class baseFunc extends Object {
 
     ;与GUI内check的事件有关，check的事件会将对应位置的job执行标志置1
     class job{
@@ -11,8 +11,7 @@ class baseFunc {
 
         addJob(describe, func){
             this.jobIndex[describe] := this.jobFunc.Length + 1
-            MsgBox func.Name
-            this.jobFunc.Push(func)
+            this.jobFunc.Push(func.Bind(this))
             this.jobStatus.Push(0)
         }
     }
@@ -21,10 +20,10 @@ class baseFunc {
     guiObj := Array()
 
     ;子类不必实现，顺序执行job内所有函数
-    action(){
+    ;@params 从不使用，为了传this为第一参数，否则无法多态调用。
+    action(params*){
         jobStatus := this.jobSet.jobStatus
         jobFunc := this.jobSet.jobFunc
-
         loop jobStatus.Length{
             if(jobStatus[A_Index] == 1){
                 jobFunc[A_Index]()
@@ -37,8 +36,6 @@ class baseFunc {
         jobStatus := this.jobSet.jobStatus
         
         jobStatus[jobIndex[jobName]] := !jobStatus[jobIndex[jobName]]
-
-        MsgBox jobName . " set to  " . jobStatus[jobIndex[jobName]]
     }
 
     addCheckRow(mainGui, describe, optStr, func){

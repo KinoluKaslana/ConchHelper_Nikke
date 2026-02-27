@@ -8,7 +8,7 @@ class award extends baseFunc{
         MsgBox "Exec award Func1"
     }
     func2(){
-        MsgBox "Exec award Func1"
+        MsgBox "Exec award Func2"
     }
     
     init(mainGui, optStr){

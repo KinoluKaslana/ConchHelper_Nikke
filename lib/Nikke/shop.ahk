@@ -8,7 +8,7 @@ class shop extends baseFunc{
         MsgBox "Exec shop Func1"
     }
     func2(){
-        MsgBox "Exec shop Func1"
+        MsgBox "Exec shop Func2"
     }
 
     init(mainGui, optStr){

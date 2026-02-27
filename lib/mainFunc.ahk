@@ -18,13 +18,7 @@ class mainFunc extends baseFunc{
     }
 
     addCheckRow(mainGui, mainGuiWidth, funcObj, funcDescribe, optStr){
-        MsgBox funcObj.__Class "    Func Name   " funcObj.action.Name
-        ;checkbox := super.addCheckRow(mainGui, funcDescribe, optStr, funcObj.action)
-
-        this.jobSet.addJob(funcDescribe, funcObj.action)
-        checkboxObj := mainGui.Add("CheckBox", optStr, funcDescribe)
-        checkboxObj.OnEvent("Click", (checkboxObj, eventInfo) => this.toggleStatus(funcDescribe))
-        this.guiObj.push(checkboxObj)
+        checkbox := super.addCheckRow(mainGui, funcDescribe, optStr, ObjBindMethod(funcObj, "action"))
 
         settingBtn := mainGui.Add("Button", "HP W30 YP XM+" . (mainGuiWidth - 30), "⚙")
         settingBtn.OnEvent("Click", (settingBtn, eventInfo) => this.showSubFunc(funcDescribe))
@@ -34,13 +28,13 @@ class mainFunc extends baseFunc{
     }
 
     init(mainGui, mainGuiWidth, optStr){
-        shopObj := shop().regFunc(mainGui, "X280 Y35 W180 R1.2")
+        shopObj := shop().regFunc(mainGui, "X280 Y35 W150 R1.2")
         this.subFuncObjArray.Push(shopObj)
-        awardObj := award().regFunc(mainGui, "X280 Y35 W180 R1.2")
+        awardObj := award().regFunc(mainGui, "X280 Y35 W150 R1.2")
         this.subFuncObjArray.Push(awardObj)
         
         this.addCheckRow(mainGui, mainGuiWidth, shopObj, "商店", optStr)
-        this.addCheckRow(mainGui, mainGuiWidth, awardObj, "奖励领取", "XS+5 YS+80 R1.2 W180")
+        this.addCheckRow(mainGui, mainGuiWidth, awardObj, "奖励领取", "XS+5 YS+50 H30 W150")
     }
 
     regFunc(mainGui, mainGuiWidth, optStr){
