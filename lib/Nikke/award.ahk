@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 
 #Include "..\baseFunc.ahk"
+#Include "..\3rd\FindText.ahk"
+#Include "..\3rd\PicLib.ahk"
 
 class award extends baseFunc{
 
