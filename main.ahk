@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <3rd\FindText>
-#Include <utils>
+#Include <helper>
 #Include <mainFunc>
 
 
