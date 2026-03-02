@@ -9,7 +9,7 @@ getNikkeHWND(){
     global processHWND
 
     processName := "nikke.exe"
-    windowTitle := "胜利女神"
+    windowTitle := "NIKKE"
     SetTitleMatchMode 1
 
     return processHWND := WinExist(windowTitle . " ahk_exe " . processName)
