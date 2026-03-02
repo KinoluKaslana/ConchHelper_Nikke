@@ -7,6 +7,7 @@
 global nikkePosH, nikkePosW, nikkePosX, nikkePosY, zoomH, zoomW
 
 class shop extends baseFunc{
+;======================================================================
     ;tag 通用商店购买处理逻辑
     ProcessPurchaseList(PurchaseItems, Options := Map()) {
         ; Options 参数支持: "CheckCredit" (检查信用点), "CheckMax" (检查MAX按钮)
@@ -150,6 +151,8 @@ class shop extends baseFunc{
         ; 调用通用处理函数，传入区域配置
         ProcessPurchaseList(PurchaseItems, ArenaShopArea)
     }
+
+;======================================================================
 
     ;付费商店功能
     ShopCash() {
