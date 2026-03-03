@@ -8,22 +8,34 @@ PicTolerance := 1
 zoomW := 1
 zoomH := 1
 
-nikkeWindowInfoRefresh(){
+changeServer(){
+    global nikkeServer
+    nikkeServer := !nikkeServer
+}
+
+nikkeWindowInfoRefresh(textGuiObj){
     global processHWND, nikkePosX, nikkePosY, nikkePosW, nikkePosH, zoomW, zoomH
     getNikkeHWND()
     getNikkePos()
     zoomW := nikkePosW / picLibClientW
     zoomH := nikkePosH / picLibClientH
+    if (processHWND){
+        textGuiObj.Text := "找到窗口"
+    }
+    else{
+        textGuiObj.Text := "没找到窗口"
+    }
 }
 
 scaledMove(x, y){
-    CoordMode "Mouse", "Client"
-    Send "{Click " Round(x * zoomW) " " Round(y*zoomH) " 0}"
+    CoordMode "Mouse", "Screen"
+    Send "{Click " Round(x * zoomW) + nikkePosX " " Round(y*zoomH) + nikkePosY " 0}"
 }
 
 scaledClick(x, y){
     scaledMove(x, y)
-    Click
+    ;Click
+    MsgBox "要求点击"
 }
 
 idleClick(){

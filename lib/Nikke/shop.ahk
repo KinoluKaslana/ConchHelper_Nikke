@@ -4,7 +4,7 @@
 #Include "..\3rd\FindText.ahk"
 #Include "..\3rd\PicLib.ahk"
 #Include "..\helper.ahk"
-global nikkePosH, nikkePosW, nikkePosX, nikkePosY, zoomH, zoomW, PicTolerance
+global nikkePosH, nikkePosW, nikkePosX, nikkePosY, zoomH, zoomW, PicTolerance, nikkeServer
 
 class shop extends baseFunc{
 ;======================================================================
@@ -29,7 +29,7 @@ class shop extends baseFunc{
                 continue ; 如果设置未开启，则跳过此物品
             }
             ; 查找物品 (使用动态坐标 sX1, sY1, sX2, sY2)
-            if (ok := FindText(&X := "wait", &Y := 1, sX1, sY1, sX2, sY2, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, zoomW, zoomH)) {
+            if (ok := FindText(&X := "wait", &Y := 1, sX1, sY1, sX2, sY2, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, zoomW * item.zoomScale, zoomH * item.zoomScale)) {
                 ; 遍历找到的所有物品 (例如多个手册)
                 loop ok.Length {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
@@ -37,7 +37,7 @@ class shop extends baseFunc{
                     Sleep 1000
                     ; 特殊逻辑：普通商店芯尘盒需要检查是否为信用点购买
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
-                        if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW, zoomH)) {
+                        if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
                             ;AddLog("未检测到信用点支付选项，跳过")
                             idleClick()
                             Sleep 1000
@@ -46,19 +46,19 @@ class shop extends baseFunc{
                     }
                     ; 特殊逻辑：废铁商店需要点击MAX
                     if (Options.Has("CheckMax")) {
-                        if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.590 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH . " ", nikkePosX + 0.590 * nikkePosW + 0.038 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH + 0.070 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , zoomW, zoomH)) {
+                        if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.590 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH . " ", nikkePosX + 0.590 * nikkePosW + 0.038 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH + 0.070 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
                             FindText().Click(X, Y, "L")
                             Sleep 1000
                         }
                     }
                     ; 点击购买 (带圈白勾)
-                    if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.088 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.146 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
+                    if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.088 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.146 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
                         Sleep 500
                         ;AddLog("购买" . Name)
                         FindText().Click(X, Y, "L")
                         Sleep 1000
                         ; 确认并返回商店主界面 (检查左上角百货商店图标)
-                        while !(FindText(&X := "wait", &Y := 1, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , zoomW, zoomH)) {
+                        while !(FindText(&X := "wait", &Y := 1, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
                             idleClick()
                         }
                     }
@@ -90,8 +90,8 @@ class shop extends baseFunc{
         Sleep 1000
         ; 定义物品
         PurchaseItems := Map(
-            "免费商品", { Text: FindText().PicLib("红点"), Setting: 1, Tolerance: 0.15 * 1 },
-            "芯尘盒", { Text: FindText().PicLib("芯尘盒"), Setting: 1, Tolerance: 0.2 * 1 }
+            "免费商品", { Text: FindText().PicLib("红点"), Setting: 1, Tolerance: 0.15 * 1 , zoomScale : 1},
+            "芯尘盒", { Text: FindText().PicLib("芯尘盒"), Setting: 1, Tolerance: 0.2 * 1 , zoomScale : 1}
         )
         ; 定义普通商店的识图区域 (将坐标放入数组中)
         GeneralShopArea := Map(
@@ -137,10 +137,13 @@ class shop extends baseFunc{
             ;"风压代码手册", { Text: FindText().PicLib("风压代码的图标"), Setting: g_settings["ShopArenaBookWind"], Tolerance: 0.3 * PicTolerance },
             ;"电击代码手册", { Text: FindText().PicLib("电击代码的图标"), Setting: g_settings["ShopArenaBookElec"], Tolerance: 0.2 * PicTolerance },
             ;"铁甲代码手册", { Text: FindText().PicLib("铁甲代码的图标"), Setting: g_settings["ShopArenaBookIron"], Tolerance: 0.2 * PicTolerance },
-            "代码手册宝箱", { Text: FindText().PicLib("代码手册选择宝箱的图标"), Setting: 1, Tolerance: 0.3 * PicTolerance },
+            "代码手册宝箱", { Text: FindText().PicLib("代码手册选择宝箱的图标"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1},
             ;"简介个性化礼包", { Text: FindText().PicLib("简介个性化礼包"), Setting: g_settings["ShopArenaPackage"], Tolerance: 0.3 * PicTolerance },
-            "公司武器熔炉", { Text: FindText().PicLib("公司武器熔炉"), Setting: 1, Tolerance: 0.3 * PicTolerance }
+            "公司武器熔炉", { Text: FindText().PicLib("公司武器熔炉"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1 }
         )
+        if (!nikkeServer){ 
+            PurchaseItems.Set("模组高级增强器",{ Text: FindText().PicLib("模组高级增强器"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1.5 })
+        }
         ; 定义竞技场商店的识图区域 (将坐标放入数组中)
         ArenaShopArea := Map(
             "Area", [nikkePosX + 0.054 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH . " ", nikkePosX + 0.054 * nikkePosW + 0.511 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH + 0.238 * nikkePosH . " "]
