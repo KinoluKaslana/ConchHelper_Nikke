@@ -3,13 +3,14 @@
 
 picLibClientW := 3840
 picLibClientH := 2160
+PicTolerance := 1
 
 zoomW := 1
 zoomH := 1
 
-nikkePosWindowsInfoRefresh(){
+nikkeWindowInfoRefresh(){
     global processHWND, nikkePosX, nikkePosY, nikkePosW, nikkePosH, zoomW, zoomH
-    getnikkePosHWND()
+    getNikkeHWND()
     getNikkePos()
     zoomW := nikkePosW / picLibClientW
     zoomH := nikkePosH / picLibClientH
@@ -29,8 +30,7 @@ idleClick(){
     global processHWND
     ;点击左下角 280 1360处
     WinActivate processHWND
-    scaledMove(420, 2040)
-    Click
+    scaledClick(420, 2040)
 }
 
 refuseSale() {
@@ -45,7 +45,6 @@ refuseSale() {
 }
 
 backHall(){
-    global processHWND, nikkePosX, nikkePosY, nikkePosW, nikkePosH, zoomW, zoomH
     while true {
         if (ok := FindText(&X, &Y, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
             ; 点右上角的公告图标

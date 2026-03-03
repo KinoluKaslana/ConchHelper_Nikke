@@ -5,7 +5,7 @@
 #Include <mainFunc>
 
 
-SetTimer nikkeWindowsInfoRefresh, 500, 0
+SetTimer nikkeWindowInfoRefresh, 500, 0
 
 mainGuiTitle := "Doro Conch(KK)"
 mainGuiDefaultOpt := "-Resize +DPIScale +OwnDialogs"
@@ -28,5 +28,5 @@ mainGuiDoroBtn.OnEvent("Click", (mainGui, eventInfo) => mainFuncObj.action())
 
 mainGuiSubfuncBox := mainGui.AddGroupBox("W250 Y10 R17.348 X270", "详细功能")
 
-mainGui.OnEvent("Close", (guiObj)=> SetTimer(nikkeWindowsInfoRefresh, 0, 0 ))
+mainGui.OnEvent("Close", (guiObj)=> SetTimer(nikkeWindowInfoRefresh, 0, 0 ))
 mainGui.Show()
