@@ -10,13 +10,16 @@ mainGui := Gui(mainGuiDefaultOpt, mainGuiTitle)
 
 mainGui.SetFont('s12', 'Microsoft YaHei UI')
 
-mainGuiInfo := mainGui.AddGroupBox("X10 Y10 W250 R3 ", "信息")
+logObj := AddLog("创建Log框架")
+logObj.init(mainGui, "x535 y21.5 w300 H545")
+
+mainGuiInfo := mainGui.AddGroupBox("X10 Y10 W250 R3 Section", "信息")
 mainGui.Add("Text","XP+5 YP+20 WP-10 HP-25" , "该版本为测试版本，目前只提供商店相关的功能，用于测试脚本国服&国际服相互兼容性。")
 
 ;mainGuiProcessStatus := mainGui.Add("Text","X10 W250 R1","")
 ;mainGuiProcessPos :=  mainGui.Add("Text","W250 R2","")
 
-mainGuiServerSelectCN := mainGui.Add("Radio", "X10 W250 R1 Checked Group", "国服")
+mainGuiServerSelectCN := mainGui.Add("Radio", "X10 W250 R1 YS+130 Checked Group", "国服")
 mainGuiServerSelectCN.OnEvent("Click", (*)=>changeServer())
 mainGuiServerSelectOther := mainGui.Add("Radio", "W250 R2", "国际服")
 mainGuiServerSelectOther.OnEvent("Click", (*)=>changeServer())
@@ -29,9 +32,11 @@ mainGuiDoroBtn := mainGui.Add("Button", "W70 YS350 H20 XS", "DORO!")
 mainGuiDoroBtn.OnEvent("Click", (mainGui, eventInfo) => mainFuncObj.action())
 
 mainGuiFindWindow := mainGui.Add("Text", "YS350 H20 XP+100 W100", "")
-SetTimer(nikkeWindowInfoRefresh.Bind(mainGuiFindWindow), 500, 0)
+refreshInfoFunc := nikkeWindowInfoRefresh.Bind(mainGuiFindWindow)
+
+SetTimer(refreshInfoFunc, 500, 0)
 
 mainGuiSubfuncBox := mainGui.AddGroupBox("W250 Y10 R17.348 X270", "详细功能")
 
-mainGui.OnEvent("Close", (guiObj)=> SetTimer(nikkeWindowInfoRefresh.Bind(mainGuiFindWindow), 0, 0 ))
+mainGui.OnEvent("Close", (guiObj)=> SetTimer(refreshInfoFunc, 0, 0 ))
 mainGui.Show()

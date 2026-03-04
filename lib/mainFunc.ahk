@@ -35,7 +35,10 @@ class mainFunc extends baseFunc{
         this.subFuncObjArray.Push(simulationObj)
         
         this.addCheckRow(mainGui, mainGuiWidth, shopObj, "商店", optStr)
-        this.addCheckRow(mainGui, mainGuiWidth, simulationObj, "模拟式", "XS+5 YS+50 H30 W150")
+        this.addCheckRow(mainGui, mainGuiWidth, simulationObj, "模拟室", "XS+5 YS+50 H30 W150")
+
+        this.jobSet.addJob("",(*)=>AddLog("所有任务执行完毕！"))
+        this.jobSet.jobStatus[-1] := 1
     }
 
     regFunc(mainGui, mainGuiWidth, optStr){

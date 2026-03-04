@@ -33,12 +33,12 @@ class shop extends baseFunc{
                 ; 遍历找到的所有物品 (例如多个手册)
                 loop ok.Length {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
-                    ;AddLog("已找到" . Name)
+                    AddLog("已找到" . Name)
                     Sleep 1000
                     ; 特殊逻辑：普通商店芯尘盒需要检查是否为信用点购买
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
                         if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
-                            ;AddLog("未检测到信用点支付选项，跳过")
+                            AddLog("未检测到信用点支付选项，跳过")
                             idleClick()
                             Sleep 1000
                             continue
@@ -54,7 +54,7 @@ class shop extends baseFunc{
                     ; 点击购买 (带圈白勾)
                     if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.088 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.146 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
                         Sleep 500
-                        ;AddLog("购买" . Name)
+                        AddLog("购买" . Name)
                         FindText().Click(X, Y, "L")
                         Sleep 1000
                         ; 确认并返回商店主界面 (检查左上角百货商店图标)
@@ -64,7 +64,7 @@ class shop extends baseFunc{
                     }
                 }
             } else {
-                ;AddLog(Name . "未找到，跳过购买")
+                AddLog(Name . "未找到，跳过购买")
             }
         }
     }
@@ -72,21 +72,21 @@ class shop extends baseFunc{
     ;tag 进入商店
     static toGeneralShop() {
         while (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.236 * nikkePosW . " ", nikkePosY + 0.633 * nikkePosH . " ", nikkePosX + 0.236 * nikkePosW + 0.118 * nikkePosW . " ", nikkePosY + 0.633 * nikkePosH + 0.103 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , zoomW, zoomH)) {
-            ;AddLog("点击商店图标")
+            AddLog("点击商店图标")
             FindText().Click(X + 20 * zoomH, Y - 20 * zoomH, "L")
         }
         else {
             MsgBox("商店图标未找到")
         }
         if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , , , , , , zoomW, zoomH)) {
-            ;AddLog("已进入百货商店")
+            AddLog("已进入百货商店")
         }
     }
 
     ;tag 普通商店
     static ShopGeneral() {
         shop.toGeneralShop()
-        ;AddLog("开始任务：普通商店", "Fuchsia")
+        AddLog("开始任务：普通商店", "Fuchsia")
         Sleep 1000
         ; 定义物品
         PurchaseItems := Map(
@@ -103,16 +103,16 @@ class shop extends baseFunc{
             shop.ProcessPurchaseList(PurchaseItems, GeneralShopArea)
             ; 刷新逻辑保持不变
             while (ok := FindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , zoomW, zoomH)) {
-                ;AddLog("尝试刷新商店")
+                AddLog("尝试刷新商店")
                 FindText().Click(X - 100 * zoomH, Y + 30 * zoomH, "L")
                 Sleep 500
                 if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH + 0.066 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
                     FindText().Click(X, Y, "L")
                     Sleep 500
-                    ;AddLog("刷新成功")
+                    AddLog("刷新成功")
                 }
             } else {
-                ;AddLog("没有免费刷新次数了，跳过刷新")
+                AddLog("没有免费刷新次数了，跳过刷新")
                 break
             }
             Sleep 2000
@@ -122,13 +122,13 @@ class shop extends baseFunc{
 
     ;tag 竞技场商店
     static ShopArena() {
-        ;AddLog("开始任务：竞技场商店", "Fuchsia")
+        AddLog("开始任务：竞技场商店", "Fuchsia")
         if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.355 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.041 * nikkePosW . " ", nikkePosY + 0.355 * nikkePosH + 0.555 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("竞技场商店的图标"), , , , , , , zoomW, zoomH)) {
-            ;AddLog("进入竞技场商店")
+            AddLog("进入竞技场商店")
             FindText().Click(X, Y, "L")
             Sleep 1000
         } else {
-            ;AddLog("竞技场商店图标未找到", "Red")
+            AddLog("竞技场商店图标未找到", "Red")
             return
         }
         PurchaseItems := Map(
@@ -158,42 +158,42 @@ class shop extends baseFunc{
     ;付费商店功能
     static ShopCash() {
         if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.250 * nikkePosW . " ", nikkePosY + 0.599 * nikkePosH . " ", nikkePosX + 0.250 * nikkePosW + 0.027 * nikkePosW . " ", nikkePosY + 0.599 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("付费商店的图标"), , , , , , , zoomW, zoomH)) {
-            ;;AddLog("点击付费商店")
+            AddLog("点击付费商店")
             FindText().Click(X, Y, "L")
             Sleep 2000
             
-            ;;AddLog("领取免费珠宝")
+            AddLog("领取免费珠宝")
             while true {
                 if (ok := FindText(&X := "wait", &Y := 2, nikkePosX + 0.386 * nikkePosW . " ", nikkePosY + 0.632 * nikkePosH . " ", nikkePosX + 0.386 * nikkePosW + 0.016 * nikkePosW . " ", nikkePosY + 0.632 * nikkePosH + 0.025 * nikkePosH . " ", 0.2 * 1, 0.2 * 1, FindText().PicLib("灰色空心方框"), , , , , , , zoomW, zoomH)) {
-                    ;;AddLog("发现日服特供的框")
+                    AddLog("发现日服特供的框")
                     FindText().Click(X, Y, "L")
                     Sleep 1000
                     if (ok := FindText(&X := "wait", &Y := 3, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.3 * 1, 0.3 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
-                        ;;AddLog("点击确认")
+                        AddLog("点击确认")
                         FindText().Click(X, Y, "L")
                     }
                 }
                 else if (ok := FindText(&X, &Y, nikkePosX + 0.040 * nikkePosW . " ", nikkePosY + 0.178 * nikkePosH . " ", nikkePosX + 0.040 * nikkePosW + 0.229 * nikkePosW . " ", nikkePosY + 0.178 * nikkePosH + 0.080 * nikkePosH . " ", 0.2 * 1, 0.2 * 1, FindText().PicLib("礼物的下半"), , , , , , , zoomW, zoomH)) {
                     Sleep 500
-                    ;;AddLog("点击一级页面")
+                    AddLog("点击一级页面")
                     FindText().Click(X + 20 * zoomW, Y + 20 * zoomH, "L")
                     Sleep 500
                 }
                 else break
             }
             while (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.002 * nikkePosW . " ", nikkePosY + 0.249 * nikkePosH . " ", nikkePosX + 0.002 * nikkePosW + 0.367 * nikkePosW . " ", nikkePosY + 0.249 * nikkePosH + 0.062 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红点"), , , , , , 1, zoomW, zoomH)) {
-                ;;AddLog("点击二级页面")
+                AddLog("点击二级页面")
                 FindText().Click(X - 20 * zoomW, Y + 20 * zoomH, "L")
                 Sleep 1000
                 if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.002 * nikkePosW . " ", nikkePosY + 0.249 * nikkePosH . " ", nikkePosX + 0.002 * nikkePosW + 0.367 * nikkePosW . " ", nikkePosY + 0.249 * nikkePosH + 0.062 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红底的N图标"), , , , , , , zoomW, zoomH)) {
-                    ;;AddLog("移除N标签")
+                    AddLog("移除N标签")
                     FindText().Click(X, Y, "L")
                     Sleep 1000
                     scaledClick(238, 608)
                     Sleep 1000
                 }
                 if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.089 * nikkePosW . " ", nikkePosY + 0.334 * nikkePosH . " ", nikkePosX + 0.089 * nikkePosW + 0.019 * nikkePosW . " ", nikkePosY + 0.334 * nikkePosH + 0.034 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("红点"), , , , , , 5, zoomW, zoomH)) {
-                    ;;AddLog("点击三级页面")
+                    AddLog("点击三级页面")
                     FindText().Click(X - 20 * zoomW, Y + 20 * zoomH, "L")
                     Sleep 1000
                     idleClick
@@ -202,22 +202,22 @@ class shop extends baseFunc{
                 }
                 if (ok := FindText(&X, &Y, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.2 * 1, 0.2 * 1, FindText().PicLib("白色的叉叉"), , , , , , , zoomW, zoomH)) {
                     FindText().Click(X, Y, "L")
-                    ;;AddLog("检测到白色叉叉，尝试重新执行任务")
+                    AddLog("检测到白色叉叉，尝试重新执行任务")
                     backHall
                     shop.ShopCash
                 }
             }
             else {
-                ;;AddLog("奖励已全部领取")
+                AddLog("奖励已全部领取")
             }
 
-            ;;AddLog("领取免费礼包")
+            AddLog("领取免费礼包")
             if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.180 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.266 * nikkePosW . " ", nikkePosY + 0.180 * nikkePosH + 0.077 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)) {
-                ;;AddLog("点击一级页面")
+                AddLog("点击一级页面")
                 FindText().Click(X - 20 * zoomH, Y + 20 * zoomH, "L")
                 Sleep 1000
                 if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.010 * nikkePosW . " ", nikkePosY + 0.259 * nikkePosH . " ", nikkePosX + 0.010 * nikkePosW + 0.351 * nikkePosW . " ", nikkePosY + 0.259 * nikkePosH + 0.051 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)) {
-                    ;;AddLog("点击二级页面")
+                    AddLog("点击二级页面")
                     FindText().Click(X - 20 * zoomW, Y + 20 * zoomH, "L")
                     Sleep 1000
                     ;把鼠标移动到商品栏
@@ -226,13 +226,13 @@ class shop extends baseFunc{
                     Sleep 1000
                 }
                 if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.332 * nikkePosW . " ", nikkePosY + 0.443 * nikkePosH . " ", nikkePosX + 0.332 * nikkePosW + 0.327 * nikkePosW . " ", nikkePosY + 0.443 * nikkePosH + 0.466 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)) {
-                    ;;AddLog("点击三级页面")
+                    AddLog("点击三级页面")
                     FindText().Click(X - 20 * zoomW, Y + 20 * zoomH, "L")
                     Sleep 1000
                     idleClick
                 }
             }
-            ;;AddLog("奖励已全部领取")
+            AddLog("奖励已全部领取")
 
             while (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.191 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.292 * nikkePosW . " ", nikkePosY + 0.191 * nikkePosH + 0.033 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红底的N图标"), , , , , , , 0.83 * zoomW, 0.83 * zoomH)) {
                 FindText().Click(X, Y, "L")
