@@ -10,9 +10,12 @@ PicTolerance := 1
 zoomW := 1
 zoomH := 1
 
-changeServer(){
+changeServer(guiObj,event){
     global nikkeServer
-    nikkeServer := !nikkeServer
+    if(guiObj.Text == "国服")
+        nikkeServer := 0
+    if(guiObj.Text == "国际服")
+        nikkeServer := 1
 }
 
 nikkeWindowInfoRefresh(textGuiObj){

@@ -20,9 +20,9 @@ mainGui.Add("Text","XP+5 YP+20 WP-10 HP-25" , "该版本为测试版本，目前
 ;mainGuiProcessPos :=  mainGui.Add("Text","W250 R2","")
 
 mainGuiServerSelectCN := mainGui.Add("Radio", "X10 W250 R1 YS+130 Checked Group", "国服")
-mainGuiServerSelectCN.OnEvent("Click", (*)=>changeServer())
+mainGuiServerSelectCN.OnEvent("Click", changeServer)
 mainGuiServerSelectOther := mainGui.Add("Radio", "W250 R2", "国际服")
-mainGuiServerSelectOther.OnEvent("Click", (*)=>changeServer())
+mainGuiServerSelectOther.OnEvent("Click", changeServer)
 
 mainGuiFuncBox := mainGui.AddGroupBox("W250 R10 Section", "功能测试")
 
