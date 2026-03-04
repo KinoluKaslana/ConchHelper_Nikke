@@ -13,9 +13,9 @@ changeServer(){
     nikkeServer := !nikkeServer
 }
 
-nikkeWindowInfoRefresh(textGuiObj){
+nikkePosWindowInfoRefresh(textGuiObj){
     global processHWND, nikkePosX, nikkePosY, nikkePosW, nikkePosH, zoomW, zoomH
-    getNikkeHWND()
+    getnikkePosHWND()
     getNikkePos()
     zoomW := nikkePosW / picLibClientW
     zoomH := nikkePosH / picLibClientH
@@ -56,6 +56,20 @@ refuseSale() {
     }
 }
 
+back() {
+    if (ok := FindText(&X, &Y, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+        return
+    }
+    ; AddLog("返回")
+    Send "{Esc}"
+    if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.518 * nikkePosW . " ", nikkePosY + 0.609 * nikkePosH . " ", nikkePosX + 0.518 * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.609 * nikkePosH + 0.033 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+        Sleep 1000
+        FindText().Click(X, Y, "L")
+    }
+    Send "{]}"
+    Sleep 500
+}
+
 backHall(){
     while true {
         if (ok := FindText(&X, &Y, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
@@ -89,4 +103,284 @@ backHall(){
         }
     }
     Sleep 1000
+}
+
+;tag 进入方舟
+enterArk() {
+    ;AddLog("进入方舟")
+    while True {
+        Sleep 500
+        if (ok := FindText(&X, &Y, nikkePosX + 0.014 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.014 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
+            break
+        }
+        if (ok := FindText(&X := "wait", &Y := 2, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
+            FindText().Click(X + 50 * zoomW, Y, "L") ;找得到就尝试进入
+        }
+        if (ok := FindText(&X := "wait", &Y := 2, nikkePosX + 0.014 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.014 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
+            break
+        }
+        else backHall() ;找不到就先返回大厅
+    }
+    Sleep 2000
+}
+
+;tag 进入前哨基地
+enterOutpost() {
+    ;AddLog("进入前哨基地")
+    while True {
+        Sleep 500
+        if (ok := FindText(&X, &Y, nikkePosX + 0.004 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH . " ", nikkePosX + 0.004 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH + 0.034 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , zoomW, zoomH)) {
+            break
+        }
+        if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.240 * nikkePosW . " ", nikkePosY + 0.755 * nikkePosH . " ", nikkePosX + 0.240 * nikkePosW + 0.048 * nikkePosW . " ", nikkePosY + 0.755 * nikkePosH + 0.061 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , zoomW, zoomH)) {
+            FindText().Click(X, Y, "L") ;找得到就尝试进入
+        }
+        if (ok := FindText(&X := "wait", &Y := 10, nikkePosX + 0.004 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH . " ", nikkePosX + 0.004 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH + 0.034 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , zoomW, zoomH)) {
+            break
+        }
+        else backHall() ;找不到就先返回大厅
+    }
+    Sleep 2000
+}
+
+;tag 进入战斗
+enterBattle() {
+    ;是否能战斗
+    global BattleActive
+    ;是否能跳过动画
+    global BattleSkip
+    ;是否能快速战斗
+    global QuickBattle
+    QuickBattle := 0
+    ; AddLog("尝试进入战斗")
+    if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.145 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH + 0.065 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击快速战斗")
+        FindText().Click(X + 50 * TrueRatio, Y, "L")
+        BattleActive := 1
+        QuickBattle := 1
+        Sleep 500
+        if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.553 * nikkePosW . " ", nikkePosY + 0.683 * nikkePosH . " ", nikkePosX + 0.553 * nikkePosW + 0.036 * nikkePosW . " ", nikkePosY + 0.683 * nikkePosH + 0.040 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 500
+        }
+        if (ok := FindText(&X, &Y, nikkePosX + 0.470 * nikkePosW . " ", nikkePosY + 0.733 * nikkePosH . " ", nikkePosX + 0.470 * nikkePosW + 0.157 * nikkePosW . " ", nikkePosY + 0.733 * nikkePosH + 0.073 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("进行战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 500
+        }
+        BattleSkip := 0
+    }
+    else if (ok := FindText(&X, &Y, nikkePosX + 0.499 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.499 * nikkePosW + 0.155 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.191 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击进入战斗")
+        BattleActive := 1
+        BattleSkip := 1
+        FindText().Click(X + 50 * TrueRatio, Y, "L")
+        Sleep 500
+    }
+    else if (ok := FindText(&X, &Y, nikkePosX + 0.519 * nikkePosW . " ", nikkePosY + 0.831 * nikkePosH . " ", nikkePosX + 0.519 * nikkePosW + 0.134 * nikkePosW . " ", nikkePosY + 0.831 * nikkePosH + 0.143 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的进"), , , , , , , TrueRatio, TrueRatio)) {
+        BattleActive := 2
+    }
+    else {
+        BattleActive := 0
+        AddLog("无法战斗")
+    }
+}
+;tag 战斗结算
+battleSettlement(currentVictory := 0, modes*) {
+    global LastVictoryCount ; 声明要使用的全局变量
+    Screenshot := false
+    RedCircle := false
+    Exit7 := false
+    EventStory := false
+    if (BattleActive = 0 or BattleActive = 2) {
+        AddLog("由于无法战斗，跳过战斗结算")
+        if BattleActive = 2 {
+            Send "{Esc}"
+        }
+        LastVictoryCount := currentVictory ; 更新全局变量
+        return
+    }
+    for mode in modes {
+        switch mode {
+            case "Screenshot":
+            {
+                Screenshot := true
+                if BattleSkip := 1
+                    AddLog("截图功能已启用", "Green")
+            }
+            case "RedCircle":
+            {
+                RedCircle := true
+                if BattleSkip := 1
+                    AddLog("红圈功能已启用", "Green")
+            }
+            case "Exit7":
+            {
+                Exit7 := true
+                if BattleSkip := 1
+                    AddLog("满7自动退出功能已启用", "Green")
+            }
+            case "EventStory":
+            {
+                EventStory := true
+                if BattleSkip := 1
+                    AddLog("剧情跳过功能已启用", "Green")
+            }
+            default: MsgBox "格式输入错误，你输入的是" mode
+        }
+    }
+    AddLog("等待战斗结算")
+    while true {
+        if Exit7 {
+            if (ok := FindText(&X, &Y, nikkePosX + 0.512 * nikkePosW . " ", nikkePosY + 0.072 * nikkePosH . " ", nikkePosX + 0.512 * nikkePosW + 0.020 * nikkePosW . " ", nikkePosY + 0.072 * nikkePosH + 0.035 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·红色框的7"), , , , , , , TrueRatio, TrueRatio)) {
+                Send "{Esc}"
+                if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.382 * nikkePosW . " ", nikkePosY + 0.890 * nikkePosH . " ", nikkePosX + 0.382 * nikkePosW + 0.113 * nikkePosW . " ", nikkePosY + 0.890 * nikkePosH + 0.067 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("放弃战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                    Sleep 500
+                    FindText().Click(X, Y, "L")
+                    if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.518 * nikkePosW . " ", nikkePosY + 0.609 * nikkePosH . " ", nikkePosX + 0.518 * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.609 * nikkePosH + 0.033 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                        Sleep 500
+                        FindText().Click(X, Y, "L")
+                    }
+                    AddLog("满7自动退出")
+                }
+            }
+        }
+        if RedCircle {
+            if (ok := FindText(&X, &Y, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.12 * PicTolerance, 0.13 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的上边缘黄边")
+                FindText().Click(X, Y + 70 * TrueRatio, 0)
+                Sleep 100
+                Click "down left"
+                Sleep 700
+                Click "up left"
+                Sleep 100
+            }
+            if (ok := FindText(&X, &Y, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.12 * PicTolerance, 0.13 * PicTolerance, FindText().PicLib("红圈的下边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的下边缘黄边")
+                FindText().Click(X, Y - 70 * TrueRatio, 0)
+                Sleep 100
+                Click "down left"
+                Sleep 700
+                Click "up left"
+                Sleep 100
+            }
+            if (ok := FindText(&X, &Y, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.12 * PicTolerance, 0.11 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的左边缘黄边")
+                FindText().Click(X + 70 * TrueRatio, Y, 0)
+                Sleep 100
+                Click "down left"
+                Sleep 700
+                Click "up left"
+                Sleep 100
+            }
+            if (ok := FindText(&X, &Y, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.12 * PicTolerance, 0.13 * PicTolerance, FindText().PicLib("红圈的右边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的右边缘黄边")
+                FindText().Click(X - 70 * TrueRatio, Y, 0)
+                Sleep 100
+                Click "down left"
+                Sleep 700
+                Click "up left"
+                Sleep 100
+            }
+        }
+        if EventStory {
+            ; 跳过剧情
+            Send "{]}"
+            ; 区域变化的提示
+            if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.445 * nikkePosW . " ", nikkePosY + 0.561 * nikkePosH . " ", nikkePosX + 0.445 * nikkePosW + 0.111 * nikkePosW . " ", nikkePosY + 0.561 * nikkePosH + 0.056 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y + 400 * TrueRatio, "L")
+            }
+        }
+        ; 检测自动战斗和爆裂
+        if g_settings["CheckAuto"] {
+            CheckAuto
+        }
+        ;无限之塔的位置
+        if (ok := FindText(&X, &Y, nikkePosX + 0.855 * nikkePosW . " ", nikkePosY + 0.907 * nikkePosH . " ", nikkePosX + 0.855 * nikkePosW + 0.031 * nikkePosW . " ", nikkePosY + 0.907 * nikkePosH + 0.081 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("[无限之塔胜利]TAB已命中")
+            break
+        }
+        ; 无限之塔失败的位置
+        else if (ok := FindText(&X, &Y, nikkePosX + 0.784 * nikkePosW . " ", nikkePosY + 0.895 * nikkePosH . " ", nikkePosX + 0.784 * nikkePosW + 0.031 * nikkePosW . " ", nikkePosY + 0.895 * nikkePosH + 0.078 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("[无限之塔失败]TAB已命中")
+            break
+        }
+        ; 新人竞技场+模拟室+异常拦截的位置
+        else if (ok := FindText(&X, &Y, nikkePosX + 0.954 * nikkePosW . " ", nikkePosY + 0.913 * nikkePosH . " ", nikkePosX + 0.954 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.913 * nikkePosH + 0.080 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("[新人竞技场|模拟室|异常拦截|推图]TAB已命中")
+            break
+        }
+        else if (ok := FindText(&X, &Y, nikkePosX + 0.012 * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH . " ", nikkePosX + 0.012 * nikkePosW + 0.036 * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH + 0.072 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("[竞技场快速战斗失败]重播的图标已命中", "MAROON")
+            break
+        }
+        else if (ok := FindText(&X, &Y, nikkePosX + 0.484 * nikkePosW . " ", nikkePosY + 0.877 * nikkePosH . " ", nikkePosX + 0.484 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.877 * nikkePosH + 0.035 * nikkePosH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("[扫荡|活动推关]ESC已命中")
+            break
+        }
+        ; 基地防御等级提升的页面
+        if (ok := FindText(&X, &Y, nikkePosX + 0.490 * nikkePosW . " ", nikkePosY + 0.426 * nikkePosH . " ", nikkePosX + 0.490 * nikkePosW + 0.016 * nikkePosW . " ", nikkePosY + 0.426 * nikkePosH + 0.029 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("蓝色的右箭头"), , , , , , , TrueRatio, TrueRatio)) {
+            Confirm
+        }
+        ;间隔500ms
+        Sleep 500
+    }
+    ;是否需要截图
+    if Screenshot {
+        Sleep 1000
+        TimeString := FormatTime(, "yyyyMMdd_HHmmss")
+        FindText().SavePic(A_ScriptDir "\Screenshot\" TimeString ".jpg", nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, ScreenShot := 1)
+    }
+    ;有灰色的锁代表赢了但次数耗尽
+    if (ok := FindText(&X, &Y, nikkePosX + 0.893 * nikkePosW . " ", nikkePosY + 0.920 * nikkePosH . " ", nikkePosX + 0.893 * nikkePosW + 0.019 * nikkePosW . " ", nikkePosY + 0.920 * nikkePosH + 0.039 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的锁"), , , , , , , TrueRatio, TrueRatio)) {
+        currentVictory := currentVictory + 1
+        if currentVictory > 1 {
+            AddLog("共胜利" currentVictory "次")
+        }
+    }
+    ;有编队代表输了，点Esc
+    if (ok := FindText(&X, &Y, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("编队的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("战斗失败！尝试返回", "MAROON")
+        GoBack
+        Sleep 1000
+        LastVictoryCount := currentVictory ; 更新全局变量
+        return False
+    }
+    ;如果有下一关，就点下一关（爬塔的情况）
+    else if (ok := FindText(&X, &Y, nikkePosX + 0.889 * nikkePosW . " ", nikkePosY + 0.912 * nikkePosH . " ", nikkePosX + 0.889 * nikkePosW + 0.103 * nikkePosW . " ", nikkePosY + 0.912 * nikkePosH + 0.081 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的下一关卡"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("战斗成功！尝试进入下一关", "GREEN")
+        currentVictory := currentVictory + 1
+        if currentVictory > 1 {
+            AddLog("共胜利" currentVictory "次")
+        }
+        FindText().Click(X, Y + 20 * TrueRatio, "L")
+        Sleep 5000
+        if EventStory {
+            BattleSettlement(currentVictory, "EventStory")
+        }
+        else {
+            BattleSettlement(currentVictory)
+        }
+    }
+    ;有灰色的下一关卡代表赢了但次数耗尽
+    else if (ok := FindText(&X, &Y, nikkePosX + 0.889 * nikkePosW . " ", nikkePosY + 0.912 * nikkePosH . " ", nikkePosX + 0.889 * nikkePosW + 0.103 * nikkePosW . " ", nikkePosY + 0.912 * nikkePosH + 0.081 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的下一关卡"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("战斗结束！")
+        currentVictory := currentVictory + 1
+        if currentVictory > 1 {
+            AddLog("共胜利" currentVictory "次")
+        }
+        GoBack
+        Sleep 1000
+        Send "{]}"
+        LastVictoryCount := currentVictory
+        return True
+    }
+    ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
+    else {
+        AddLog("战斗结束！")
+        GoBack
+        Sleep 1000
+        Send "{]}"
+        LastVictoryCount := currentVictory
+        return True
+    }
 }

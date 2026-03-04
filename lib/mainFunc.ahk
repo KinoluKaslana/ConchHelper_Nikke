@@ -2,6 +2,7 @@
 
 #Include <baseFunc>
 #Include <Nikke\shop>
+#Include <Nikke\simulation>
 #Include <Nikke\award>
 
 class mainFunc extends baseFunc{
@@ -30,11 +31,11 @@ class mainFunc extends baseFunc{
     init(mainGui, mainGuiWidth, optStr){
         shopObj := shop().regFunc(mainGui, "X280 Y35 W150 R1.2")
         this.subFuncObjArray.Push(shopObj)
-        awardObj := award().regFunc(mainGui, "X280 Y35 W150 R1.2")
-        this.subFuncObjArray.Push(awardObj)
+        simulationObj := simulation().regFunc(mainGui, "X280 Y35 W150 R1.2")
+        this.subFuncObjArray.Push(simulationObj)
         
         this.addCheckRow(mainGui, mainGuiWidth, shopObj, "商店", optStr)
-        this.addCheckRow(mainGui, mainGuiWidth, awardObj, "奖励领取", "XS+5 YS+50 H30 W150")
+        this.addCheckRow(mainGui, mainGuiWidth, simulationObj, "模拟式", "XS+5 YS+50 H30 W150")
     }
 
     regFunc(mainGui, mainGuiWidth, optStr){

@@ -29,7 +29,7 @@ class shop extends baseFunc{
                 continue ; 如果设置未开启，则跳过此物品
             }
             ; 查找物品 (使用动态坐标 sX1, sY1, sX2, sY2)
-            if (ok := FindText(&X := "wait", &Y := 1, sX1, sY1, sX2, sY2, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, zoomW * item.zoomScale, zoomH * item.zoomScale)) {
+            if (ok := FindText(&X := "wait", &Y := 1, sX1, sY1, sX2, sY2, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, zoomW / item.zoomScale, zoomH / item.zoomScale)) {
                 ; 遍历找到的所有物品 (例如多个手册)
                 loop ok.Length {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
@@ -37,7 +37,7 @@ class shop extends baseFunc{
                     Sleep 1000
                     ; 特殊逻辑：普通商店芯尘盒需要检查是否为信用点购买
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
-                        if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
+                        if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
                             ;AddLog("未检测到信用点支付选项，跳过")
                             idleClick()
                             Sleep 1000
@@ -46,19 +46,19 @@ class shop extends baseFunc{
                     }
                     ; 特殊逻辑：废铁商店需要点击MAX
                     if (Options.Has("CheckMax")) {
-                        if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.590 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH . " ", nikkePosX + 0.590 * nikkePosW + 0.038 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH + 0.070 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
+                        if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.590 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH . " ", nikkePosX + 0.590 * nikkePosW + 0.038 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH + 0.070 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
                             FindText().Click(X, Y, "L")
                             Sleep 1000
                         }
                     }
                     ; 点击购买 (带圈白勾)
-                    if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.088 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.146 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
+                    if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.088 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.146 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
                         Sleep 500
                         ;AddLog("购买" . Name)
                         FindText().Click(X, Y, "L")
                         Sleep 1000
                         ; 确认并返回商店主界面 (检查左上角百货商店图标)
-                        while !(FindText(&X := "wait", &Y := 1, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , zoomW * item.zoomScale, zoomH * item.zoomScale)) {
+                        while !(FindText(&X := "wait", &Y := 1, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
                             idleClick()
                         }
                     }
@@ -168,7 +168,7 @@ class shop extends baseFunc{
                     ;;AddLog("发现日服特供的框")
                     FindText().Click(X, Y, "L")
                     Sleep 1000
-                    if (ok := FindText(&X := "wait", &Y := 3, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.3 * 1, 0.3 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomH, zoomH)) {
+                    if (ok := FindText(&X := "wait", &Y := 3, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.3 * 1, 0.3 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
                         ;;AddLog("点击确认")
                         FindText().Click(X, Y, "L")
                     }
@@ -218,7 +218,7 @@ class shop extends baseFunc{
                 Sleep 1000
                 if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.010 * nikkePosW . " ", nikkePosY + 0.259 * nikkePosH . " ", nikkePosX + 0.010 * nikkePosW + 0.351 * nikkePosW . " ", nikkePosY + 0.259 * nikkePosH + 0.051 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)) {
                     ;;AddLog("点击二级页面")
-                    FindText().Click(X - 20 * zoomH, Y + 20 * zoomH, "L")
+                    FindText().Click(X - 20 * zoomW, Y + 20 * zoomH, "L")
                     Sleep 1000
                     ;把鼠标移动到商品栏
                     scaledClick(1918, 1060)
@@ -227,7 +227,7 @@ class shop extends baseFunc{
                 }
                 if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.332 * nikkePosW . " ", nikkePosY + 0.443 * nikkePosH . " ", nikkePosX + 0.332 * nikkePosW + 0.327 * nikkePosW . " ", nikkePosY + 0.443 * nikkePosH + 0.466 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)) {
                     ;;AddLog("点击三级页面")
-                    FindText().Click(X - 20 * zoomH, Y + 20 * zoomH, "L")
+                    FindText().Click(X - 20 * zoomW, Y + 20 * zoomH, "L")
                     Sleep 1000
                     idleClick
                 }
