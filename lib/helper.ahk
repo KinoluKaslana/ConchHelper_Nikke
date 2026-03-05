@@ -2,6 +2,7 @@
 
 #Include <log>
 #Include "Nikke\processcatch.ahk"
+#Include "3rd\Gdip_Toolbox.ahk"
 
 picLibClientW := 3840
 picLibClientH := 2160
@@ -13,9 +14,9 @@ zoomH := 1
 changeServer(guiObj,event){
     global nikkeServer
     if(guiObj.Text == "国服")
-        nikkeServer := 0
-    if(guiObj.Text == "国际服")
         nikkeServer := 1
+    if(guiObj.Text == "国际服")
+        nikkeServer := 0
 }
 
 nikkeWindowInfoRefresh(textGuiObj){
@@ -388,4 +389,10 @@ battleSettlement(currentVictory := 0, modes*) {
         LastVictoryCount := currentVictory
         return True
     }
+}
+
+createOutline(x1,y1,x2,y2){
+    rect := DrawRectangle(Floor(x1),Floor(y1),Floor(x2),Floor(y2), 0xff0000, 0.5)
+    MsgBox("Click ok to destroy rectangle")
+    rect.Destroy()
 }

@@ -8,11 +8,11 @@ nikkePosH := -1
 
 ;0 = 国服
 ;1 = 国际服
-nikkeServer := 0
+nikkeServer := 1
 
 getNikkeHWND(){
     global processHWND
-    windowTitle := nikkeServer ? "NIKKE" : "胜利女神"
+    windowTitle := nikkeServer ? "胜利女神" : "NIKKE"
     processName := "nikke.exe"
     SetTitleMatchMode 1
 

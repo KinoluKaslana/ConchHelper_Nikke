@@ -3,12 +3,15 @@
 #Include "..\helper.ahk"
 #Include "..\3rd\FindText.ahk"
 
+global nikkeServer
+
 class simulation extends baseFunc{
     static normal(){
         enterArk
         AddLog("开始任务：模拟室", "Fuchsia")
         AddLog("查找模拟室入口")
-        while (ok := FindText(&X, &Y, nikkePosX + 0.370 * nikkePosW . " ", nikkePosY + 0.544 * nikkePosH . " ", nikkePosX + 0.370 * nikkePosW + 0.069 * nikkePosW . " ", nikkePosY + 0.544 * nikkePosH + 0.031 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("模拟室"), , 0, , , , , zoomW, zoomH)) {
+
+        while (ok := FindText(&X, &Y, nikkePosX + 0.370 * nikkePosW . " ", nikkePosY + (0.544 + 0.05 * nikkeServer) * nikkePosH . " ", nikkePosX + 0.370 * nikkePosW + 0.069 * nikkePosW . " ", nikkePosY + (0.544 + 0.05 * nikkeServer) * nikkePosH + 0.031 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("模拟室"), , 0, , , , , zoomW, zoomH)) {
             AddLog("进入模拟室")
             FindText().Click(X, Y - 50 * zoomH, "L")
             Sleep 1000
@@ -26,19 +29,20 @@ class simulation extends baseFunc{
             }
             else idleClick
         }
-        if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.373 * nikkePosW . " ", nikkePosY + 0.695 * nikkePosH . " ", nikkePosX + 0.373 * nikkePosW + 0.104 * nikkePosW . " ", nikkePosY + 0.695 * nikkePosH + 0.058 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室·已通关"), , , , , , , zoomW, zoomH)) {
-            AddLog("模拟已通关，跳过该任务", "Olive")
-            sleep 1000
-            idleClick
-            return
-        }
+        ;if (ok := FindText(&X := "wait", &Y := 3, nikkePosX + 0.373 * nikkePosW . " ", nikkePosY + 0.695 * nikkePosH . " ", nikkePosX + 0.373 * nikkePosW + 0.104 * nikkePosW . " ", nikkePosY + 0.;695 * nikkePosH + 0.058 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室·已通关"), , , , , , , zoomW, zoomH)) {
+        ;    AddLog("模拟已通关，跳过该任务", "Olive")
+        ;    sleep 1000
+        ;    idleClick
+        ;    return
+        ;}
         Directly := false
-        while !(ok := FindText(&X, &Y, nikkePosX + 0.469 * nikkePosW . " ", nikkePosY + 0.761 * nikkePosH . " ", nikkePosX + 0.469 * nikkePosW + 0.037 * nikkePosW . " ", nikkePosY + 0.761 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室·蓝色的开关"), , , , , , , zoomW, zoomH)) {
+        createOutline(nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW , nikkePosY + 0.761 * nikkePosH , nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW + 0.037 * nikkePosW , nikkePosY + 0.761 * nikkePosH + 0.047 * nikkePosH)
+        while !(ok := FindText(&X, &Y, nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.761 * nikkePosH . " ", nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW + 0.037 * nikkePosW . " ", nikkePosY + 0.761 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室·蓝色的开关"), , , , , , , zoomW, zoomH)) {
             scaledClick(1850, 1710)
             Sleep 500
-            Directly := true
+            Directly := false
             if A_Index >= 3 {
-                Directly := false
+                Directly := true
                 break
             }
         }
