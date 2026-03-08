@@ -36,7 +36,6 @@ class simulation extends baseFunc{
         ;    return
         ;}
         Directly := false
-        createOutline(nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW , nikkePosY + 0.761 * nikkePosH , nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW + 0.037 * nikkePosW , nikkePosY + 0.761 * nikkePosH + 0.047 * nikkePosH)
         while !(ok := FindText(&X, &Y, nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.761 * nikkePosH . " ", nikkePosX + (0.469 - 0.032 * nikkeServer) * nikkePosW + 0.037 * nikkePosW . " ", nikkePosY + 0.761 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室·蓝色的开关"), , , , , , , zoomW, zoomH)) {
             scaledClick(1850, 1710)
             Sleep 500

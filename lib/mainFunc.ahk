@@ -4,6 +4,7 @@
 #Include <Nikke\shop>
 #Include <Nikke\simulation>
 #Include <Nikke\award>
+#Include <Nikke\tower>
 
 class mainFunc extends baseFunc{
     subFuncMap := Map()
@@ -33,9 +34,15 @@ class mainFunc extends baseFunc{
         this.subFuncObjArray.Push(shopObj)
         simulationObj := simulation().regFunc(mainGui, "X280 Y35 W150 R1.2")
         this.subFuncObjArray.Push(simulationObj)
+        awardjObj := award().regFunc(mainGui, "X280 Y35 W150 R1.2")
+        this.subFuncObjArray.Push(awardjObj)
+        towerObj := tower().regFunc(mainGui, "X280 Y35 W150 R1.2")
+        this.subFuncObjArray.Push(towerObj)
         
         this.addCheckRow(mainGui, mainGuiWidth, shopObj, "商店", optStr)
         this.addCheckRow(mainGui, mainGuiWidth, simulationObj, "模拟室", "XS+5 YS+50 H30 W150")
+        this.addCheckRow(mainGui, mainGuiWidth, awardjObj, "竞技场", "XS+5 YS+80 H30 W150")
+        this.addCheckRow(mainGui, mainGuiWidth, towerObj, "爬塔", "XS+5 YS+110 H30 W150")
 
         this.jobSet.addJob("",(*)=>AddLog("所有任务执行完毕！"))
         this.jobSet.jobStatus[-1] := 1

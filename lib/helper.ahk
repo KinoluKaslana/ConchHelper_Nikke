@@ -40,8 +40,7 @@ scaledMove(x, y){
 
 scaledClick(x, y){
     scaledMove(x, y)
-    ;Click
-    MsgBox "要求点击"
+    Click
 }
 
 idleClick(){
@@ -128,6 +127,22 @@ enterArk() {
         else backHall() ;找不到就先返回大厅
     }
     Sleep 2000
+}
+
+;tag 进入竞技场
+enterArena() {
+    if (ok := FindText(&X, &Y, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.060 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH + 0.060 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , zoomW, zoomH)) {
+        return
+    }
+    while (ok := FindText(&X := "wait", &Y := 1, nikkePosX + (0.554 - 0.014 * nikkeServer) * nikkePosW . " ", nikkePosY + (0.640 + 0.071 * nikkeServer) * nikkePosH . " ", nikkePosX + (0.554 - 0.014 * nikkeServer) * nikkePosW + 0.068 * nikkePosW . " ", nikkePosY + (0.640 + 0.071 * nikkeServer) * nikkePosH + 0.029 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("方舟·竞技场"), , , , , , , zoomW, zoomH)) {
+        AddLog("点击竞技场")
+        FindText().Click(X, Y - 50 * zoomH, "L")
+    }
+    while !(ok := FindText(&X, &Y, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.060 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH + 0.060 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , zoomW, zoomH)) {
+        idleClick
+    }
+    AddLog("进入竞技场")
+    Sleep 1000
 }
 
 ;tag 进入前哨基地
@@ -395,4 +410,29 @@ createOutline(x1,y1,x2,y2){
     rect := DrawRectangle(Floor(x1),Floor(y1),Floor(x2),Floor(y2), 0xff0000, 0.5)
     MsgBox("Click ok to destroy rectangle")
     rect.Destroy()
+}
+
+;tag 颜色判断
+IsSimilarColor(targetColor, color) {
+    tr := Format("{:d}", "0x" . substr(targetColor, 3, 2))
+    tg := Format("{:d}", "0x" . substr(targetColor, 5, 2))
+    tb := Format("{:d}", "0x" . substr(targetColor, 7, 2))
+    pr := Format("{:d}", "0x" . substr(color, 3, 2))
+    pg := Format("{:d}", "0x" . substr(color, 5, 2))
+    pb := Format("{:d}", "0x" . substr(color, 7, 2))
+    distance := sqrt((tr - pr) ** 2 + (tg - pg) ** 2 + (tb - pb) ** 2)
+    if (distance < 15)
+        return true
+    return false
+}
+;tag 颜色
+UserCheckColor(sX, sY, sC, k) {
+    loop sX.Length {
+        uX := Round(sX[A_Index] * k)
+        uY := Round(sY[A_Index] * k)
+        uC := PixelGetColor(uX, uY)
+        if (!IsSimilarColor(uC, sC[A_Index]))
+            return 0
+    }
+    return 1
 }
