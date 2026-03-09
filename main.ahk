@@ -32,7 +32,7 @@ mainGuiDoroBtn := mainGui.Add("Button", "W70 YS350 H20 XS", "DORO!")
 mainGuiDoroBtn.OnEvent("Click", (mainGui, eventInfo) => mainFuncObj.action())
 
 mainGuiFindWindow := mainGui.Add("Text", "YS350 H20 XP+100 W100", "")
-refreshInfoFunc := nikkeWindowInfoRefresh.Bind(mainGuiFindWindow)
+refreshInfoFunc := nikkePosWindowInfoRefresh.Bind(mainGuiFindWindow)
 
 SetTimer(refreshInfoFunc, 500, 0)
 
