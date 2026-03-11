@@ -40,3 +40,7 @@ mainGuiSubfuncBox := mainGui.AddGroupBox("W250 Y10 R17.348 X270", "详细功能"
 
 mainGui.OnEvent("Close", (guiObj)=> SetTimer(refreshInfoFunc, 0, 0 ))
 mainGui.Show()
+
+^1:: {
+    ExitApp
+}

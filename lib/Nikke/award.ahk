@@ -45,6 +45,7 @@ class award extends baseFunc{
         AddLog("尝试返回前哨基地主页面")
         while !(ok := selfFindText(&X, &Y, nikkePosX + 0.884 * nikkePosW . " ", nikkePosY + 0.904 * nikkePosH . " ", nikkePosX + 0.884 * nikkePosW + 0.114 * nikkePosW . " ", nikkePosY + 0.904 * nikkePosH + 0.079 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("溢出资源的图标"), , , , , , , zoomW, zoomH)) {
             idleClick
+            Sleep 500
         }
         AddLog("已返回前哨基地主页面")            
         award.AwardOutpostDispatch()
@@ -91,7 +92,7 @@ class award extends baseFunc{
             AddLog("点击妮姬的图标，进入好感度咨询")
         }
         Sleep 2000
-        while (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.818 * nikkePosW . " ", nikkePosY + 0.089 * nikkePosH . " ", nikkePosX + 0.818 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.089 * nikkePosH + 0.056 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("咨询的图标"), , , , , , , zoomW, zoomH)) {
+        while (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + (0.818 + 0.082 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.089 * nikkePosH . " ", nikkePosX + (0.818 + 0.082 * nikkeServer) * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.089 * nikkePosH + 0.056 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("咨询的图标"), , , , , , , zoomW, zoomH)) {
             selfFindText().Click(X, Y, "L")
             Sleep 1000
             if A_Index > 10 {
@@ -101,9 +102,14 @@ class award extends baseFunc{
         }
         AddLog("已进入好感度咨询界面")
         ; 花絮鉴赏会
-        award.AwardAppreciation
-        while (ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.118 * nikkePosW . " ", nikkePosY + 0.356 * nikkePosH . " ", nikkePosX + 0.118 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.356 * nikkePosH + 0.022 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("》》》"), , , , , , , zoomW, zoomH)) {
-            selfFindText().Click(X + 50 * zoomW, Y, "L")
+        ;award.AwardAppreciation
+        while (
+            (!nikkeServer && ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.118 * nikkePosW . " ", nikkePosY + 0.356 * nikkePosH . " ", nikkePosX + 0.118 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.356 * nikkePosH + 0.022 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("》》》"), , , , , , , zoomW, zoomH)) ||
+            (nikkeServer && ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.166 * nikkePosW . " ", nikkePosY + 0.376 * nikkePosH . " ", nikkePosX + 0.166 * nikkePosW + 0.025 * nikkePosW . " ", nikkePosY + 0.376 * nikkePosH + 0.01 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("CN_-."), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
+                if(nikkeServer)
+                    selfFindText().Click(X, Y - 30 * zoomH, "L")
+                else
+                    selfFindText().Click(X + 50 * zoomW, Y, "L")
             AddLog("点击左上角的妮姬")
             Sleep 500
         }
@@ -117,10 +123,13 @@ class award extends baseFunc{
                 AddLog("妮姬咨询任务已超过20次，结束任务", "MAROON")
                 break
             }
-            if (ok := selfFindText(&X, &Y, nikkePosX + 0.637 * nikkePosW . " ", nikkePosY + 0.672 * nikkePosH . " ", nikkePosX + 0.637 * nikkePosW + 0.004 * nikkePosW . " ", nikkePosY + 0.672 * nikkePosH + 0.013 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("红色的20进度"), , , , , , , zoomW, zoomH)) {
+            if (
+                (!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + (0.637 - 0.0017 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.672 * nikkePosH . " ", nikkePosX + (0.637 - 0.0017 * nikkeServer) * nikkePosW + (0.004 + 0.0002 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.672 * nikkePosH + (0.013 + 0.001 * nikkeServer) * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("红色的20进度"), , , , , , , zoomW, zoomH)) || 
+                (nikkeServer && isMax := selfFindText(&X_Max, &Y_Max, nikkePosX + 0.541 * nikkePosW . " ", nikkePosY + 0.637 * nikkePosH . " ", nikkePosX + 0.541 * nikkePosW + 0.030 * nikkePosW . " ", nikkePosY + 0.637 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("咨询·MAX"), , , , , , , zoomW, zoomH))) {
                 AddLog("图鉴已满")
                 ; 检测是否 MAX
-                isMax := selfFindText(&X_Max, &Y_Max, nikkePosX + 0.541 * nikkePosW . " ", nikkePosY + 0.637 * nikkePosH . " ", nikkePosX + 0.541 * nikkePosW + 0.030 * nikkePosW . " ", nikkePosY + 0.637 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("咨询·MAX"), , , , , , , zoomW, zoomH)
+                if(!nikkeServer && isMax := selfFindText(&X_Max, &Y_Max, nikkePosX + 0.541 * nikkePosW . " ", nikkePosY + 0.637 * nikkePosH . " ", nikkePosX + 0.541 * nikkePosW + 0.030 * nikkePosW . " ", nikkePosY + 0.637 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("咨询·MAX"), , , , , , , zoomW, zoomH))
+                {}
                 ; 如果是 MAX 且 未开启强制执行，则跳过
                 if (isMax) {
                     AddLog("好感度已满，跳过")
@@ -137,7 +146,7 @@ class award extends baseFunc{
                     }
                 }
                 else AddLog("该妮姬已咨询")
-                if (ok := selfFindText(&X, &Y, nikkePosX + 0.361 * nikkePosW . " ", nikkePosY + 0.512 * nikkePosH . " ", nikkePosX + 0.361 * nikkePosW + 0.026 * nikkePosW . " ", nikkePosY + 0.512 * nikkePosH + 0.046 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("红色的收藏图标"), , , , , , , zoomW, zoomH)) {
+                if ((nikkeServer && isMax && ok := selfFindText(&X, &Y, nikkePosX + 0.361 * nikkePosW . " ", nikkePosY + 0.512 * nikkePosH . " ", nikkePosX + 0.361 * nikkePosW + 0.026 * nikkePosW . " ", nikkePosY + 0.512 * nikkePosH + 0.046 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("红色的收藏图标"), , , , , , , zoomW, zoomH)) || (!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.361 * nikkePosW . " ", nikkePosY + 0.512 * nikkePosH . " ", nikkePosX + 0.361 * nikkePosW + 0.026 * nikkePosW . " ", nikkePosY + 0.512 * nikkePosH + 0.046 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("红色的收藏图标"), , , , , , , zoomW, zoomH))) {
                     selfFindText().Click(X, Y, "L")
                     AddLog("取消收藏该妮姬")
                 }
@@ -175,7 +184,7 @@ class award extends baseFunc{
                 AddLog("确认咨询结算")
                 idleClick
             }
-            award.AwardAdviseAward
+            ;award.AwardAdviseAward
             if (ok := selfFindText(&X, &Y, nikkePosX + 0.970 * nikkePosW . " ", nikkePosY + 0.403 * nikkePosH . " ", nikkePosX + 0.970 * nikkePosW + 0.024 * nikkePosW . " ", nikkePosY + 0.403 * nikkePosH + 0.067 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("咨询·向右的图标"), , , , , , , zoomW, zoomH)) {
                 AddLog("下一个妮姬")
                 selfFindText().Click(X - 30 * zoomH, Y, "L")
@@ -188,7 +197,7 @@ class award extends baseFunc{
     static AwardAppreciation() {
         AddLog("开始任务：花絮鉴赏会", "Fuchsia")
         Sleep 1000
-        while (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.979 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH . " ", nikkePosX + 0.979 * nikkePosW + 0.020 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("红底的N图标"), , , , , , , zoomW, zoomH)) {
+        while (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + (0.979 - 0.075 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH . " ", nikkePosX + (0.979 - 0.075 * nikkeServer) * nikkePosW + 0.020 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("红底的N图标"), , , , , , , zoomW, zoomH)) {
             selfFindText().Click(X - 50 * zoomH, Y + 50 * zoomH, "L")
             AddLog("点击花絮")
         }
@@ -229,7 +238,9 @@ class award extends baseFunc{
             AddLog("点击红点")
             selfFindText().Click(X, Y, "L")
             Sleep 2000
-            while (ok := selfFindText(&X, &Y, nikkePosX + 0.486 * nikkePosW . " ", nikkePosY + 0.131 * nikkePosH . " ", nikkePosX + 0.486 * nikkePosW + 0.015 * nikkePosW . " ", nikkePosY + 0.131 * nikkePosH + 0.025 * nikkePosH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, selfFindText().PicLib("红点"), , , , , , , zoomW, zoomH)) {
+            while (
+                (!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.486 * nikkePosW . " ", nikkePosY + 0.131 * nikkePosH . " ", nikkePosX + 0.486 * nikkePosW + 0.015 * nikkePosW . " ", nikkePosY + 0.131 * nikkePosH + 0.025 * nikkePosH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, selfFindText().PicLib("红点"), , , , , , , zoomW, zoomH) ||
+                nikkeServer)) {
                 if (ok := selfFindText(&X, &Y, nikkePosX + 0.617 * nikkePosW . " ", nikkePosY + 0.400 * nikkePosH . " ", nikkePosX + 0.617 * nikkePosW + 0.026 * nikkePosW . " ", nikkePosY + 0.400 * nikkePosH + 0.512 * nikkePosH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, selfFindText().PicLib("红点"), , , , , , 1, zoomW, zoomH)) {
                     AddLog("播放新的片段")
                     selfFindText().Click(X, Y, "L")
@@ -244,7 +255,7 @@ class award extends baseFunc{
                 Send "{WheelDown 3}"
                 Sleep 1000
             }
-            if (ok := selfFindText(&X, &Y, nikkePosX + 0.616 * nikkePosW . " ", nikkePosY + 0.132 * nikkePosH . " ", nikkePosX + 0.616 * nikkePosW + 0.014 * nikkePosW . " ", nikkePosY + 0.132 * nikkePosH + 0.024 * nikkePosH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, selfFindText().PicLib("红点"), , , , , , 1, zoomW, zoomH)) {
+            if (!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.616 * nikkePosW . " ", nikkePosY + 0.132 * nikkePosH . " ", nikkePosX + 0.616 * nikkePosW + 0.014 * nikkePosW . " ", nikkePosY + 0.132 * nikkePosH + 0.024 * nikkePosH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, selfFindText().PicLib("红点"), , , , , , 1, zoomW, zoomH)) {
                 selfFindText().Click(X, Y, "L")
                 AddLog("点击咨询图鉴")
                 Sleep 1000
@@ -270,7 +281,7 @@ class award extends baseFunc{
         }
         while (
             (!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.628 * nikkePosW . " ", nikkePosY + 0.822 * nikkePosH . " ", nikkePosX + 0.628 * nikkePosW + 0.010 * nikkePosW . " ", nikkePosY + 0.822 * nikkePosH + 0.017 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("红点"), , , , , , , zoomW, zoomH)) || 
-            (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.565 * nikkePosW . " ", nikkePosY + 0.84 * nikkePosH . " ", nikkePosX + 0.565 * nikkePosW + 0.012 * nikkePosW . " ", nikkePosY + 0.84 * nikkePosH + 0.020 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("好友的爱心"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
+            (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.563 * nikkePosW . " ", nikkePosY + 0.838 * nikkePosH . " ", nikkePosX + 0.563 * nikkePosW + 0.015 * nikkePosW . " ", nikkePosY + 0.838 * nikkePosH + 0.024 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("好友的爱心"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
             AddLog("点击赠送")
             selfFindText().Click(X - (50 * zoomW) * (!nikkeServer), Y + (50 * zoomH) * (!nikkeServer), "L")
             Sleep 2000

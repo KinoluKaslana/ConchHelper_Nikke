@@ -141,14 +141,14 @@ enterArk() {
 
 ;tag 进入竞技场
 enterArena() {
-    if (ok := FindText(&X, &Y, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.060 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH + 0.060 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , zoomW, zoomH)) {
+    if (ok := selfFindText(&X, &Y, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.060 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH + 0.060 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , zoomW, zoomH)) {
         return
     }
-    while (ok := FindText(&X := "wait", &Y := 1, nikkePosX + (0.554 - 0.014 * nikkeServer) * nikkePosW . " ", nikkePosY + (0.640 + 0.071 * nikkeServer) * nikkePosH . " ", nikkePosX + (0.554 - 0.014 * nikkeServer) * nikkePosW + 0.068 * nikkePosW . " ", nikkePosY + (0.640 + 0.071 * nikkeServer) * nikkePosH + 0.029 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("方舟·竞技场"), , , , , , , zoomW, zoomH)) {
+    while (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + (0.554 - 0.014 * nikkeServer) * nikkePosW . " ", nikkePosY + (0.640 + 0.071 * nikkeServer) * nikkePosH . " ", nikkePosX + (0.554 - 0.014 * nikkeServer) * nikkePosW + 0.068 * nikkePosW . " ", nikkePosY + (0.640 + 0.071 * nikkeServer) * nikkePosH + 0.029 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib(nikkeServer ? "CN_方舟·竞技场" : "方舟·竞技场"), , , , , , , zoomW * (nikkeServer ? 1.5 : 1), zoomH * (nikkeServer ? 1.5 : 1))) {
         AddLog("点击竞技场")
-        FindText().Click(X, Y - 50 * zoomH, "L")
+        selfFindText().Click(X, Y - 50 * zoomH, "L")
     }
-    while !(ok := FindText(&X, &Y, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.060 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH + 0.060 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , zoomW, zoomH)) {
+    while !(ok := selfFindText(&X, &Y, nikkePosX + 0.001 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH . " ", nikkePosX + 0.001 * nikkePosW + 0.060 * nikkePosW . " ", nikkePosY + 0.002 * nikkePosH + 0.060 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , zoomW, zoomH)) {
         idleClick
     }
     AddLog("进入竞技场")
