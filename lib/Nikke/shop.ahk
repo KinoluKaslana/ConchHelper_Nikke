@@ -37,7 +37,7 @@ class shop extends baseFunc{
                     Sleep 1000
                     ; 特殊逻辑：普通商店芯尘盒需要检查是否为信用点购买
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
-                        if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
+                        if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale))) {
                             AddLog("未检测到信用点支付选项，跳过")
                             idleClick()
                             Sleep 1000
@@ -46,19 +46,19 @@ class shop extends baseFunc{
                     }
                     ; 特殊逻辑：废铁商店需要点击MAX
                     if (Options.Has("CheckMax")) {
-                        if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.590 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH . " ", nikkePosX + 0.590 * nikkePosW + 0.038 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH + 0.070 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
+                        if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.590 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH . " ", nikkePosX + 0.590 * nikkePosW + 0.038 * nikkePosW . " ", nikkePosY + 0.595 * nikkePosH + 0.070 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale))) {
                             FindText().Click(X, Y, "L")
                             Sleep 1000
                         }
                     }
                     ; 点击购买 (带圈白勾)
-                    if (FindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.088 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.146 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
+                    if (selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.088 * nikkePosW . " ", nikkePosY + 0.786 * nikkePosH + 0.146 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale))) {
                         Sleep 500
                         AddLog("购买" . Name)
                         FindText().Click(X, Y, "L")
                         Sleep 1000
                         ; 确认并返回商店主界面 (检查左上角百货商店图标)
-                        while !(FindText(&X := "wait", &Y := 1, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , zoomW / item.zoomScale, zoomH / item.zoomScale)) {
+                        while !(FindText(&X := "wait", &Y := 1, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale))) {
                             idleClick()
                         }
                     }
@@ -103,7 +103,7 @@ class shop extends baseFunc{
             shop.ProcessPurchaseList(PurchaseItems, GeneralShopArea)
             ; 刷新逻辑保持不变
             while ((!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , zoomW, zoomH))||
-                    (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_免费边框"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
+                    (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.035 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_免费边框"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
                 AddLog("尝试刷新商店")
                 FindText().Click(X - (100 - 50 * nikkeServer) * zoomH, Y + 30 * zoomH, "L")
                 Sleep 500
@@ -140,14 +140,14 @@ class shop extends baseFunc{
             ;"铁甲代码手册", { Text: FindText().PicLib("铁甲代码的图标"), Setting: g_settings["ShopArenaBookIron"], Tolerance: 0.2 * PicTolerance },
             "代码手册宝箱", { Text: FindText().PicLib("代码手册选择宝箱的图标"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1},
             ;"简介个性化礼包", { Text: FindText().PicLib("简介个性化礼包"), Setting: g_settings["ShopArenaPackage"], Tolerance: 0.3 * PicTolerance },
-            "公司武器熔炉", { Text: FindText().PicLib("公司武器熔炉"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1 }
+            ;"公司武器熔炉", { Text: FindText().PicLib("公司武器熔炉"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1 }
         )
         if (nikkeServer){ 
             PurchaseItems["模组高级增强器"] := { Text: FindText().PicLib("模组高级增强器"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1 / 1.5 }
         }
         ; 定义竞技场商店的识图区域 (将坐标放入数组中)
         ArenaShopArea := Map(
-            "Area", [nikkePosX + 0.054 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH . " ", nikkePosX + 0.054 * nikkePosW + (0.511 + 0.2 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH + 0.238 * nikkePosH . " "]
+            "Area", [nikkePosX + 0.054 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH . " ", nikkePosX + 0.054 * nikkePosW + (0.511 + 0.15 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH + 0.2 * nikkePosH . " "]
         )
         ; 调用通用处理函数，传入区域配置
         shop.ProcessPurchaseList(PurchaseItems, ArenaShopArea)

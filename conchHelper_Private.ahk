@@ -45,8 +45,5 @@ mainGui.Show()
     ExitApp
 }
 ^2:: { 
-    ok := selfFindText(&X, &Y, nikkePosX + 0.012 * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH . " ", nikkePosX + 0.012 * zoomW + 0.04 * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH + 0.072 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("重播的图标"), , 0, , , , , zoomW, zoomH)
-    if(ok){
-        MsgBox "111"
-    }
+    backHall
 }

@@ -85,13 +85,16 @@ back() {
     Sleep 500
 }
 
-backHall(){
+backHall(ad := false){
     while true {
-        if (ok := FindText(&X, &Y, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
+        if (ok := selfFindText(&X, &Y, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
             ; 点右上角的公告图标
+            if (!ad){
+                break
+            }
             scaledClick(3568, 90)
             Sleep 500
-            if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.477 * nikkePosW . " ", nikkePosY + 0.082 * nikkePosH . " ", nikkePosX + 0.477 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.082 * nikkePosH + 0.042 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("公告的图标"), , , , , , , zoomW, zoomH)) {
+            if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.477 * nikkePosW . " ", nikkePosY + 0.082 * nikkePosH . " ", nikkePosX + 0.477 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.082 * nikkePosH + 0.042 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("公告的图标"), , , , , , , zoomW, zoomH)) {
                 ; AddLog("已返回大厅")
                 loop 3 {
                     idleClick
@@ -125,13 +128,18 @@ enterArk() {
     ;AddLog("进入方舟")
     while True {
         Sleep 500
-        if (ok := FindText(&X, &Y, nikkePosX + 0.014 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.014 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
+        if (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.010 * nikkePosW . " ", nikkePosY + 0.024 * nikkePosH . " ", nikkePosX + 0.010 * nikkePosW + 0.028 * nikkePosW . " ", nikkePosY + 0.024 * nikkePosH + 0.023 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上竞技场"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            Send "{ESC}"
+            Sleep 3000
             break
         }
-        if (ok := FindText(&X := "wait", &Y := 2, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
+        if (ok := selfFindText(&X, &Y, nikkePosX + 0.0125 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.0125 * nikkePosW + 0.024 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
+            break
+        }
+        if (ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
             FindText().Click(X + 50 * zoomW, Y, "L") ;找得到就尝试进入
         }
-        if (ok := FindText(&X := "wait", &Y := 2, nikkePosX + 0.014 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.014 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
+        if (ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.014 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.014 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
             break
         }
         else backHall() ;找不到就先返回大厅

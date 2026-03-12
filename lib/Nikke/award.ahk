@@ -277,14 +277,14 @@ class award extends baseFunc{
         while (ok := selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.111 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH)) {
             AddLog("点击好友")
             selfFindText().Click(X, Y, "L")
-            Sleep 2000
+            Sleep 4000
         }
         while (
             (!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.628 * nikkePosW . " ", nikkePosY + 0.822 * nikkePosH . " ", nikkePosX + 0.628 * nikkePosW + 0.010 * nikkePosW . " ", nikkePosY + 0.822 * nikkePosH + 0.017 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("红点"), , , , , , , zoomW, zoomH)) || 
             (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.563 * nikkePosW . " ", nikkePosY + 0.838 * nikkePosH . " ", nikkePosX + 0.563 * nikkePosW + 0.015 * nikkePosW . " ", nikkePosY + 0.838 * nikkePosH + 0.024 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("好友的爱心"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
             AddLog("点击赠送")
             selfFindText().Click(X - (50 * zoomW) * (!nikkeServer), Y + (50 * zoomH) * (!nikkeServer), "L")
-            Sleep 2000
+            Sleep 3000
         }
         else {
             AddLog("好友点数已执行")
