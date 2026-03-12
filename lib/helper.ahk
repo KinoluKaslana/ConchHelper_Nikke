@@ -51,7 +51,7 @@ idleClick(){
 }
 
 selfFindText(params*){
-    debug := true
+    debug := false
     if(params.Length == 0){
         return FindText()
     }
@@ -340,7 +340,7 @@ battleSettlement(currentVictory := 0, modes*) {
             AddLog("[新人竞技场|模拟室|异常拦截|推图]TAB已命中")
             break
         }
-        else if (ok := selfFindText(&X, &Y, nikkePosX + 0.012 * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH . " ", nikkePosX + 0.012 * zoomW + 0.036 * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH + 0.072 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("重播的图标"), , 0, , , , , zoomW, zoomH)) {
+        else if (ok := selfFindText(&X, &Y, nikkePosX + 0.012 * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH . " ", nikkePosX + 0.012 * zoomW + (0.036 + 0.004 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.921 * nikkePosH + 0.072 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("重播的图标"), , 0, , , , , zoomW, zoomH)) {
             AddLog("[竞技场快速战斗失败]重播的图标已命中", "MAROON")
             break
         }

@@ -15,7 +15,7 @@ class shop extends baseFunc{
         ; 默认区域
         sX1 := nikkePosX + 0.049 * nikkePosW
         sY1 := nikkePosY + 0.479 * nikkePosH
-        sX2 := nikkePosX + 0.989 * nikkePosW
+        sX2 := nikkePosX + (0.989 + 0.01 * nikkeServer) * nikkePosW
         sY2 := nikkePosY + 0.918 * nikkePosH
         ; 解析 Area 参数 (如果存在且为数组)
         if Options.Has("Area") and IsObject(Options["Area"]) and Options["Area"].Length >= 4 {
@@ -29,7 +29,7 @@ class shop extends baseFunc{
                 continue ; 如果设置未开启，则跳过此物品
             }
             ; 查找物品 (使用动态坐标 sX1, sY1, sX2, sY2)
-            if (ok := FindText(&X := "wait", &Y := 1, sX1, sY1, sX2, sY2, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, zoomW / item.zoomScale, zoomH / item.zoomScale)) {
+            if (ok := selfFindText(&X := "wait", &Y := 1, sX1, sY1, sX2, sY2, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, zoomW / item.zoomScale, zoomH / item.zoomScale)) {
                 ; 遍历找到的所有物品 (例如多个手册)
                 loop ok.Length {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
@@ -102,9 +102,10 @@ class shop extends baseFunc{
             ; 调用通用处理函数，传入区域配置
             shop.ProcessPurchaseList(PurchaseItems, GeneralShopArea)
             ; 刷新逻辑保持不变
-            while (ok := FindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , zoomW, zoomH)) {
+            while ((!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , zoomW, zoomH))||
+                    (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_免费边框"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
                 AddLog("尝试刷新商店")
-                FindText().Click(X - 100 * zoomH, Y + 30 * zoomH, "L")
+                FindText().Click(X - (100 - 50 * nikkeServer) * zoomH, Y + 30 * zoomH, "L")
                 Sleep 500
                 if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH + 0.066 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
                     FindText().Click(X, Y, "L")
@@ -141,12 +142,12 @@ class shop extends baseFunc{
             ;"简介个性化礼包", { Text: FindText().PicLib("简介个性化礼包"), Setting: g_settings["ShopArenaPackage"], Tolerance: 0.3 * PicTolerance },
             "公司武器熔炉", { Text: FindText().PicLib("公司武器熔炉"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1 }
         )
-        if (!nikkeServer){ 
-            PurchaseItems.Set("模组高级增强器",{ Text: FindText().PicLib("模组高级增强器"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1.5 })
+        if (nikkeServer){ 
+            PurchaseItems["模组高级增强器"] := { Text: FindText().PicLib("模组高级增强器"), Setting: 1, Tolerance: 0.3 * PicTolerance, zoomScale : 1 / 1.5 }
         }
         ; 定义竞技场商店的识图区域 (将坐标放入数组中)
         ArenaShopArea := Map(
-            "Area", [nikkePosX + 0.054 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH . " ", nikkePosX + 0.054 * nikkePosW + 0.511 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH + 0.238 * nikkePosH . " "]
+            "Area", [nikkePosX + 0.054 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH . " ", nikkePosX + 0.054 * nikkePosW + (0.511 + 0.2 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH + 0.238 * nikkePosH . " "]
         )
         ; 调用通用处理函数，传入区域配置
         shop.ProcessPurchaseList(PurchaseItems, ArenaShopArea)
