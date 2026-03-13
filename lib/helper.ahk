@@ -11,6 +11,8 @@ PicTolerance := 1
 zoomW := 1
 zoomH := 1
 
+outlineDebug := false
+
 changeServer(guiObj,event){
     global nikkeServer
     if(guiObj.Text == "国服")
@@ -51,7 +53,7 @@ idleClick(){
 }
 
 selfFindText(params*){
-    debug := false
+    debug := outlineDebug
     if(params.Length == 0){
         return FindText()
     }
@@ -109,6 +111,7 @@ backHall(ad := false){
             scaledClick(333, 2041)
             Sleep 500
             Send "{]}"
+            Send "{ESC}"
             refuseSale
         }
         if A_Index > 10 {
@@ -133,7 +136,12 @@ enterArk() {
             Sleep 3000
             break
         }
-        if (ok := selfFindText(&X, &Y, nikkePosX + 0.0125 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.0125 * nikkePosW + 0.024 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
+        if(selfFindText(&X, &Y, nikkePosX + 0.46 * nikkePosW . " ", nikkePosY + 0.48  * nikkePosH . " ", nikkePosX + 0.46 * nikkePosW + 0.08 * nikkePosW . " ", nikkePosY + 0.48 * nikkePosH + 0.052 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("CN_模拟室_BIG"), , 0, , , , , zoomW, zoomH)){
+            Send "{ESC}"
+            Sleep 3000
+            break
+        }
+        if (ok := selfFindText(&X, &Y, nikkePosX + 0.0125 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH . " ", nikkePosX + 0.0125 * nikkePosW + 0.024 * nikkePosW . " ", nikkePosY + 0.026 * nikkePosH + 0.021 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , zoomW, zoomH)) {
             break
         }
         if (ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {

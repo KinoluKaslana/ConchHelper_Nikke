@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include <3rd\FindText>
+#Include <3rd\OCR>
 #Include <helper>
 #Include <mainFunc>
 
@@ -24,7 +25,7 @@ mainGuiServerSelectCN.OnEvent("Click", changeServer)
 mainGuiServerSelectOther := mainGui.Add("Radio", "W250 R2", "国际服")
 mainGuiServerSelectOther.OnEvent("Click", changeServer)
 
-mainGuiFuncBox := mainGui.AddGroupBox("W250 R10 Section", "功能测试")
+mainGuiFuncBox := mainGui.AddGroupBox("W250 R10 Section", "功能测试")   
 
 mainFuncObj := mainFunc().regFunc(mainGui, 200, "XS+5 YS+20 H30 W150")
 
@@ -45,5 +46,12 @@ mainGui.Show()
     ExitApp
 }
 ^2:: { 
-    backHall
+    createOutline(nikkePosX + 0.180 * nikkePosW, nikkePosY + 0.433 * nikkePosH , nikkePosX + 0.180 * nikkePosW + 0.01 * nikkePosW , nikkePosY + 0.433 * nikkePosH + 0.013 * nikkePosH)
+    count := selfFindText().PixelCount(nikkePosX + 0.182 * nikkePosW, nikkePosY + 0.433 * nikkePosH , nikkePosX + 0.182 * nikkePosW + 0.025 * nikkePosW , nikkePosY + 0.433 * nikkePosH + 0.017 * nikkePosH,"FA5C23-020202")
+    MsgBox count ""
+
+}
+^3::{
+    global outlineDebug
+    outlineDebug := !outlineDebug
 }

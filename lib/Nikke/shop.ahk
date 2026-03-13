@@ -37,7 +37,9 @@ class shop extends baseFunc{
                     Sleep 1000
                     ; 特殊逻辑：普通商店芯尘盒需要检查是否为信用点购买
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
-                        if (!FindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale))) {
+                        if ((!nikkeServer && !selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale)))||
+                        (nikkeServer && !selfFindText(&X, &Y, nikkePosX + 0.507 * nikkePosW . " ", nikkePosY + 0.684 * nikkePosH . " ", nikkePosX + 0.507 * nikkePosW + 0.008 * nikkePosW . " ", nikkePosY + 0.684 * nikkePosH + 0.022 * nikkePosH . " ", 0, 0, "|<>##0.82$0/0/B69363,-1/0/B79669"))
+                    ) {
                             AddLog("未检测到信用点支付选项，跳过")
                             idleClick()
                             Sleep 1000
@@ -91,10 +93,10 @@ class shop extends baseFunc{
         ; 定义物品
         PurchaseItems := Map(
             "免费商品", { Text: FindText().PicLib("红点"), Setting: 1, Tolerance: 0.15 * 1 , zoomScale : 1},
-            "芯尘盒", { Text: FindText().PicLib("芯尘盒"), Setting: 1, Tolerance: 0.2 * 1 , zoomScale : 1}
+            "芯尘盒", { Text: FindText().PicLib("芯尘盒"), Setting: 1, Tolerance: (0.2 + 0.1 * nikkeServer) * 1 , zoomScale : 1}
         )
         ; 定义普通商店的识图区域 (将坐标放入数组中)
-        GeneralShopArea := Map(
+            GeneralShopArea := Map(
             "CheckCredit", true,
             "Area", [nikkePosX + 0.055 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH . " ", nikkePosX + 0.055 * nikkePosW + 0.426 * nikkePosW . " ", nikkePosY + 0.481 * nikkePosH + 0.237 * nikkePosH . " "]
         )
@@ -103,9 +105,14 @@ class shop extends baseFunc{
             shop.ProcessPurchaseList(PurchaseItems, GeneralShopArea)
             ; 刷新逻辑保持不变
             while ((!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , zoomW, zoomH))||
-                    (nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.035 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_免费边框"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
+                    ;(nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.035 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_免费边框"), , , , , , , zoomW * 1.5, zoomH * 1.5))
+            (nikkeServer && (count := selfFindText().PixelCount(nikkePosX + 0.182 * nikkePosW, nikkePosY + 0.433 * nikkePosH , nikkePosX + 0.182 * nikkePosW + 0.025 * nikkePosW , nikkePosY + 0.433 * nikkePosH + 0.017 * nikkePosH,"F95F2E")) >= 10)
+        ) {
                 AddLog("尝试刷新商店")
-                FindText().Click(X - (100 - 50 * nikkeServer) * zoomH, Y + 30 * zoomH, "L")
+                if(nikkeServer)
+                    scaledClick(500, 980)
+                else
+                    FindText().Click(X - 100 * zoomH, Y + 30 * zoomH, "L")
                 Sleep 500
                 if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH + 0.066 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
                     FindText().Click(X, Y, "L")
