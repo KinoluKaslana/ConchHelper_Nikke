@@ -83,6 +83,12 @@ class mainFunc extends baseFunc{
         subFuncToggle.OnEvent("Click", (settingBtn, eventInfo) => mainFunc.toggleCurFunc(this))
     }
 
+    getObj(describe){
+        if (this.subFuncMap[describe]) {
+            return this.subFuncMap[describe]
+        }
+    }
+
     regFunc(mainGui, mainGuiWidth, optStr){
         this.init(mainGui, mainGuiWidth, optStr)
         return this

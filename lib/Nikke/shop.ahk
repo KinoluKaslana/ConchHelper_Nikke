@@ -202,7 +202,7 @@ class shop extends baseFunc{
                         FindText().Click(X, Y, "L")
                     }
                 }
-                else if (ok := FindText(&X, &Y, nikkePosX + 0.040 * nikkePosW . " ", nikkePosY + 0.178 * nikkePosH . " ", nikkePosX + 0.040 * nikkePosW + 0.229 * nikkePosW . " ", nikkePosY + 0.178 * nikkePosH + 0.080 * nikkePosH . " ", 0.2 * 1, 0.2 * 1, FindText().PicLib("礼物的下半"), , , , , , , zoomW, zoomH)) {
+                else if (ok := selfFindText(&X, &Y, nikkePosX + 0.040 * nikkePosW . " ", nikkePosY + 0.208 * nikkePosH . " ", nikkePosX + 0.040 * nikkePosW + 0.229 * nikkePosW . " ", nikkePosY + 0.208 * nikkePosH + 0.03 * nikkePosH . " ", 0.2 * 1, 0.2 * 1, FindText().PicLib("CN_礼物"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
                     Sleep 500
                     AddLog("点击一级页面")
                     FindText().Click(X + 20 * zoomW, Y + 20 * zoomH, "L")

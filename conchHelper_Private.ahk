@@ -62,7 +62,7 @@ mainGui.Show()
     ExitApp
 }
 ^2:: { 
-
+    MsgBox selfFindText(&X, &Y, nikkePosX + 0.040 * nikkePosW . " ", nikkePosY + 0.208 * nikkePosH . " ", nikkePosX + 0.040 * nikkePosW + 0.229 * nikkePosW . " ", nikkePosY + 0.208 * nikkePosH + 0.03 * nikkePosH . " ", 0.2 * 1, 0.2 * 1, FindText().PicLib("CN_礼物"), , , , , , , zoomW * 1.5, zoomH * 1.5) ? "111" : "222"
 }
 ^3::{
     global outlineDebug

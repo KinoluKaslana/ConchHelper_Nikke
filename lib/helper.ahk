@@ -119,14 +119,14 @@ backHall(ad := false){
             Sleep 500
             Send "{]}"
             Send "{ESC}"
-            refuseSale
+            if !isHall {
+                scaledClick(333, 2041)
+                refuseSale
+            }
         }
         if A_Index > 10 {
             scaledClick(1924, 1968)
             Sleep 500
-        }
-        if A_Index > 15 {
-            refuseSale
         }
         if A_Index > 50 {
             MsgBox ("返回大厅失败，程序已中止")
@@ -248,6 +248,7 @@ enterBattle() {
 ;tag 战斗结算
 battleSettlement(currentVictory := 0, modes*) {
     global LastVictoryCount ; 声明要使用的全局变量
+    global mainFuncObj
     Screenshot := false
     RedCircle := false
     Exit7 := false
@@ -290,7 +291,7 @@ battleSettlement(currentVictory := 0, modes*) {
         }
     }
     AddLog("等待战斗结算")
-    while true {
+        while true {
         if Exit7 {
             if (ok := selfFindText(&X, &Y, nikkePosX + 0.512 * nikkePosW . " ", nikkePosY + 0.072 * nikkePosH . " ", nikkePosX + 0.512 * nikkePosW + 0.020 * nikkePosW . " ", nikkePosY + 0.072 * nikkePosH + 0.035 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("拦截战·红色框的7"), , , , , , , zoomW, zoomH)) {
                 Send "{Esc}"
@@ -363,6 +364,8 @@ battleSettlement(currentVictory := 0, modes*) {
         ; 无限之塔失败的位置
         else if (ok := selfFindText(&X, &Y, nikkePosX + 0.784 * nikkePosW . " ", nikkePosY + 0.895 * nikkePosH . " ", nikkePosX + 0.784 * nikkePosW + 0.031 * nikkePosW . " ", nikkePosY + 0.895 * nikkePosH + 0.078 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("TAB的图标"), , 0, , , , , zoomW, zoomH)) {
             AddLog("[无限之塔失败]TAB已命中")
+            global curTowerFail
+            curTowerFail := true
             break
         }
         ; 新人竞技场+模拟室+异常拦截的位置
