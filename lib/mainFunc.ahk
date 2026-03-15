@@ -10,6 +10,7 @@
 
 class mainFunc extends baseFunc{
     subFuncMap := Map()
+    subSettingBtnArray := Array()
     subFuncObjArray := Array()
     curShow :=""
 
@@ -22,13 +23,37 @@ class mainFunc extends baseFunc{
     }
 
     addCheckRow(mainGui, mainGuiWidth, funcObj, funcDescribe, optStr){
-        checkbox := super.addCheckRow(mainGui, funcDescribe, optStr, ObjBindMethod(funcObj, "action"))
+        super.addCheckRow(mainGui, funcDescribe, optStr, ObjBindMethod(funcObj, "action"))
 
         settingBtn := mainGui.Add("Button", "HP W30 YP XM+" . (mainGuiWidth - 30), "⚙")
         settingBtn.OnEvent("Click", (settingBtn, eventInfo) => this.showSubFunc(funcDescribe))
-        this.guiObj.push(settingBtn)
+        this.subSettingBtnArray.push(settingBtn)
 
         this.subFuncMap[funcDescribe] := funcObj
+    }
+    
+    static mainFuncActionEnd(*){
+        global shopFreshFail
+        AddLog("所有任务执行完毕！")
+        if(shopFreshFail){
+            AddLog("商店可能刷新失败！！", "Red")
+        }
+        else{
+            shopFreshFail := true
+        }
+    }
+    static toggleCurFunc(thisObj){
+        if(thisObj.curShow == ""){
+            return
+        }
+        thisObj.curShow.toggleAll()
+    }
+
+    static toggleAll(thisObj){
+        thisObj.toggleAll()
+        for subFuncObj in thisObj.subFuncObjArray {
+            subFuncObj.toggleAll()
+        }
     }
 
     init(mainGui, mainGuiWidth, optStr){
@@ -49,8 +74,13 @@ class mainFunc extends baseFunc{
         this.addCheckRow(mainGui, mainGuiWidth, towerObj, "爬塔", "XS+5 YS+110 H30 W150")
         this.addCheckRow(mainGui, mainGuiWidth, awardObj, "常规奖励", "XS+5 YS+140 H30 W150")
 
-        this.jobSet.addJob("",(*)=>AddLog("所有任务执行完毕！"))
+        this.jobSet.addJob("",mainFunc.mainFuncActionEnd)
         this.jobSet.jobStatus[-1] := 1
+
+        mainFuncToggle := mainGui.Add("Button", "XS+205 YS+2 W20 H20", "✅")
+        mainFuncToggle.OnEvent("Click", (settingBtn, eventInfo) => mainFunc.toggleAll(this))
+        subFuncToggle := mainGui.Add("Button", "XS+228 YS+2 W20 H20", "✔")
+        subFuncToggle.OnEvent("Click", (settingBtn, eventInfo) => mainFunc.toggleCurFunc(this))
     }
 
     regFunc(mainGui, mainGuiWidth, optStr){

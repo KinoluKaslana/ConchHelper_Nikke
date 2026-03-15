@@ -14,6 +14,12 @@ class baseFunc extends Object {
             this.jobFunc.Push(func.Bind(this))
             this.jobStatus.Push(0)
         }
+
+        toggleAllStatus(){
+            for status in this.jobStatus{
+                this.jobStatus[A_Index] := !this.jobStatus[A_Index]
+            }
+        }
     }
 
     jobSet := baseFunc.job()
@@ -29,6 +35,13 @@ class baseFunc extends Object {
                 jobFunc[A_Index]()
             }
         }
+    }
+
+    toggleAll(){
+        for guiObj in this.guiObj{
+            guiObj.Value := !guiObj.Value
+        }
+        this.jobSet.toggleAllStatus()
     }
 
     toggleStatus(jobName){

@@ -6,6 +6,7 @@
 class award extends baseFunc{
     static AwardOutpost() {
         AddLog("开始任务：前哨基地收菜", "Fuchsia")
+        backHall()
         enterOutpost()
         while true {
             if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.884 * nikkePosW . " ", nikkePosY + 0.904 * nikkePosH . " ", nikkePosX + 0.884 * nikkePosW + 0.114 * nikkePosW . " ", nikkePosY + 0.904 * nikkePosH + 0.079 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("溢出资源的图标"), , , , , , , zoomW, zoomH)) {

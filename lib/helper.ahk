@@ -12,6 +12,10 @@ zoomW := 1
 zoomH := 1
 
 outlineDebug := false
+isHall(){
+    return selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.111 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH) &&
+    selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.236 * nikkePosW . " ", nikkePosY + 0.633 * nikkePosH . " ", nikkePosX + 0.236 * nikkePosW + 0.118 * nikkePosW . " ", nikkePosY + 0.633 * nikkePosH + 0.103 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , zoomW, zoomH)
+}
 
 changeServer(guiObj,event){
     global nikkeServer
@@ -42,6 +46,9 @@ scaledMove(x, y){
 
 scaledClick(x, y){
     scaledMove(x, y)
+    Sleep 100
+    scaledMove(x, y)
+    Sleep 50
     Click
 }
 
@@ -118,6 +125,9 @@ backHall(ad := false){
             scaledClick(1924, 1968)
             Sleep 500
         }
+        if A_Index > 15 {
+            refuseSale
+        }
         if A_Index > 50 {
             MsgBox ("返回大厅失败，程序已中止")
             Pause
@@ -176,13 +186,17 @@ enterOutpost() {
     ;AddLog("进入前哨基地")
     while True {
         Sleep 500
-        if (ok := FindText(&X, &Y, nikkePosX + 0.004 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH . " ", nikkePosX + 0.004 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH + 0.034 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , zoomW, zoomH)) {
-            break
-        }
-        if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.240 * nikkePosW . " ", nikkePosY + 0.755 * nikkePosH . " ", nikkePosX + 0.240 * nikkePosW + 0.048 * nikkePosW . " ", nikkePosY + 0.755 * nikkePosH + 0.061 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , zoomW, zoomH)) {
+        if (isHall && ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.240 * nikkePosW . " ", nikkePosY + 0.755 * nikkePosH . " ", nikkePosX + 0.240 * nikkePosW + 0.048 * nikkePosW . " ", nikkePosY + 0.755 * nikkePosH + 0.061 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , zoomW, zoomH)) {
             FindText().Click(X, Y, "L") ;找得到就尝试进入
         }
-        if (ok := FindText(&X := "wait", &Y := 10, nikkePosX + 0.004 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH . " ", nikkePosX + 0.004 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH + 0.034 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , zoomW, zoomH)) {
+        else if (isHall){
+            AddLog("大厅尝试进入前哨基地失败，尝试手动点击前哨基地图标")
+            scaledClick(1000,1700)
+        }
+        if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.004 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH . " ", nikkePosX + 0.004 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH + 0.034 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , zoomW, zoomH)) {
+            break
+        }
+        if (ok := selfFindText(&X := "wait", &Y := 8, nikkePosX + 0.004 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH . " ", nikkePosX + 0.004 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.020 * nikkePosH + 0.034 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , zoomW, zoomH)) {
             break
         }
         else backHall() ;找不到就先返回大厅

@@ -5,6 +5,7 @@
 #Include "..\3rd\PicLib.ahk"
 #Include "..\helper.ahk"
 global nikkePosH, nikkePosW, nikkePosX, nikkePosY, zoomH, zoomW, PicTolerance, nikkeServer
+shopFreshFail := true
 
 class shop extends baseFunc{
 ;======================================================================
@@ -38,7 +39,7 @@ class shop extends baseFunc{
                     ; 特殊逻辑：普通商店芯尘盒需要检查是否为信用点购买
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
                         if ((!nikkeServer && !selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale)))||
-                        (nikkeServer && !selfFindText(&X, &Y, nikkePosX + 0.507 * nikkePosW . " ", nikkePosY + 0.684 * nikkePosH . " ", nikkePosX + 0.507 * nikkePosW + 0.008 * nikkePosW . " ", nikkePosY + 0.684 * nikkePosH + 0.022 * nikkePosH . " ", 0, 0, "|<>##0.82$0/0/B69363,-1/0/B79669"))
+                        (nikkeServer && selfFindText().PixelCount(nikkePosX + 0.41 * nikkePosW, nikkePosY + 0.64 * nikkePosH , nikkePosX + 0.41 * nikkePosW + 0.015 * nikkePosW , nikkePosY + 0.64 * nikkePosH + 0.018 * nikkePosH,"368AF5-020102"))
                     ) {
                             AddLog("未检测到信用点支付选项，跳过")
                             idleClick()
@@ -104,24 +105,44 @@ class shop extends baseFunc{
             ; 调用通用处理函数，传入区域配置
             shop.ProcessPurchaseList(PurchaseItems, GeneralShopArea)
             ; 刷新逻辑保持不变
-            while ((!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , zoomW, zoomH))||
-                    ;(nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.035 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_免费边框"), , , , , , , zoomW * 1.5, zoomH * 1.5))
-            (nikkeServer && (count := selfFindText().PixelCount(nikkePosX + 0.182 * nikkePosW, nikkePosY + 0.433 * nikkePosH , nikkePosX + 0.182 * nikkePosW + 0.025 * nikkePosW , nikkePosY + 0.433 * nikkePosH + 0.017 * nikkePosH,"F95F2E")) >= 10)
-        ) {
-                AddLog("尝试刷新商店")
-                if(nikkeServer)
-                    scaledClick(500, 980)
-                else
-                    FindText().Click(X - 100 * zoomH, Y + 30 * zoomH, "L")
-                Sleep 500
-                if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH + 0.066 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
-                    FindText().Click(X, Y, "L")
-                    Sleep 500
-                    AddLog("刷新成功")
+            isFresh := false
+            failCount := 0
+            while (true) {
+                if isFresh {
+                    AddLog("已刷新")
+                    break
                 }
-            } else {
-                AddLog("没有免费刷新次数了，跳过刷新")
-                break
+                if ((!nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.034 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , zoomW, zoomH))||
+                    ;(nikkeServer && ok := selfFindText(&X, &Y, nikkePosX + 0.173 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH . " ", nikkePosX + 0.173 * nikkePosW + 0.035 * nikkePosW . " ", nikkePosY + 0.423 * nikkePosH + 0.047 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_免费边框"), , , , , , , zoomW * 1.5, zoomH * 1.5))
+                (nikkeServer && (count := selfFindText().PixelCount(nikkePosX + 0.178 * nikkePosW, nikkePosY + 0.428 * nikkePosH , nikkePosX + 0.178 * nikkePosW + 0.03 * nikkePosW , nikkePosY + 0.428 * nikkePosH + 0.023 * nikkePosH,"FA5C23-030303")) >= 5)) {
+                    AddLog("尝试刷新商店")
+                    if(nikkeServer)
+                        scaledClick(500, 980)
+                    else
+                        FindText().Click(X - 100 * zoomH, Y + 30 * zoomH, "L")
+                    Sleep 500
+                    if (ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.593 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ",    nikkePosY + 0.593 * nikkePosH + 0.066 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
+                        FindText().Click(X, Y, "L")
+                        Sleep 500
+                        AddLog("刷新成功")
+                        isFresh := true
+                        shopFreshFail := false
+                        break
+                    }
+                    idleClick
+                    failCount := failCount + 1
+                } else if(!nikkeServer) {
+                    AddLog("没有免费刷新次数了，跳过刷新")
+                    break
+                } else if (!failCount && A_Index > 7) {
+                    shopFreshFail := true
+                    AddLog("没有免费刷新次数或刷新失败")
+                    break
+                } else if(failCount > 5) {
+                    shopFreshFail := true
+                    AddLog("尝试点击刷新按钮失败", "Fuchsia")
+                    break
+                }
             }
             Sleep 2000
         }

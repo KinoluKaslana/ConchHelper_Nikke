@@ -4,6 +4,22 @@
 #Include <3rd\OCR>
 #Include <helper>
 #Include <mainFunc>
+#SingleInstance Force
+
+full_command_line := DllCall("GetCommandLine", "str")
+
+if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
+{
+    try
+    {
+        if A_IsCompiled
+            Run '*RunAs "' A_ScriptFullPath '" /restart'
+        else
+            Run '*RunAs "' A_AhkPath '" /restart "' A_ScriptFullPath '"'
+    }
+    ExitApp
+}
+
 
 mainGuiTitle := "Doro Conch(KK)"
 mainGuiDefaultOpt := "-Resize +DPIScale +OwnDialogs"
@@ -30,7 +46,7 @@ mainGuiFuncBox := mainGui.AddGroupBox("W250 R10 Section", "功能测试")
 mainFuncObj := mainFunc().regFunc(mainGui, 200, "XS+5 YS+20 H30 W150")
 
 mainGuiDoroBtn := mainGui.Add("Button", "W70 YS350 H20 XS", "DORO!")
-mainGuiDoroBtn.OnEvent("Click", (mainGui, eventInfo) => mainFuncObj.action())
+mainGuiDoroBtn.OnEvent("Click", (mainGui, eventInfo) =>(Sleep(200), mainFuncObj.action()))
 
 mainGuiFindWindow := mainGui.Add("Text", "YS350 H20 XP+100 W100", "")
 refreshInfoFunc := nikkePosWindowInfoRefresh.Bind(mainGuiFindWindow)
@@ -46,9 +62,6 @@ mainGui.Show()
     ExitApp
 }
 ^2:: { 
-    createOutline(nikkePosX + 0.180 * nikkePosW, nikkePosY + 0.433 * nikkePosH , nikkePosX + 0.180 * nikkePosW + 0.01 * nikkePosW , nikkePosY + 0.433 * nikkePosH + 0.013 * nikkePosH)
-    count := selfFindText().PixelCount(nikkePosX + 0.182 * nikkePosW, nikkePosY + 0.433 * nikkePosH , nikkePosX + 0.182 * nikkePosW + 0.025 * nikkePosW , nikkePosY + 0.433 * nikkePosH + 0.017 * nikkePosH,"FA5C23-020202")
-    MsgBox count ""
 
 }
 ^3::{
