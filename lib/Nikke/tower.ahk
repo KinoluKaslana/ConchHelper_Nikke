@@ -28,7 +28,7 @@ class tower extends baseFunc{
             if (!nikkeServer && ok := FindText(&X, &Y, nikkePosX + 0.356 * nikkePosW + 270 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH . " ", nikkePosX + 0.356 * nikkePosW + 0.070 * nikkePosW + 270 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·OPEN"), , , , , , , zoomW, zoomH)) {
                 Status := "开放中"
             }
-            if (nikkeServer && ok := FindText(&X, &Y, nikkePosX + 0.356 * nikkePosW + 270 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH . " ", nikkePosX + 0.356 * nikkePosW + 0.070 * nikkePosW + 270 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·开启"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            if (nikkeServer && ok := selfFindText(&X := "wait", &Y := 0.7, nikkePosX + 0.356 * nikkePosW + 278 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH . " ", nikkePosX + 0.356 * nikkePosW + 0.070 * nikkePosW + 278 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·开启"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
                 Status := "开放中"
             }
             else Status := "未开放"
