@@ -72,13 +72,18 @@ selfFindText(params*){
 refuseSale() {
     loop 2 {
         if (ok := FindText(&X, &Y, nikkePosX + 0.438 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH . " ", nikkePosX + 0.438 * nikkePosW + 0.124 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH + 0.048 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("黄色的小时"), , , , , , , zoomW, zoomH)) {
+            AddLog("识别到时间")
             scaledClick(333, 2041)
             Sleep 500
             if (ok := FindText(&X, &Y, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH + 0.065 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
+                AddLog("识别到推销确认弹框")
                 FindText().Click(X, Y, "L")
                 Sleep 500
                 break
             }
+        }
+        else{
+            AddLog("未识别到时间，再试一次")
         }
         idleClick
         Sleep 500
@@ -100,8 +105,10 @@ back() {
 }
 
 backHall(ad := false){
+    AddLog ("尝试返回大厅")
     while true {
         if (ok := selfFindText(&X, &Y, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
+            AddLog ("发现方舟图标")
             ; 点右上角的公告图标
             if (!ad){
                 break
@@ -124,12 +131,14 @@ backHall(ad := false){
             Sleep 500
             Send "{]}"
             Send "{ESC}"
-            if !isHall {
+            AddLog("判断返回中。。。")
+            if !isHall() {
+                AddLog("返回失败，尝试点掉推销")
                 scaledClick(333, 2041)
                 refuseSale
             }
         }
-        if A_Index > 10 {
+        if A_Index > 3 {
             scaledClick(1924, 1968)
             Sleep 500
         }
