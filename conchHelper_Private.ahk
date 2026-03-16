@@ -62,7 +62,7 @@ mainGui.Show()
     ExitApp
 }
 ^2:: { 
-
+    MsgBox selfFindText(&X := "wait", &Y := 5, nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH . " ", nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH + 0.069 * nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , zoomW, zoomH) ? "111" : "222"
 }
 ^3::{
     global outlineDebug

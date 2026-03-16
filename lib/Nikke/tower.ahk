@@ -4,6 +4,7 @@
 #Include "..\3rd\FindText.ahk"
 
 curTowerFail := false
+LastVictoryCount := 0
 
 class tower extends baseFunc{
     
@@ -82,9 +83,10 @@ class tower extends baseFunc{
                             back
                             break
                         }
-                        battleCount++
+                        battleCount := LastVictoryCount
+                        AddLog("更新塔战斗胜利次数：" battleCount)
                     }
-                    else if(nikkeServer && ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.912 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH . " ", nikkePosX + 0.912 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH + 0.026 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_塔排名"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+                    else if(nikkeServer && ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.912 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH . " ", nikkePosX + 0.912 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH + 0.026 * nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("CN_塔排名"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
                         AddLog(Tower "已完成")
                         break
                     } else {
@@ -103,9 +105,9 @@ class tower extends baseFunc{
                     curTowerFail := false
                 }
                 ; 点向右的箭头进入下一关
-                if (ok := FindText(&X := "wait", &Y := 5, nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH . " ", nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH + 0.069 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , zoomW, zoomH)) {
-                    Sleep 3000
+                if (ok := FindText(&X := "wait", &Y := 5, nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH . " ", nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH + 0.069 * nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , zoomW, zoomH)) {
                     FindText().Click(X, Y, "L")
+                    Sleep 2000
                 }
                 Sleep 1000
             }

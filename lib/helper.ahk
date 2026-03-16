@@ -70,13 +70,18 @@ selfFindText(params*){
 }
 
 refuseSale() {
-    if (ok := FindText(&X, &Y, nikkePosX + 0.438 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH . " ", nikkePosX + 0.438 * nikkePosW + 0.124 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH + 0.048 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("黄色的小时"), , , , , , , zoomW, zoomH)) {
-        scaledClick(333, 2041)
-        Sleep 500
-        if (ok := FindText(&X, &Y, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH + 0.065 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
-            FindText().Click(X, Y, "L")
+    loop 2 {
+        if (ok := FindText(&X, &Y, nikkePosX + 0.438 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH . " ", nikkePosX + 0.438 * nikkePosW + 0.124 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH + 0.048 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("黄色的小时"), , , , , , , zoomW, zoomH)) {
+            scaledClick(333, 2041)
             Sleep 500
+            if (ok := FindText(&X, &Y, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH + 0.065 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
+                FindText().Click(X, Y, "L")
+                Sleep 500
+                break
+            }
         }
+        idleClick
+        Sleep 500
     }
 }
 
@@ -248,7 +253,6 @@ enterBattle() {
 ;tag 战斗结算
 battleSettlement(currentVictory := 0, modes*) {
     global LastVictoryCount ; 声明要使用的全局变量
-    global mainFuncObj
     Screenshot := false
     RedCircle := false
     Exit7 := false
