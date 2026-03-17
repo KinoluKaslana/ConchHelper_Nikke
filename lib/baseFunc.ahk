@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#Include helper.ahk
 
 class baseFunc extends Object {
 
@@ -22,6 +23,8 @@ class baseFunc extends Object {
         }
     }
 
+    
+    jobNum := 0
     jobSet := baseFunc.job()
     guiObj := Array()
 
@@ -49,6 +52,8 @@ class baseFunc extends Object {
         jobStatus := this.jobSet.jobStatus
         
         jobStatus[jobIndex[jobName]] := !jobStatus[jobIndex[jobName]]
+
+        this.updateJobNum()
     }
 
     addCheckRow(mainGui, describe, optStr, func){
@@ -69,6 +74,31 @@ class baseFunc extends Object {
         guiObj := this.guiObj
         loop guiObj.Length
             guiObj[A_Index].Visible := true
+    }
+
+    updateJobNum(){
+        jobStatus := this.jobSet.jobStatus
+        num := 0
+        for _ in jobStatus {
+            num := num << 1
+            num := num | jobStatus[A_Index * -1]
+        }
+        this.jobNum := num
+    }
+
+    setJobNum(num){
+        jobCount := this.jobSet.jobStatus.Length
+        while num {
+            if(jobCount >= A_Index) {
+                if(getBit(num, A_Index)){
+                    this.guiObj[A_Index].Value := true
+                    this.toggleStatus(this.guiObj[A_Index].Text)
+                }
+            }
+            else {
+                break
+            }
+        }
     }
 
     init(mainGui, optStr){

@@ -62,7 +62,8 @@ mainGui.Show()
     ExitApp
 }
 ^2:: { 
-    backHall
+    mainFuncObj.subFuncObjArray[-1].setJobNum(72)
+    MsgBox mainFuncObj.subFuncObjArray[-1].jobNum ""
 }
 ^3::{
     global outlineDebug

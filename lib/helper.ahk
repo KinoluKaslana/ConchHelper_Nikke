@@ -11,6 +11,13 @@ PicTolerance := 1
 zoomW := 1
 zoomH := 1
 
+getBit(num,pos){
+    if(pos > 0){
+        pos := pos - 1
+    }
+    return (num >> pos) & 1
+}
+
 outlineDebug := false
 isHall(){
     return selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.111 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH) &&
@@ -70,22 +77,22 @@ selfFindText(params*){
 }
 
 refuseSale() {
-    loop 2 {
+    loop 3 {
         if (ok := FindText(&X, &Y, nikkePosX + 0.438 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH . " ", nikkePosX + 0.438 * nikkePosW + 0.124 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH + 0.048 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("黄色的小时"), , , , , , , zoomW, zoomH)) {
             AddLog("识别到时间")
             scaledClick(333, 2041)
             Sleep 500
-            if (ok := FindText(&X, &Y, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH + 0.065 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
-                AddLog("识别到推销确认弹框")
-                FindText().Click(X, Y, "L")
-                Sleep 500
-                break
-            }
         }
         else{
             AddLog("未识别到时间，再试一次")
         }
-        idleClick
+        if (ok := FindText(&X, &Y, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH + 0.065 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
+                AddLog("识别到推销确认弹框")
+                FindText().Click(X, Y, "L")
+                Sleep 500
+                break
+        }
+        idleClick()
         Sleep 500
     }
 }
@@ -123,7 +130,7 @@ backHall(ad := false){
                 Sleep 500
                 break
             }
-            else refuseSale
+            else refuseSale()
         }
         else {
             ; 点左下角的小房子的位置
@@ -135,7 +142,7 @@ backHall(ad := false){
             if !isHall() {
                 AddLog("返回失败，尝试点掉推销")
                 scaledClick(333, 2041)
-                refuseSale
+                refuseSale()
             }
         }
         if A_Index > 3 {
