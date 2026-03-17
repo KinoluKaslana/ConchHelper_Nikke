@@ -77,23 +77,34 @@ selfFindText(params*){
 }
 
 refuseSale() {
+    findTime := false
     loop 3 {
         if (ok := FindText(&X, &Y, nikkePosX + 0.438 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH . " ", nikkePosX + 0.438 * nikkePosW + 0.124 * nikkePosW . " ", nikkePosY + 0.853 * nikkePosH + 0.048 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("黄色的小时"), , , , , , , zoomW, zoomH)) {
             AddLog("识别到时间")
             scaledClick(333, 2041)
             Sleep 500
+            findTime := true
         }
         else{
-            AddLog("未识别到时间，再试一次")
+            AddLog("未识别到时间")
         }
-        if (ok := FindText(&X, &Y, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH + 0.065 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
+        if (count := selfFindText().PixelCount(nikkePosX + 0.438 * nikkePosW, nikkePosY + 0.853 * nikkePosH, nikkePosX + 0.438 * nikkePosW + 0.124 * nikkePosW, nikkePosY + 0.853 * nikkePosH + 0.048 * nikkePosH,"FFC700") > 50) {
+            AddLog("识别到时间区域")
+            scaledClick(333, 2041)
+            Sleep 500
+            findTime := true
+        }
+        else{
+            AddLog("未识别到时间")
+        }
+        if (findTime && ok := FindText(&X, &Y, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.127 * nikkePosW . " ", nikkePosY + 0.594 * nikkePosH + 0.065 * nikkePosH . " ", 0.4 * 1, 0.4 * 1, FindText().PicLib("带圈白勾"), , 0, , , , , zoomW, zoomH)) {
                 AddLog("识别到推销确认弹框")
                 FindText().Click(X, Y, "L")
                 Sleep 500
                 break
         }
         idleClick()
-        Sleep 500
+        Sleep 1000
     }
 }
 
@@ -139,6 +150,7 @@ backHall(ad := false){
             Send "{]}"
             Send "{ESC}"
             AddLog("判断返回中。。。")
+            Sleep 1500
             if !isHall() {
                 AddLog("返回失败，尝试点掉推销")
                 scaledClick(333, 2041)

@@ -28,14 +28,31 @@ class baseFunc extends Object {
     jobSet := baseFunc.job()
     guiObj := Array()
 
+    onBegin := 0
+    onEnd := 0
+
+    forceCallEnd := false
+    forceCallBegin := false
+
     ;子类不必实现，顺序执行job内所有函数
     ;@params 从不使用，为了传this为第一参数，否则无法多态调用。
     action(params*){
+        if(this.forceCallBegin || this.jobNum){
+            if(this.onBegin){
+                this.onBegin()
+            }
+        }
         jobStatus := this.jobSet.jobStatus
         jobFunc := this.jobSet.jobFunc
         loop jobStatus.Length{
             if(jobStatus[A_Index] == 1){
                 jobFunc[A_Index]()
+                Sleep 1000
+            }
+        }
+        if(this.forceCallEnd || this.jobNum){
+            if(this.onEnd){
+                this.onEnd()
             }
         }
     }
@@ -45,6 +62,7 @@ class baseFunc extends Object {
             guiObj.Value := !guiObj.Value
         }
         this.jobSet.toggleAllStatus()
+        this.updateJobNum()
     }
 
     toggleStatus(jobName){
@@ -99,6 +117,10 @@ class baseFunc extends Object {
                 break
             }
         }
+    }
+
+    getJobStatus(){
+        return [this.jobSet.jobStatus.Length, this.jobNum]
     }
 
     init(mainGui, optStr){

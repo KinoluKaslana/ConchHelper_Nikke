@@ -61,9 +61,26 @@ mainGui.Show()
 ^1:: {
     ExitApp
 }
-^2:: { 
-    mainFuncObj.subFuncObjArray[-1].setJobNum(72)
-    MsgBox mainFuncObj.subFuncObjArray[-1].jobNum ""
+^2:: {
+    rangeCalc(coordSet, index){
+        x1 := coordSet[1]
+        y1 := coordSet[2]
+        w1 := coordSet[3] - coordSet[1]
+        h1 := coordSet[4] - coordSet[2]
+
+        return [x1, y1, ]
+    }
+    smallEvent(coordSet1, coordSet2){
+
+
+        x2 := coordSet2[1]
+        y2 := coordSet2[2]
+        w2 := coordSet2[3] - coordSet2[1]
+        h2 := coordSet2[4] - coordSet2[2]
+
+        
+        
+    }
 }
 ^3::{
     global outlineDebug

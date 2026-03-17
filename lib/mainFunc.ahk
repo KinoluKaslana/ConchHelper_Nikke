@@ -32,16 +32,30 @@ class mainFunc extends baseFunc{
         this.subFuncMap[funcDescribe] := funcObj
     }
     
-    static mainFuncActionEnd(*){
+    static mainFuncActionEnd(thisObj){
         global shopFreshFail
-        AddLog("所有任务执行完毕！")
-        if(shopFreshFail){
-            AddLog("商店可能刷新失败！！", "Red")
+        if(thisObj.jobNum){
+            AddLog("所有任务执行完毕！")
+            if(shopFreshFail){
+                AddLog("商店可能刷新失败！！", "Red")
+            }
+            else{
+                shopFreshFail := true
+            }
         }
         else{
-            shopFreshFail := true
+            AddLog("未勾选任何主任务")
         }
     }
+
+    static mainFuncActionBegin(){
+        AddLog("开局默认点掉所有通知及弹窗")
+        loop 4 {
+            idleClick()
+            Sleep 500
+        }
+    }
+
     static toggleCurFunc(thisObj){
         if(thisObj.curShow == ""){
             return
@@ -74,8 +88,10 @@ class mainFunc extends baseFunc{
         this.addCheckRow(mainGui, mainGuiWidth, towerObj, "爬塔", "XS+5 YS+110 H30 W150")
         this.addCheckRow(mainGui, mainGuiWidth, awardObj, "常规奖励", "XS+5 YS+140 H30 W150")
 
-        this.jobSet.addJob("",mainFunc.mainFuncActionEnd)
-        this.jobSet.jobStatus[-1] := 1
+        this.onBegin := mainFunc.mainFuncActionBegin
+
+        this.forceCallEnd := true
+        this.onEnd := mainFunc.mainFuncActionEnd.Bind(this)
 
         mainFuncToggle := mainGui.Add("Button", "XS+205 YS+2 W20 H20", "✅")
         mainFuncToggle.OnEvent("Click", (settingBtn, eventInfo) => mainFunc.toggleAll(this))

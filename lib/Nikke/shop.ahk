@@ -35,7 +35,7 @@ class shop extends baseFunc{
                 loop ok.Length {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                     AddLog("已找到" . Name)
-                    Sleep 1000
+                    Sleep 3000
                     ; 特殊逻辑：普通商店芯尘盒需要检查是否为信用点购买
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
                         if ((!nikkeServer && !selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale)))||
