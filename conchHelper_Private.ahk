@@ -61,27 +61,14 @@ mainGui.Show()
 ^1:: {
     ExitApp
 }
+
 ^2:: {
-    rangeCalc(coordSet, index){
-        x1 := coordSet[1]
-        y1 := coordSet[2]
-        w1 := coordSet[3] - coordSet[1]
-        h1 := coordSet[4] - coordSet[2]
-
-        return [x1, y1, ]
-    }
-    smallEvent(coordSet1, coordSet2){
-
-
-        x2 := coordSet2[1]
-        y2 := coordSet2[2]
-        w2 := coordSet2[3] - coordSet2[1]
-        h2 := coordSet2[4] - coordSet2[2]
-
-        
-        
-    }
+    btn1Coord := []
+    btn2Coord := []
+    btn3Coord := []
+    
 }
+
 ^3::{
     global outlineDebug
     outlineDebug := !outlineDebug

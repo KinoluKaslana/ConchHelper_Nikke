@@ -40,7 +40,7 @@ class shop extends baseFunc{
                     if (Options.Has("CheckCredit") && Name = "芯尘盒") {
                         if ((!nikkeServer && !selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.430 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH . " ", nikkePosX + 0.430 * nikkePosW + 0.139 * nikkePosW . " ", nikkePosY + 0.716 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , zoomW / (nikkeServer ? 1 : item.zoomScale), zoomH / (nikkeServer ? 1 : item.zoomScale)))||
                         (nikkeServer && selfFindText().PixelCount(nikkePosX + 0.41 * nikkePosW, nikkePosY + 0.64 * nikkePosH , nikkePosX + 0.41 * nikkePosW + 0.015 * nikkePosW , nikkePosY + 0.64 * nikkePosH + 0.018 * nikkePosH,"368AF5-020102"))
-                    ) {
+                        ) {
                             AddLog("未检测到信用点支付选项，跳过")
                             idleClick()
                             Sleep 1000

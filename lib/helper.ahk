@@ -150,10 +150,14 @@ backHall(ad := false){
             Send "{]}"
             Send "{ESC}"
             AddLog("判断返回中。。。")
-            Sleep 1500
+            count := 0
+            while (!isHall() && count < 6) {
+                Sleep 500
+                scaledClick(333, 2041)
+                count++
+            }
             if !isHall() {
                 AddLog("返回失败，尝试点掉推销")
-                scaledClick(333, 2041)
                 refuseSale()
             }
         }

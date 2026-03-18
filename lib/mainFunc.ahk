@@ -49,11 +49,11 @@ class mainFunc extends baseFunc{
     }
 
     static mainFuncActionBegin(){
-        AddLog("开局默认点掉所有通知及弹窗")
-        loop 4 {
-            idleClick()
-            Sleep 500
-        }
+        AddLog("DORO!!!!!")
+        ;loop 4 {
+        ;    idleClick()
+        ;    Sleep 500
+        ;}
     }
 
     static toggleCurFunc(thisObj){

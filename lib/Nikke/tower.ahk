@@ -60,56 +60,53 @@ class tower extends baseFunc{
             ; 修改循环条件
             while (TowerIndex <= count) {
                 Tower := TowerArray[TowerIndex]
-                battleCount := 0
-                while battleCount < 3 {
-                    AddLog("尝试进入" Tower)
-                    if (
-                        (!nikkeServer &&ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.426 * nikkePosW . " ", nikkePosY + 0.405 * nikkePosH . " ", nikkePosX + 0.426 * nikkePosW + 0.025 *  nikkePosW . " ", nikkePosY + 0.405 * nikkePosH + 0.024 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , zoomW, zoomH)) ||
-                        (nikkeServer && ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5))) {
-
-                        AddLog("已进入" Tower "的内部")
-                        Sleep 1000
-                
-                        if(!nikkeServer)
-                            FindText().Click(X + 100 * zoomW, Y, "L")
-                        enterBattle
-                        global curTowerFail
-                        battleSettlement
-
-                        if (curTowerFail) {
-                            AddLog(Tower "战斗失败，返回", "Red")
-                            Sleep 3000
-                            
-                            back
-                            break
-                        }
-                        battleCount := LastVictoryCount
-                        AddLog("更新塔战斗胜利次数：" battleCount)
+                AddLog("尝试进入" Tower)
+                if (
+                    (!nikkeServer && ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.426 * nikkePosW . " ", nikkePosY + 0.405 * nikkePosH . " ", nikkePosX + 0.426 * nikkePosW + 0.025 *  nikkePosW . " ", nikkePosY + 0.405 * nikkePosH + 0.024 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , zoomW, zoomH)) ||
+                    (nikkeServer && (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5) || selfFindText().PixelCount( nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") > 300 ))) {
+                    AddLog("已进入" Tower "的内部")
+                    Sleep 1000
+                    
+                    if(!nikkeServer)
+                        FindText().Click(X + 100 * zoomW, Y, "L")
+                    enterBattle
+                    global curTowerFail
+                    battleSettlement
+                    if (curTowerFail) {
+                        AddLog(Tower "战斗失败，返回", "Red")
+                        Sleep 3000
+                        scaledClick(420, 560)
                     }
-                    else if(nikkeServer && ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.912 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH . " ", nikkePosX + 0.912 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH + 0.026 * nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("CN_塔排名"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
-                        AddLog(Tower "已完成")
-                        break
-                    } else {
-                        RefuseSale
-                    }
+                    battleCount := LastVictoryCount
+                    AddLog(Tower "战斗胜利次数：" battleCount)
+                    TowerIndex++
                 }
-                TowerIndex++
+                else if(nikkeServer && ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.912 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH . " ", nikkePosX + 0.912 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.931 * nikkePosH + 0.026* nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("CN_塔排名"), , , , , , , zoomW * 1.5,zoomH * 1.5)) {
+                    AddLog("找到塔排名")
+                    TowerIndex++
+                }
+                else{
+                    AddLog("没找到塔内特征，再看一眼", "Red")
+                    continue
+                }
                 ; 检查是否已完成所有关卡
                 if (TowerIndex > count) {
                     break
                 }
                 if (!curTowerFail) {
-                    AddLog(Tower "战斗完成，返回下一个")
-                }
-                else{
-                    curTowerFail := false
+                    AddLog(Tower "战斗完成")
                 }
                 ; 点向右的箭头进入下一关
+                Sleep 1000
                 if (ok := FindText(&X := "wait", &Y := 5, nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH . " ", nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH + 0.069 * nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , zoomW, zoomH)) {
+                    AddLog("点击下一个塔")
                     FindText().Click(X, Y, "L")
                     Sleep 2000
+                    continue
                 }
-                Sleep 1000
+
+                AddLog("塔界面特征查找失败，尝试点掉推销")
+                RefuseSale
             }
             AddLog("所有塔都打过了")
         }
