@@ -63,9 +63,12 @@ mainGui.Show()
 }
 
 ^2:: {
-    btn1Coord := []
-    btn2Coord := []
-    btn3Coord := []
+    btnChallenge := []
+    btnMission := []
+    btnEnter := []
+
+    eventFormation(2)
+    ;enterBattle()
     
 }
 
