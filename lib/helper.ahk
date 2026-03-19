@@ -108,6 +108,11 @@ refuseSale() {
     }
 }
 
+clickBtn(x1, y1, x2, y2){
+    AddLog("X:" nikkePosX  ",W:" (x1 + (x2 - x1) / 2) * nikkePosW ",Y:" nikkePosY ",H:" (y1 + (y2 - y1) / 2) * nikkePosH)
+    scaledClick((x1 + (x2 - x1) / 2) * nikkePosW / zoomW, (y1 + (y2 - y1) / 2) * nikkePosH / zoomH)
+}
+
 back() {
     if (ok := FindText(&X, &Y, nikkePosX + 0.658 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH . " ", nikkePosX + 0.658 * nikkePosW + 0.040 * nikkePosW . " ", nikkePosY + 0.639 * nikkePosH + 0.066 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , zoomW, zoomH)) {
         return
