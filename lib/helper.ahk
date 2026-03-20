@@ -276,7 +276,7 @@ eventFormation(formationMode, count := 0){
                 AddLog("已编队，跳过自动编队")
                 return
             }
-            else{
+            else if (selfFindText) {
                 AddLog("进入编队失败，重试一次")
                 if(count >= 3){
                     AddLog("编队失败")

@@ -7,7 +7,7 @@ class event extends baseFunc{
     challengeAutoForm := false
     missionAutoForm := false
     static readSetting(){
-        
+        IniRead("eventSetting.ini", "eventEntry")
     }
     static smallEvent(thisObj){
             ;Text := "|<>F8A397-0.90$29.0000000003rU007z0CEDy0TUTw0z07s1y0Dk3y0TU7w0z07s1y0DnXy0Tb7xzz6Dzzy4Tzzw8zzzsFzTzkXy0TV7w0z2Ds1y4Tk3w0TU7s0/0Dk060TV0A0y3"
