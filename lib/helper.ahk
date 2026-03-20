@@ -253,6 +253,9 @@ eventFormation(formationMode, count := 0){
         isFormed := false
         selfFindText().Click(X, Y, "L")
     }
+    else if(ok := selfFindText(&X, &Y, nikkePosX + 0.519 * nikkePosW . " ", nikkePosY + 0.831 * nikkePosH . " ", nikkePosX + 0.519 * nikkePosW + 0.134 * nikkePosW . " ", nikkePosY + 0.831 * nikkePosH + 0.143 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , zoomW, zoomH)){
+        AddLog("发现活动编队")
+    }
     
     ;formationMode
     ; 1:自动编队
@@ -260,6 +263,7 @@ eventFormation(formationMode, count := 0){
     ;
     switch(formationMode){
         case 1:
+        {
             if(selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.843 * nikkePosW . " ", nikkePosY + 0.923 * nikkePosH . " ", nikkePosX + 0.863 * nikkePosW . " ", nikkePosY + 0.9584 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动编队自动"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
                 AddLog("点击自动编队")
                 selfFindText().Click(X, Y, "L")
@@ -268,6 +272,10 @@ eventFormation(formationMode, count := 0){
                 scaledClick(3600, 2040)
                 Sleep 500
             }
+            else if (isFormed){
+                AddLog("已编队，跳过自动编队")
+                return
+            }
             else{
                 AddLog("进入编队失败，重试一次")
                 if(count >= 3){
@@ -275,11 +283,13 @@ eventFormation(formationMode, count := 0){
                     return
                 }
                 back
-                Sleep 500
+                Sleep 1500
                 eventFormation(formationMode, count + 1)
                 return
             }
+        }
         case 2:
+        {
             MsgBox "请点击编队保存，保存好后确认并继续。"
             if(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
                 AddLog("检测到已返回战斗准备页面")
@@ -290,6 +300,7 @@ eventFormation(formationMode, count := 0){
                 back
                 return
             }
+        }
     }
 }
 

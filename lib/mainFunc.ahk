@@ -7,6 +7,7 @@
 #Include <Nikke\arena>
 #Include <Nikke\tower>
 #Include <Nikke\award>
+#Include <Nikke\event>
 
 class mainFunc extends baseFunc{
     subFuncMap := Map()
