@@ -46,17 +46,24 @@ nikkePosWindowInfoRefresh(textGuiObj){
     }
 }
 
-scaledMove(x, y){
+scaledMove(x, y, n := 1){
     CoordMode "Mouse", "Screen"
-    Send "{Click " Round(x * zoomW) + nikkePosX " " Round(y*zoomH) + nikkePosY " 0}"
+    loop n{
+        Send "{Click " Round(x * zoomW) + nikkePosX " " Round(y*zoomH) + nikkePosY " 0}"
+        if(n > 1){
+            Sleep 200
+        }
+    }
 }
 
-scaledClick(x, y){
-    scaledMove(x, y)
-    Sleep 100
-    scaledMove(x, y)
-    Sleep 50
-    Click
+scaledClick(x, y, n := 1){
+    scaledMove(x, y, 2)
+    loop n {
+        Click
+        if(n > 1){
+            Sleep 500
+        }
+    }
 }
 
 idleClick(){
@@ -101,16 +108,45 @@ refuseSale() {
                 AddLog("识别到推销确认弹框")
                 FindText().Click(X, Y, "L")
                 Sleep 500
-                break
+                return true
         }
         idleClick()
         Sleep 1000
     }
+    return false
 }
 
-clickBtn(x1, y1, x2, y2){
-    AddLog("X:" nikkePosX  ",W:" (x1 + (x2 - x1) / 2) * nikkePosW ",Y:" nikkePosY ",H:" (y1 + (y2 - y1) / 2) * nikkePosH)
-    scaledClick((x1 + (x2 - x1) / 2) * nikkePosW / zoomW, (y1 + (y2 - y1) / 2) * nikkePosH / zoomH)
+clickBtn(abs, x1, y1, x2, y2){
+    if(abs){
+        if(outlineDebug)
+            AddLog("X:" nikkePosX  ",W:" (x1 + (x2 - x1) / 2) / zoomW - nikkePosX ",Y:" nikkePosY ",H:" (y1 + (y2 - y1) / 2) / zoomH - nikkePosY)
+        scaledClick((x1 + (x2 - x1) / 2 - nikkePosX) / zoomW, (y1 + (y2 - y1) / 2- nikkePosY) / zoomH )
+    }
+    else{
+        if(outlineDebug)
+            AddLog("X:" nikkePosX  ",W:" nikkePosX + (x1 + (x2 - x1) / 2) * nikkePosW ",Y:" nikkePosY ",H:" nikkePosY + (y1 + (y2 - y1) / 2) * nikkePosH)
+        scaledClick(((x1 + (x2 - x1) / 2) * nikkePosW) / zoomW, ((y1 + (y2 - y1) / 2) * nikkePosH) / zoomH)
+    }
+}
+
+getSubRange(nx, ny, x, y, x1, y1, x2, y2){
+    x--
+    y--
+    return [x1 + x * (x2 - x1) / nx, y1 + y * (y2 - y1) / ny, 
+            x1 + (x + 1) * (x2 - x1) / nx, y1 + (y + 1) * (y2 - y1) / ny]
+}
+
+backSelectState(){
+    while true{
+        if(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5) || selfFindText().PixelCount(nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") >300 ){
+            AddLog("返回进入准备阶段")
+            scaledClick(420, 560, 2)
+            if(!(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5))){
+                break
+            }
+        }
+        Sleep 1000
+    }
 }
 
 back() {
@@ -549,6 +585,7 @@ battleSettlement(currentVictory := 0, modes*) {
 }
 
 createOutline(x1,y1,x2,y2){
+    AddLog("x1:" x1 "`nx2:" x2 "`ny1:" y1 "`ny2:" y2)
     rect := DrawRectangle(Integer(x1),Integer(y1),Integer(x2),Integer(y2), 0xff0000, 0.5)
     MsgBox("Click ok to destroy rectangle")
     rect.Destroy()

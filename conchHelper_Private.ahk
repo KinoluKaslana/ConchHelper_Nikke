@@ -63,7 +63,10 @@ mainGui.Show()
 }
 
 ^2:: {
-
+    obj := event()
+    event.onAction(obj)
+    event.smallEventStory(obj,1)
+    ;createOutline(885 - 2560,450,1670 - 2560,1180)
 }
 
 ^3::{

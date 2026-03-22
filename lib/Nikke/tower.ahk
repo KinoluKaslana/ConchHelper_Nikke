@@ -6,8 +6,17 @@
 curTowerFail := false
 LastVictoryCount := 0
 
+towerBack(){
+    backSelectState()
+    while true{
+        if(ok := FindText(&X := "wait", &Y := 5, nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH . " ", nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH + 0.069 * nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , zoomW, zoomH)){
+            AddLog("返回完成")
+            break
+        }
+    }
+}
+
 class tower extends baseFunc{
-    
 
     TowerCompany() {
         enterArk
@@ -25,6 +34,7 @@ class tower extends baseFunc{
             return
         }
         TowerArray := []
+        openIndex := 0
         loop 4 {
             if (!nikkeServer && ok := FindText(&X, &Y, nikkePosX + 0.356 * nikkePosW + 270 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH . " ", nikkePosX + 0.356 * nikkePosW + 0.070 * nikkePosW + 270 * zoomW * (A_Index - 1) . " ", nikkePosY + 0.521 * nikkePosH + 0.034 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·OPEN"), , , , , , , zoomW, zoomH)) {
                 Status := "开放中"
@@ -41,16 +51,23 @@ class tower extends baseFunc{
             }
             if Status = "开放中" {
                 TowerArray.Push(Tower)
+                if(!openIndex){
+                    openIndex := A_Index
+                }
                 AddLog(Tower "-" Status, "Green")
             }
             else AddLog(Tower "-" Status, "Gray")
         }
-        if (
-            (!nikkeServer && ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.287 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH + 0.060 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·OPEN"), , , , , , 5, zoomW, zoomH)) ||
-            (nikkeServer && ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.287 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH + 0.060 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·开启"), , , , , , 5, zoomW*1.5, zoomH*1.5))) {
-            count := ok.Length
+        ;if (
+        ;    (!nikkeServer && ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.287 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH + 0.060 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·OPEN"), , , , , , 5, zoomW, zoomH)) ||
+        ;    (nikkeServer && ok := FindText(&X := "wait", &Y := 1, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.287 * nikkePosW . " ", nikkePosY + 0.518 * nikkePosH + 0.060 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·开启"), , , , , , 5, zoomW*1.5, zoomH*1.5))) {
+        if(TowerArray.Length > 0){
+            ;count := ok.Length
+            fstOpenTowerTapPos := getSubRange(4,1,openIndex,1,nikkePosX + 0.357 * nikkePosW, nikkePosY + 0.518 * nikkePosH, nikkePosX + 0.357 * nikkePosW + 0.287 * nikkePosW, nikkePosY + 0.518 * nikkePosH + 0.060 * nikkePosH)
+            fstOpenTowerTapPos[4] += 100
+            count := TowerArray.Length
             Sleep 1000
-            FindText().Click(X, Y + 100 * zoomH, "L")
+            clickBtn(true, fstOpenTowerTapPos*)
             if nikkeServer
                 Sleep 4500
             else
@@ -58,9 +75,10 @@ class tower extends baseFunc{
             ; 添加变量跟踪当前关卡
             TowerIndex := 1
             ; 修改循环条件
+            seeCount := 1
             while (TowerIndex <= count) {
                 Tower := TowerArray[TowerIndex]
-                AddLog("尝试进入" Tower)
+                AddLog("尝试进入" Tower "切换界面")
                 if (
                     (!nikkeServer && ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.426 * nikkePosW . " ", nikkePosY + 0.405 * nikkePosH . " ", nikkePosX + 0.426 * nikkePosW + 0.025 *  nikkePosW . " ", nikkePosY + 0.405 * nikkePosH + 0.024 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , zoomW, zoomH)) ||
                     (nikkeServer && (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5) || selfFindText().PixelCount( nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") > 300 ))) {
@@ -74,8 +92,10 @@ class tower extends baseFunc{
                     battleSettlement
                     if (curTowerFail) {
                         AddLog(Tower "战斗失败，返回", "Red")
-                        Sleep 3000
-                        scaledClick(420, 560)
+                        AddLog("返回前防止礼包gank...")
+                        refuseSale()
+                        towerBack()
+                        curTowerFail := false
                     }
                     battleCount := LastVictoryCount
                     AddLog(Tower "战斗胜利次数：" battleCount)
@@ -87,7 +107,15 @@ class tower extends baseFunc{
                 }
                 else{
                     AddLog("没找到塔内特征，再看一眼", "Red")
-                    continue
+                    if(seeCount < 5){
+                        seeCount++
+                        continue
+                    }
+                    else{
+                        AddLog("看了好几眼了还是没有")
+                        seeCount := 1
+                    }
+                    
                 }
                 ; 检查是否已完成所有关卡
                 if (TowerIndex > count) {
@@ -107,6 +135,13 @@ class tower extends baseFunc{
 
                 AddLog("塔界面特征查找失败，尝试点掉推销")
                 RefuseSale
+                Sleep 1500
+
+                if (ok := FindText(&X := "wait", &Y := 5, nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH . " ", nikkePosX + (0.569 - 0.015 * nikkeServer) * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.833 * nikkePosH + 0.069 * nikkePosH . " ", 0.15 * PicTolerance, 0.15 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , zoomW, zoomH)) {
+                    AddLog("点击下一个塔")
+                    FindText().Click(X, Y, "L")
+                    Sleep 4000
+                }
             }
             AddLog("所有塔都打过了")
         }
