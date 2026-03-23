@@ -276,7 +276,7 @@ class award extends baseFunc{
     static AwardFriendPoint() {
         failCount := 0
         AddLog("开始任务：好友点数", "Fuchsia")
-        while (ok := selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.111 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH)) {
+        while (ok := selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.130 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH)) {
             AddLog("点击好友")
             selfFindText().Click(X, Y, "L")
             Sleep 4000
@@ -290,7 +290,7 @@ class award extends baseFunc{
                 break
             }
             else {
-                if(failCount > 4){
+                if(failCount > 10){
                     break
                 }
                 Sleep 500
@@ -483,12 +483,12 @@ class award extends baseFunc{
         backHall
     }
     init(mainGui, optStr) {
-        this.addCheckRow(mainGui, "前哨基地防御奖励领取", optStr, award.AwardOutpost)
-        this.addCheckRow(mainGui,"咨询Nikke","",award.AwardAdvise)
-        this.addCheckRow(mainGui,"好友点数收发","",award.AwardFriendPoint)
-        this.addCheckRow(mainGui,"邮箱收取","",award.AwardMail)
-        this.addCheckRow(mainGui,"方舟排名奖励","",award.AwardRanking)
-        this.addCheckRow(mainGui,"任务收取","",award.AwardDaily)
-        this.addCheckRow(mainGui,"通行证收取","",award.AwardPass)
+        this.addCheckRow(this, mainGui, "前哨基地防御奖励领取", optStr, award.AwardOutpost)
+        this.addCheckRow(this, mainGui,"咨询Nikke","",award.AwardAdvise)
+        this.addCheckRow(this, mainGui,"好友点数收发","",award.AwardFriendPoint)
+        this.addCheckRow(this, mainGui,"邮箱收取","",award.AwardMail)
+        this.addCheckRow(this, mainGui,"方舟排名奖励","",award.AwardRanking)
+        this.addCheckRow(this, mainGui,"任务收取","",award.AwardDaily)
+        this.addCheckRow(this, mainGui,"通行证收取","",award.AwardPass)
     }
 }

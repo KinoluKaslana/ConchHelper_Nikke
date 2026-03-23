@@ -152,6 +152,6 @@ class tower extends baseFunc{
     }
 
     init(mainGui, optStr){
-        this.addCheckRow(mainGui,"爬企业塔",optStr, this.TowerCompany)
+        this.addCheckRow(this, mainGui,"爬企业塔",optStr, this.TowerCompany)
     }
 }

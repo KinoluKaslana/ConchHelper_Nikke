@@ -138,10 +138,10 @@ getSubRange(nx, ny, x, y, x1, y1, x2, y2){
 
 backSelectState(){
     while true{
-        if(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5) || selfFindText().PixelCount(nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") >300 ){
+        if(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5) || selfFindText().PixelCount(nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") > 300 ){
             AddLog("返回进入准备阶段")
             scaledClick(420, 560, 2)
-            if(!(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5))){
+            if(!(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5))){
                 break
             }
         }
@@ -421,6 +421,17 @@ battleSettlement(currentVictory := 0, modes*) {
                 EventStory := true
                 if BattleSkip := 1
                     AddLog("剧情跳过功能已启用", "Green")
+            }
+
+            case "Challenge":
+            {
+                loop 5{
+                    if(selfFindText(&X, &Y, nikkePosX + 0.532 * nikkePosW . " ", nikkePosY + 0.746 * nikkePosH . " ", nikkePosX + 0.616 * nikkePosW . " ", nikkePosY + 0.788 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("挑战关快速战斗"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
+                        selfFindText().Click(X, Y, "L")
+                        break
+                    }
+                    Sleep 500
+                }
             }
             default: MsgBox "格式输入错误，你输入的是" mode
         }

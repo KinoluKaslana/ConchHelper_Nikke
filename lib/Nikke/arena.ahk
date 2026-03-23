@@ -197,8 +197,8 @@ class arena extends baseFunc{
     }
     
     init(mainGui, optStr){
-        this.addCheckRow(mainGui,"竞技场收菜",optStr, this.AwardArena)
-        this.addCheckRow(mainGui,"新人竞技场","",this.ArenaRookie)
-        this.addCheckRow(mainGui,"特殊竞技场","",this.ArenaSpecial)
+        this.addCheckRow(this, mainGui,"竞技场收菜",optStr, this.AwardArena)
+        this.addCheckRow(this, mainGui,"新人竞技场","",this.ArenaRookie)
+        this.addCheckRow(this, mainGui,"特殊竞技场","",this.ArenaSpecial)
     }
 } 

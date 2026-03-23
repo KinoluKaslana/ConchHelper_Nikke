@@ -10,9 +10,9 @@ class baseFunc extends Object {
         jobFunc := Array()
         jobIndex := Map()
 
-        addJob(describe, func){
+        addJob(thisObj, describe, func){
             this.jobIndex[describe] := this.jobFunc.Length + 1
-            this.jobFunc.Push(func.Bind(this))
+            this.jobFunc.Push(func.Bind(thisObj))
             this.jobStatus.Push(0)
         }
 
@@ -57,6 +57,13 @@ class baseFunc extends Object {
         }
     }
 
+    getCheckStatus(jobName){
+        jobIndex := this.jobSet.jobIndex
+        jobStatus := this.jobSet.jobStatus
+
+        return jobStatus[jobIndex[jobName]]
+    }
+
     toggleAll(){
         for guiObj in this.guiObj{
             guiObj.Value := !guiObj.Value
@@ -74,8 +81,8 @@ class baseFunc extends Object {
         this.updateJobNum()
     }
 
-    addCheckRow(mainGui, describe, optStr, func){
-        this.jobSet.addJob(describe, func)
+    addCheckRow(thisObj, mainGui, describe, optStr, func){
+        this.jobSet.addJob(thisObj, describe, func)
         checkboxObj := mainGui.Add("CheckBox", optStr, describe)
         checkboxObj.OnEvent("Click", (checkboxObj, eventInfo) => this.toggleStatus(describe))
         this.guiObj.push(checkboxObj)

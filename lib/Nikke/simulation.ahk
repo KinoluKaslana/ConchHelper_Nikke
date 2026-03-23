@@ -94,6 +94,6 @@ class simulation extends baseFunc{
     }
 
     init(mainGui, optStr){
-        this.addCheckRow(mainGui,"普通模拟室", optStr, simulation.normal)
+        this.addCheckRow(this, mainGui,"普通模拟室", optStr, simulation.normal)
     }
 }

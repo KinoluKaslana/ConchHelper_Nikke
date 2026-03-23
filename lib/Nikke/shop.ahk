@@ -279,7 +279,7 @@ class shop extends baseFunc{
     }
 
     init(mainGui, optStr){
-        this.addCheckRow(mainGui,"付费商店免费珠宝", optStr, Shop.ShopCash)
-        this.addCheckRow(mainGui,"普通商店商品(含竞技场商店)","", Shop.ShopGeneral)
+        this.addCheckRow(this, mainGui,"付费商店免费珠宝", optStr, Shop.ShopCash)
+        this.addCheckRow(this, mainGui,"普通商店商品(含竞技场商店)","", Shop.ShopGeneral)
     }
 }

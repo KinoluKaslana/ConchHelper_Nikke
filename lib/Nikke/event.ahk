@@ -23,6 +23,8 @@ class event extends baseFunc{
                 break
             }
             clickBtn(false, range *)
+            Sleep 700
+            ;AddLog("点击关卡选项")
             if(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
                 if(ok :=  selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.145 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH + 0.065 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , zoomW, zoomH)){
                     backSelectState()
@@ -31,16 +33,16 @@ class event extends baseFunc{
                 backSelectState()
                 return 1
             }
-            Sleep 200
+            Sleep 500
         }
         ok1 := 0
         ok2 := 0
         while true {
             clickBtn(false, range *)
+            Sleep 1000
             if(ok1 := selfFindText(&X,&Y, nikkePosX + 0.474 * nikkePosW . " ", nikkePosY + 0.458 * nikkePosH . " ", nikkePosX + 0.525 * nikkePosW . " ", nikkePosY + 0.496  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("解锁条件"), , , , , , , zoomW * 1.5, zoomH * 1.5) || ok2 := selfFindText(&X,&Y, nikkePosX + 0.5 * nikkePosW . " ", nikkePosY + 0.493 * nikkePosH . " ", nikkePosX + 0.519 * nikkePosW . " ", nikkePosY + 0.510  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("重复通关"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
                 break
             }
-            Sleep 200
         }
         if(ok1[1].id == "解锁条件"){
             return 0
@@ -78,7 +80,7 @@ class event extends baseFunc{
         }
     }
 
-    static onAction(thisObj){
+    static begin(thisObj){
         event.readSetting(thisObj)
     }
 
@@ -92,6 +94,7 @@ class event extends baseFunc{
 
     static smallEventEntry(thisObj){
         eventIndex := 1
+        backHall()
         while(true){
             if(eventIndex > thisObj.eventNum){
                 AddLog("所有小活动执行完毕")
@@ -109,12 +112,35 @@ class event extends baseFunc{
                 idleClick
                 Sleep 2000
 
-                ;if(event.smallEventChallenge(thisObj, eventIndex)){
-                ;   back()
-                ;}
+                AddLog("开始打小活动挑战关")
+                if(event.smallEventChallenge(thisObj, eventIndex)){
+                    AddLog("小活动挑战关完成，返回活动页面")
+                    Sleep 2000
+                    back()
+                    Sleep 2000
+                }
+                else{
+                    AddLog("挑战关卡未完成", "red")
+                    back()
+                }
                 
-                event.smallEventStory(thisObj, eventIndex)
+                AddLog("开始小活动推图")
+                if(event.smallEventStory(thisObj, eventIndex)){
+                    AddLog("推图完成，返回活动页面")
+                    Sleep 2000
+                    back()
+                    Sleep 2000
+                }
+                else{
+                    AddLog("小活动推图未完成", "red")
+                    back()
+                }
+
+                event.smallMission(thisObj, eventIndex)
+
+                AddLog("尝试进入下一个小活动")
                 eventIndex++
+                backHall()
             }
             else{
                 AddLog("查找小活动" eventIndex "失败")
@@ -132,11 +158,12 @@ class event extends baseFunc{
 
     static smallEventChallenge(thisObj, index){
         btnChallenge := thisObj.challengeBtnSet[index]
+        thisObj.challengeAutoForm := thisObj.getCheckStatus("挑战自动编队")
 
         if(selfFindText(&X,&Y, nikkePosX + btnChallenge[1] * nikkePosW . " ", nikkePosY + btnChallenge[2] * nikkePosH . " ", nikkePosX + btnChallenge[3] * nikkePosW . " ", nikkePosY +btnChallenge[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)){
             AddLog("进入挑战关卡")
             clickBtn(false, btnChallenge *)
-            Sleep 2000
+            Sleep 6000
             if(ok1 := selfFindText(&X,&Y, nikkePosX + 0.359 * nikkePosW . " ", nikkePosY + 0.347 * nikkePosH . " ", nikkePosX + 0.359 * nikkePosW + 0.044 * nikkePosW . " ", nikkePosY + 0.347 *nikkePosH + 0.546 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的关卡的循环图标"), , , , , , , zoomW, zoomH)){
                 AddLog("发现挑战关卡")
                 selfFindText().Click(X, Y, "L")
@@ -150,7 +177,7 @@ class event extends baseFunc{
             }
             if(ok1 || ok2){
                 enterBattle()
-                battleSettlement()
+                battleSettlement(0, "Challenge")
                 return true
             }
             AddLog("未找到挑战开放关卡")
@@ -181,6 +208,7 @@ class event extends baseFunc{
 
     static smallEventStory(thisObj, index){
         btnEnter := thisObj.enterBtnSet[index]
+        thisObj.missionAutoForm := thisObj.getCheckStatus("挑战自动编队")
         lastRepeatBtn := []
 
         if(selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY +btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)){
@@ -261,6 +289,7 @@ class event extends baseFunc{
             ;第6关已挑战，并且第11关状态可挑战
             if(lastStage == 12 && storyStatusB[5] == 2){
                 clickBtn(false, getSubRange(1, 6, 1, 5, thisObj.storyRangeSet[index][2]*) *)
+                eventFormation(thisObj.missionAutoForm ? 1 : 2)
                 enterBattle()
                 battleSettlement(0, "EventStory")
                 return true
@@ -272,19 +301,43 @@ class event extends baseFunc{
             else{
                 clickBtn(false, getSubRange(1, 6, 1, lastStage, thisObj.storyRangeSet[index][1] *) *)
             }
+            eventFormation(thisObj.missionAutoForm ? 1 : 2)
             enterBattle()
             battleSettlement(0, "EventStory")
             return true
         }
     }
 
-    static smallEvent(thisObj){
-        backHall()
+    static smallMission(thisObj, index){
+        btnMission := thisObj.missionBtnSet[index]
+        AddLog("开始任务：小活动·任务领取", "Fuchsia")
+        if (selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            AddLog("已进入任务界面")
+            if (ok := FindText(&X := "wait", &Y := 2, nikkePosX + 0.515 * nikkePosW . " ", nikkePosY + 0.862 * nikkePosH . " ", nikkePosX + 0.515 * nikkePosW + 0.119 * nikkePosW . " ", nikkePosY + 0.862 * nikkePosH + 0.068 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 *   PicTolerance, FindText().PicLib("小活动·全部领取"), , , , , , , zoomW, zoomH)) {
+                loop 3 {
+                    FindText().Click(X + 50 * zoomW, Y, "L")
+                    Sleep 1000
+                    AddLog("点击全部领取")
+                }
+            }
+        }
+        else {
+            AddLog("没有可领取的任务")
+        }
+    }
 
-        event.smallEventEntry(thisObj)
+    smallEvent(){
+        ;backHall()
+        event.smallEventEntry(this)
     }
 
     init(mainGui, optStr){
-        
+        this.onBegin := event.begin(this)
+
+        this.addCheckRow(this, mainGui, "小活动一键通", optStr, this.smallEvent)
+        this.addCheckRow(this, mainGui, "挑战自动编队", "", ()=>{})
+        this.addCheckRow(this, mainGui, "推图自动编队", "", ()=>{})
     }
 }
