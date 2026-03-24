@@ -18,14 +18,16 @@ class event extends baseFunc{
 
     ;正常模式下，1是开放关卡，0是未解锁，-1是不可重复, 2是重复战斗
     static checkLoop(range, hardBtn := false){
+        clickBtn(false, range *)
+        Sleep 300
+        scaledMove(420, 560)
         loop 3 {
             if(hardBtn){
                 break
             }
-            clickBtn(false, range *)
             Sleep 700
             ;AddLog("点击关卡选项")
-            if(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
+            if(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW, zoomH)){
                 if(ok :=  selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.145 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH + 0.065 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , zoomW, zoomH)){
                     backSelectState()
                     return 2
@@ -37,12 +39,20 @@ class event extends baseFunc{
         }
         ok1 := 0
         ok2 := 0
+        count := 0
+        clickBtn(false, range *)
+        Sleep 300
+        scaledMove(420, 560)
         while true {
-            clickBtn(false, range *)
-            Sleep 1000
-            if(ok1 := selfFindText(&X,&Y, nikkePosX + 0.474 * nikkePosW . " ", nikkePosY + 0.458 * nikkePosH . " ", nikkePosX + 0.525 * nikkePosW . " ", nikkePosY + 0.496  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("解锁条件"), , , , , , , zoomW * 1.5, zoomH * 1.5) || ok2 := selfFindText(&X,&Y, nikkePosX + 0.5 * nikkePosW . " ", nikkePosY + 0.493 * nikkePosH . " ", nikkePosX + 0.519 * nikkePosW . " ", nikkePosY + 0.510  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("重复通关"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
+            if(count == 5){
+                clickBtn(false, range *)
+                scaledMove(420, 560)
+            }
+            if(ok1 := selfFindText(&X,&Y, nikkePosX + 0.474 * nikkePosW . " ", nikkePosY + 0.458 * nikkePosH . " ", nikkePosX + 0.525 * nikkePosW . " ", nikkePosY + 0.496  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("解锁条件"), , , , , , , zoomW, zoomH) || ok2 := selfFindText(&X,&Y, nikkePosX + 0.473 * nikkePosW . " ", nikkePosY + 0.492 * nikkePosH . " ", nikkePosX + 0.492 * nikkePosW . " ", nikkePosY + 0.510  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("重复通关"), , , , , , , zoomW, zoomH)){
                 break
             }
+            Sleep 200
+            count++
         }
         if(ok1[1].id == "解锁条件"){
             return 0
@@ -113,27 +123,36 @@ class event extends baseFunc{
                 Sleep 2000
 
                 AddLog("开始打小活动挑战关")
-                if(event.smallEventChallenge(thisObj, eventIndex)){
+                challengeRet := event.smallEventChallenge(thisObj, eventIndex)
+                if(challengeRet == 2){
                     AddLog("小活动挑战关完成，返回活动页面")
                     Sleep 2000
                     back()
                     Sleep 2000
                 }
-                else{
+                else if(challengeRet == 0) {
                     AddLog("挑战关卡未完成", "red")
                     back()
                 }
                 
                 AddLog("开始小活动推图")
-                if(event.smallEventStory(thisObj, eventIndex)){
-                    AddLog("推图完成，返回活动页面")
-                    Sleep 2000
-                    back()
-                    Sleep 2000
-                }
-                else{
-                    AddLog("小活动推图未完成", "red")
-                    back()
+                switch(event.smallEventStory(thisObj, eventIndex)){
+                    case 0:
+                    {
+                        AddLog("小活动推图未完成", "red")
+                        back()
+                    }
+                    case 1:
+                    {
+                        AddLog("推图完成，返回活动页面")
+                        Sleep 2000
+                        back()
+                        Sleep 2000
+                    }
+                    case 2:
+                    {
+                        AddLog("推图关卡完成")
+                    }
                 }
 
                 event.smallMission(thisObj, eventIndex)
@@ -157,6 +176,7 @@ class event extends baseFunc{
     }
 
     static smallEventChallenge(thisObj, index){
+        global LastVictoryCount
         btnChallenge := thisObj.challengeBtnSet[index]
         thisObj.challengeAutoForm := thisObj.getCheckStatus("挑战自动编队")
 
@@ -178,14 +198,15 @@ class event extends baseFunc{
             if(ok1 || ok2){
                 enterBattle()
                 battleSettlement(0, "Challenge")
-                return true
+                return 2
             }
             AddLog("未找到挑战开放关卡")
         }
         else{
             AddLog("挑战关卡无事件（红点）")
+            return 1
         }
-        return false 
+        return 0 
     }
 
     static eventStoryCheck(checkRange, base := 0){
@@ -208,7 +229,7 @@ class event extends baseFunc{
 
     static smallEventStory(thisObj, index){
         btnEnter := thisObj.enterBtnSet[index]
-        thisObj.missionAutoForm := thisObj.getCheckStatus("挑战自动编队")
+        thisObj.missionAutoForm := thisObj.getCheckStatus("推图自动编队")
         lastRepeatBtn := []
 
         if(selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY +btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)){
@@ -241,6 +262,7 @@ class event extends baseFunc{
             }
             storyStatusA := event.eventStoryCheck(thisObj.storyRangeSet[index][1])
             if(storyStatusA[6] != 0){
+                scaledMove(1920, 1080)
                 loop 20{
                     Click "WheelDown"
                 }
@@ -248,64 +270,82 @@ class event extends baseFunc{
             }
 
             lastStage := -1
-            ;第六关为通过或第六关通过但11关没有开启或通关
-            if(!storyStatusA[6] || !(storyStatusB[5] == 2)){
-                ;7-12关第7关未开放
-                if(storyStatusB.Length == 6 && !storyStatusB[1]){
+            lastRrtry := -1
+
+            loop 6{
+                ;第7关未开放
+                if(storyStatusB.Length && !storyStatusB[1]){
+                    lastRrtry := 4
                     lastStage := 6
+                    break
                 }
-                else if(storyStatusB.Length == 6 && storyStatusB[1]){
-                    loop 6{
-                        if(storyStatusB[-1 * A_Index]){
-                            lastStage := 6 - A_Index + 7
-                            break
-                        }
-                    }
+                switch(storyStatusA[A_Index]){
+                    case 1:
+                        if(lastRrtry < A_Index)
+                            lastStage := A_Index
+                    case 2:
+                        if(lastStage < A_Index)
+                            lastRrtry := A_Index
+                    default: 
                 }
-                if(lastStage < 0 && !storyStatusA[6]){
-                    loop 6{
-                        if(storyStatusA[-1 * A_Index]){
-                            lastStage := 6 - A_Index + 1
-                            break
-                        }
-                    }
+                if(storyStatusB.Length)
+                switch(storyStatusB[A_Index]){
+                    case 1:
+                        lastStage := A_Index + 6
+                    case 2:
+                        lastRrtry := A_Index + 6
+                    default: 
                 }
+            }
+            if(lastStage == -1){
+                lastStage := 13
             }
 
             Sleep 2000
             scaledMove(1920, 1080)
 
-            if(lastStage > 6){
+            if(lastStage > 6 && lastStage <= 12){
                 loop 20{
                     Click "WheelDown"
                 }
             }
-            else{
+            else if(lastStage <= 6){
                 loop 20{
                     Click "WheelUp"
                 }
             }
 
-            ;第6关已挑战，并且第11关状态可挑战
-            if(lastStage == 12 && storyStatusB[5] == 2){
+            ;第12关已挑战，并且第11关状态可挑战
+            if(lastStage > 12 && storyStatusB[5] == 2){
                 clickBtn(false, getSubRange(1, 6, 1, 5, thisObj.storyRangeSet[index][2]*) *)
-                eventFormation(thisObj.missionAutoForm ? 1 : 2)
-                enterBattle()
-                battleSettlement(0, "EventStory")
-                return true
-            }
-
-            if(lastStage > 6){
+            } 
+            else if(lastStage > 6 && lastStage <= 12){
                 clickBtn(false, getSubRange(1, 6, 1, lastStage - 6, thisObj.storyRangeSet[index][2] *) *)
             }
-            else{
+            else if(lastStage <= 6) {
                 clickBtn(false, getSubRange(1, 6, 1, lastStage, thisObj.storyRangeSet[index][1] *) *)
+            }
+            else {
+                MsgBox "推图异常情况，手动复位后将继续扫描活动任务"
+                return 1
             }
             eventFormation(thisObj.missionAutoForm ? 1 : 2)
             enterBattle()
             battleSettlement(0, "EventStory")
-            return true
+            
+            ;特殊情况：当前lastStage + 胜利数大于12并且胜利数低于5,则扫荡第11关
+            if(LastVictoryCount < 5 && (lastStage + LastVictoryCount > 12)){
+                clickBtn(false, getSubRange(1, 6, 1, 5, thisObj.storyRangeSet[index][2]*) *)
+                enterBattle()
+                battleSettlement(0, "EventStory")
+            }
+            else{
+                AddLog("推图失败", "Red")
+                return 0
+            }
+            return 1
         }
+        return 2
     }
 
     static smallMission(thisObj, index){

@@ -81,7 +81,7 @@ class tower extends baseFunc{
                 AddLog("尝试进入" Tower "切换界面")
                 if (
                     (!nikkeServer && ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.426 * nikkePosW . " ", nikkePosY + 0.405 * nikkePosH . " ", nikkePosX + 0.426 * nikkePosW + 0.025 *  nikkePosW . " ", nikkePosY + 0.405 * nikkePosH + 0.024 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , zoomW, zoomH)) ||
-                    (nikkeServer && (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5) || selfFindText().PixelCount( nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") > 300 ))) {
+                    (nikkeServer && (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW, zoomH) || selfFindText().PixelCount( nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") > 300 ))) {
                     AddLog("已进入" Tower "的内部")
                     Sleep 1000
                     

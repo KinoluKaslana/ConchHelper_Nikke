@@ -10,6 +10,7 @@ PicTolerance := 1
 
 zoomW := 1
 zoomH := 1
+LastVictoryCount := 0
 
 getBit(num,pos){
     if(pos > 0){
@@ -138,10 +139,10 @@ getSubRange(nx, ny, x, y, x1, y1, x2, y2){
 
 backSelectState(){
     while true{
-        if(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5) || selfFindText().PixelCount(nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") > 300 ){
+        if(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW, zoomH) || selfFindText().PixelCount(nikkePosX + 0.300 * nikkePosW, nikkePosY + 0.667 * nikkePosH, nikkePosX + 0.300 * nikkePosW + 0.02 * nikkePosW, nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH,"F7FBFE-020202") >300 ){
             AddLog("返回进入准备阶段")
             scaledClick(420, 560, 2)
-            if(!(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5))){
+            if(!(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW, zoomH))){
                 break
             }
         }
@@ -284,7 +285,8 @@ enterOutpost() {
 
 eventFormation(formationMode, count := 0){
     isFormed := true
-    if(ok:= selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.358 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH . " ", nikkePosX + 0.358 * nikkePosW + 0.047 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH + 0.0868 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动编队十字"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
+    Sleep 2000
+    if(ok:= selfFindText(&X, &Y, nikkePosX + 0.358 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH . " ", nikkePosX + 0.358 * nikkePosW + 0.047 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH + 0.0868 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动编队十字"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
         AddLog("发现活动没有编队")
         isFormed := false
         selfFindText().Click(X, Y, "L")
@@ -300,6 +302,10 @@ eventFormation(formationMode, count := 0){
     switch(formationMode){
         case 1:
         {
+            if (isFormed){
+                AddLog("已编队，跳过自动编队")
+                return
+            }
             if(selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.843 * nikkePosW . " ", nikkePosY + 0.923 * nikkePosH . " ", nikkePosX + 0.863 * nikkePosW . " ", nikkePosY + 0.9584 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动编队自动"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
                 AddLog("点击自动编队")
                 selfFindText().Click(X, Y, "L")
@@ -307,10 +313,6 @@ eventFormation(formationMode, count := 0){
                 AddLog("点击保存")
                 scaledClick(3600, 2040)
                 Sleep 500
-            }
-            else if (isFormed){
-                AddLog("已编队，跳过自动编队")
-                return
             }
             else if (selfFindText) {
                 AddLog("进入编队失败，重试一次")
@@ -327,7 +329,7 @@ eventFormation(formationMode, count := 0){
         case 2:
         {
             MsgBox "请点击编队保存，保存好后确认并继续。"
-            if(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
+            if(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW, zoomH)){
                 AddLog("检测到已返回战斗准备页面")
                 return
             }
@@ -422,7 +424,6 @@ battleSettlement(currentVictory := 0, modes*) {
                 if BattleSkip := 1
                     AddLog("剧情跳过功能已启用", "Green")
             }
-
             case "Challenge":
             {
                 loop 5{

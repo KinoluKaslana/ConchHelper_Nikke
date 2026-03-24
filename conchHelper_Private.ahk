@@ -63,6 +63,14 @@ mainGui.Show()
 }
 
 ^2:: {
+    ok := 0
+    loop 30 {
+        ok := selfFindText(&X,&Y, nikkePosX + 0.474 * nikkePosW . " ", nikkePosY + 0.458 * nikkePosH . " ", nikkePosX + 0.525 * nikkePosW . " ", nikkePosY + 0.496  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("解锁条件"), , , , , , , zoomW, zoomH)
+        if(ok)
+            break
+        Sleep 200
+    }
+    MsgBox ok ? "111" : "222"
 }
 
 ^3::{
