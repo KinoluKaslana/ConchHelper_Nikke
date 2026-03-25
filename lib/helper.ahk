@@ -174,7 +174,7 @@ backHall(ad := false){
                 break
             }
             scaledClick(3568, 90)
-            Sleep 500
+            Sleep 1000
             if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.477 * nikkePosW . " ", nikkePosY + 0.082 * nikkePosH . " ", nikkePosX + 0.477 * nikkePosW + 0.021 * nikkePosW . " ", nikkePosY + 0.082 * nikkePosH + 0.042 * nikkePosH . " ", 0.3 * 1, 0.3 * 1, FindText().PicLib("公告的图标"), , , , , , , zoomW, zoomH)) {
                 ; AddLog("已返回大厅")
                 loop 3 {
@@ -210,6 +210,9 @@ backHall(ad := false){
         if A_Index > 50 {
             MsgBox ("返回大厅失败，程序已中止")
             Pause
+        }
+        if A_Index < 2{
+            Sleep 1500
         }
     }
     Sleep 1000
@@ -286,7 +289,7 @@ enterOutpost() {
 eventFormation(formationMode, count := 0){
     isFormed := true
     Sleep 2000
-    if(ok:= selfFindText(&X, &Y, nikkePosX + 0.358 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH . " ", nikkePosX + 0.358 * nikkePosW + 0.047 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH + 0.0868 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动编队十字"), , , , , , , zoomW * 1.5, zoomH * 1.5)){
+    if(ok:= selfFindText(&X, &Y, nikkePosX + 0.358 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH . " ", nikkePosX + 0.358 * nikkePosW + 0.047 * nikkePosW . " ", nikkePosY + 0.718 * nikkePosH + 0.0868 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动编队十字"), , , , , , , zoomW, zoomH)){
         AddLog("发现活动没有编队")
         isFormed := false
         selfFindText().Click(X, Y, "L")
@@ -547,6 +550,7 @@ battleSettlement(currentVictory := 0, modes*) {
         if currentVictory > 1 {
             AddLog("共胜利" currentVictory "次")
         }
+        return true
     }
     ;有编队代表输了，点Esc
     if (ok := selfFindText(&X, &Y, nikkePosX, nikkePosY, nikkePosX + nikkePosW, nikkePosY + nikkePosH, 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("编队的图标"), , 0, , , , , zoomW, zoomH)) {
@@ -566,10 +570,10 @@ battleSettlement(currentVictory := 0, modes*) {
         selfFindText().Click(X, Y + 20 * zoomH, "L")
         Sleep 5000
         if EventStory {
-            BattleSettlement(currentVictory, "EventStory")
+            return BattleSettlement(currentVictory, "EventStory")
         }
         else {
-            BattleSettlement(currentVictory)
+            return BattleSettlement(currentVictory)
         }
     }
     ;有灰色的下一关卡代表赢了但次数耗尽

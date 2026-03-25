@@ -44,9 +44,13 @@ class event extends baseFunc{
         Sleep 300
         scaledMove(420, 560)
         while true {
-            if(count == 5){
+            if(count == 5 && hardBtn){
                 clickBtn(false, range *)
+                Sleep 300
                 scaledMove(420, 560)
+                if(hardBtn){
+                    break
+                }
             }
             if(ok1 := selfFindText(&X,&Y, nikkePosX + 0.474 * nikkePosW . " ", nikkePosY + 0.458 * nikkePosH . " ", nikkePosX + 0.525 * nikkePosW . " ", nikkePosY + 0.496  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("解锁条件"), , , , , , , zoomW, zoomH) || ok2 := selfFindText(&X,&Y, nikkePosX + 0.473 * nikkePosW . " ", nikkePosY + 0.492 * nikkePosH . " ", nikkePosX + 0.492 * nikkePosW . " ", nikkePosY + 0.510  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("重复通关"), , , , , , , zoomW, zoomH)){
                 break
@@ -54,10 +58,10 @@ class event extends baseFunc{
             Sleep 200
             count++
         }
-        if(ok1[1].id == "解锁条件"){
+        if(ok1 && ok1[1].id == "解锁条件"){
             return 0
         }
-        if(ok2[1].id == "重复通关"){
+        if(ok2 && ok2[1].id == "重复通关"){
             return -1
         }
         if(hardBtn){
@@ -127,12 +131,16 @@ class event extends baseFunc{
                 if(challengeRet == 2){
                     AddLog("小活动挑战关完成，返回活动页面")
                     Sleep 2000
-                    back()
-                    Sleep 2000
+                    scaledMove(147,2047,3)
+                    Sleep 500
+                    scaledClick(147,2047)
                 }
                 else if(challengeRet == 0) {
-                    AddLog("挑战关卡未完成", "red")
-                    back()
+                    AddLog("挑战关卡未完成(失败)", "red")
+                    Sleep 2000
+                    scaledMove(147,2047,3)
+                    Sleep 500
+                    scaledClick(147,2047)
                 }
                 
                 AddLog("开始小活动推图")
@@ -140,14 +148,18 @@ class event extends baseFunc{
                     case 0:
                     {
                         AddLog("小活动推图未完成", "red")
-                        back()
+                        Sleep 2000
+                        scaledMove(147,2047,3)
+                        Sleep 500
+                        scaledClick(147,2047)
                     }
                     case 1:
                     {
                         AddLog("推图完成，返回活动页面")
                         Sleep 2000
-                        back()
-                        Sleep 2000
+                        scaledMove(147,2047,3)
+                        Sleep 500
+                        scaledClick(147,2047)
                     }
                     case 2:
                     {
@@ -156,8 +168,9 @@ class event extends baseFunc{
                 }
 
                 event.smallMission(thisObj, eventIndex)
-
-                AddLog("尝试进入下一个小活动")
+                if((eventIndex + 1) <= thisObj.eventNum){
+                    AddLog("尝试进入下一个小活动")
+                }
                 eventIndex++
                 backHall()
             }
@@ -184,6 +197,8 @@ class event extends baseFunc{
             AddLog("进入挑战关卡")
             clickBtn(false, btnChallenge *)
             Sleep 6000
+            ok1 := 0
+            ok2 := 0
             if(ok1 := selfFindText(&X,&Y, nikkePosX + 0.359 * nikkePosW . " ", nikkePosY + 0.347 * nikkePosH . " ", nikkePosX + 0.359 * nikkePosW + 0.044 * nikkePosW . " ", nikkePosY + 0.347 *nikkePosH + 0.546 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的关卡的循环图标"), , , , , , , zoomW, zoomH)){
                 AddLog("发现挑战关卡")
                 selfFindText().Click(X, Y, "L")
@@ -191,11 +206,26 @@ class event extends baseFunc{
                 eventFormation(thisObj.challengeAutoForm ? 1 : 2)
             }
             else if(ok2 := selfFindText(&X,&Y, nikkePosX + 0.359 * nikkePosW . " ", nikkePosY + 0.347 * nikkePosH . " ", nikkePosX + 0.359 * nikkePosW + 0.044 * nikkePosW . " ", nikkePosY + 0.347 *nikkePosH + 0.546 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的关卡的循环图标"), , , , , , , zoomW, zoomH)){
-                AddLog("发现重复挑战关卡")
-                selfFindText().Click(X, Y, "L")
+                AddLog("发现" ok2.Length "个可扫荡挑战关")
                 Sleep 2000
             }
-            if(ok1 || ok2){
+            if(ok1){
+                enterBattle()
+                battleSettlement(0, "Challenge")
+                return 2
+            }
+            if(ok2){                
+                maxY := -150000
+                x := 0, y:=0
+                loop ok2.Length {
+                    if(ok2[A_Index].y > maxY){
+                        x:=ok2[A_Index].x
+                        y:=ok2[A_Index].y
+                        maxY := y
+                    }
+                }
+                selfFindText().Click(x,y,"L")
+                Sleep 1000
                 enterBattle()
                 battleSettlement(0, "Challenge")
                 return 2
@@ -248,6 +278,7 @@ class event extends baseFunc{
                     Send "{]}"
                     Sleep 300
                 }
+                AddLog("进入活动困难关")
             }
             else{
                 AddLog("困难关卡未开放")
@@ -331,7 +362,10 @@ class event extends baseFunc{
             }
             eventFormation(thisObj.missionAutoForm ? 1 : 2)
             enterBattle()
-            battleSettlement(0, "EventStory")
+            isFin := battleSettlement(0, "EventStory")
+            if(LastVictoryCount >= 5 || isFin){
+                return 1
+            }
             
             ;特殊情况：当前lastStage + 胜利数大于12并且胜利数低于5,则扫荡第11关
             if(LastVictoryCount < 5 && (lastStage + LastVictoryCount > 12)){
@@ -355,12 +389,15 @@ class event extends baseFunc{
             FindText().Click(X, Y, "L")
             Sleep 1000
             AddLog("已进入任务界面")
-            if (ok := FindText(&X := "wait", &Y := 2, nikkePosX + 0.515 * nikkePosW . " ", nikkePosY + 0.862 * nikkePosH . " ", nikkePosX + 0.515 * nikkePosW + 0.119 * nikkePosW . " ", nikkePosY + 0.862 * nikkePosH + 0.068 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 *   PicTolerance, FindText().PicLib("小活动·全部领取"), , , , , , , zoomW, zoomH)) {
+            count := 0
+            while (count <= 1 || selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.550 * nikkePosW . " ", nikkePosY + 0.864 * nikkePosH . " ", nikkePosX + 0.550 * nikkePosW + 0.09 * nikkePosW . " ", nikkePosY + 0.864 * nikkePosH + 0.068 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 *   PicTolerance, FindText().PicLib("小活动·全部领取"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
                 loop 3 {
                     FindText().Click(X + 50 * zoomW, Y, "L")
                     Sleep 1000
                     AddLog("点击全部领取")
                 }
+                count++
+                idleClick()
             }
         }
         else {
@@ -377,7 +414,7 @@ class event extends baseFunc{
         this.onBegin := event.begin(this)
 
         this.addCheckRow(this, mainGui, "小活动一键通", optStr, this.smallEvent)
-        this.addCheckRow(this, mainGui, "挑战自动编队", "", ()=>{})
-        this.addCheckRow(this, mainGui, "推图自动编队", "", ()=>{})
+        this.addCheckRow(this, mainGui, "挑战自动编队", "", (*)=>{})
+        this.addCheckRow(this, mainGui, "推图自动编队", "", (*)=>{})
     }
 }
