@@ -64,10 +64,10 @@ mainGui.Show()
 
 ^2:: {
 
-    scaledMove(147,2047,3)
+
 }
 
 ^3::{
     global outlineDebug
     outlineDebug := !outlineDebug
-}
+}   

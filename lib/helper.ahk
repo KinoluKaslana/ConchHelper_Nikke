@@ -21,8 +21,13 @@ getBit(num,pos){
 
 outlineDebug := false
 isHall(){
-    return selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.111 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH) &&
+    ret := selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.130 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH) &&
     selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.236 * nikkePosW . " ", nikkePosY + 0.633 * nikkePosH . " ", nikkePosX + 0.236 * nikkePosW + 0.118 * nikkePosW . " ", nikkePosY + 0.633 * nikkePosH + 0.103 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , zoomW, zoomH)
+
+    text := ret ? "在" : "不在"
+
+    AddLog("当前" text "大厅")
+    return 
 }
 
 changeServer(guiObj,event){
@@ -67,11 +72,11 @@ scaledClick(x, y, n := 1){
     }
 }
 
-idleClick(){
+idleClick(times := 1){
     global processHWND
     ;点击左下角 280 1360处
     WinActivate processHWND
-    scaledClick(420, 2040)
+    scaledClick(420, 2040, times)
 }
 
 selfFindText(params*){

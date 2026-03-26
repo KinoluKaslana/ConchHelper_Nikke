@@ -4,6 +4,10 @@
 #Include "..\helper.ahk"
 
 class event extends baseFunc{
+    challengeRedPoint := false
+    missionRedPoint := false
+    storyRedPoint := false
+
     challengeAutoForm := false
     missionAutoForm := false
     eventNum := 0
@@ -28,9 +32,14 @@ class event extends baseFunc{
             Sleep 700
             ;AddLog("点击关卡选项")
             if(ok := selfFindText(&X, &Y, nikkePosX + 0.357 * nikkePosW . " ", nikkePosY + 0.667 * nikkePosH . " ", nikkePosX + 0.357 * nikkePosW + 0.02 * nikkePosW . " ", nikkePosY+ 0.667 * nikkePosH + 0.028 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("CN_AIM"), , , , , , , zoomW, zoomH)){
-                if(ok :=  selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.145 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH + 0.065 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , zoomW, zoomH)){
+                AddLog("定位到可战斗关卡，正在判断快速战斗")
+                if(ok :=  selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.506 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH . " ", nikkePosX + 0.506 * nikkePosW + 0.145 * nikkePosW . " ", nikkePosY + 0.826 * nikkePosH + 0.065 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , zoomW, zoomH)){
                     backSelectState()
                     return 2
+                }
+                else if(A_Index < 3){
+                    AddLog("快速战斗判断失败，重试" A_Index)
+                    continue
                 }
                 backSelectState()
                 return 1
@@ -41,13 +50,13 @@ class event extends baseFunc{
         ok2 := 0
         count := 0
         clickBtn(false, range *)
-        Sleep 300
+        Sleep 500
         scaledMove(420, 560)
         while true {
+            clickBtn(false, range *)
+            Sleep 500
+            scaledMove(420, 560)
             if(count == 5 && hardBtn){
-                clickBtn(false, range *)
-                Sleep 300
-                scaledMove(420, 560)
                 if(hardBtn){
                     break
                 }
@@ -98,6 +107,19 @@ class event extends baseFunc{
         event.readSetting(thisObj)
     }
 
+    static checkRedPoint(thisObj, eventIndex){
+        AddLog("正在检查活动红点")
+        btnChallenge := thisObj.challengeBtnSet[eventIndex]
+        selfFindText(&X,&Y, nikkePosX + btnChallenge[1] * nikkePosW . " ", nikkePosY + btnChallenge[2] * nikkePosH . " ", nikkePosX + btnChallenge[3] * nikkePosW . " ", nikkePosY +btnChallenge[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH) ? thisObj.challengeRedPoint := true : thisObj.challengeRedPoint := false
+
+        
+        btnEnter := thisObj.enterBtnSet[eventIndex]
+        selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY +btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)  ? thisObj.storyRedPoint := true : thisObj.storyRedPoint := false
+
+        btnMission := thisObj.missionBtnSet[eventIndex]
+        selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH) ? thisObj.missionRedPoint := true : thisObj.missionRedPoint := false
+    }
+
     static getSetting(sectionName, valueName, isString := false){
         returnValue := IniRead(A_ScriptDir "\\eventSetting.ini", sectionName, valueName)
         if(!StrLen(returnValue) && !isString){
@@ -125,49 +147,76 @@ class event extends baseFunc{
                 Sleep 200
                 idleClick
                 Sleep 2000
+                event.checkRedPoint(thisObj, eventIndex)
 
-                AddLog("开始打小活动挑战关")
-                challengeRet := event.smallEventChallenge(thisObj, eventIndex)
-                if(challengeRet == 2){
-                    AddLog("小活动挑战关完成，返回活动页面")
-                    Sleep 2000
-                    scaledMove(147,2047,3)
-                    Sleep 500
-                    scaledClick(147,2047)
-                }
-                else if(challengeRet == 0) {
-                    AddLog("挑战关卡未完成(失败)", "red")
-                    Sleep 2000
-                    scaledMove(147,2047,3)
-                    Sleep 500
-                    scaledClick(147,2047)
-                }
-                
-                AddLog("开始小活动推图")
-                switch(event.smallEventStory(thisObj, eventIndex)){
-                    case 0:
-                    {
-                        AddLog("小活动推图未完成", "red")
-                        Sleep 2000
-                        scaledMove(147,2047,3)
-                        Sleep 500
-                        scaledClick(147,2047)
+                while true{
+                    if(thisObj.challengeRedPoint){
+                        AddLog("开始打小活动挑战关")
+                        challengeRet := event.smallEventChallenge(thisObj, eventIndex)
+                        if(challengeRet == 2){
+                            AddLog("小活动挑战关完成，返回活动页面")
+                            Sleep 2000
+                            scaledMove(147,2047,3)
+                            Sleep 500
+                            scaledClick(147,2047)
+                        }
+                        else if(challengeRet == 0) {
+                            AddLog("挑战关卡未完成(失败)", "red")
+                            Sleep 2000
+                            scaledMove(147,2047,3)
+                            Sleep 500
+                            scaledClick(147,2047)
+                        }
+                        Sleep 3000
                     }
-                    case 1:
-                    {
-                        AddLog("推图完成，返回活动页面")
-                        Sleep 2000
-                        scaledMove(147,2047,3)
-                        Sleep 500
-                        scaledClick(147,2047)
+
+                    if(thisObj.storyRedPoint){
+                        AddLog("开始小活动推图")
+                        switch(event.smallEventStory(thisObj, eventIndex)){
+                            case 0:
+                            {
+                                AddLog("小活动推图未完成", "red")
+                                Sleep 2000
+                                scaledMove(147,2047,3)
+                                Sleep 500
+                                scaledClick(147,2047)
+                            }
+                            case 1:
+                            {
+                                AddLog("推图完成，返回活动页面")
+                                Sleep 2000
+                                scaledMove(147,2047,3)
+                                Sleep 500
+                                scaledClick(147,2047)
+                            }
+                            case 2:
+                            {
+                                AddLog("推图关卡完成")
+                            }
+                        }
+                        Sleep 3000
                     }
-                    case 2:
-                    {
-                        AddLog("推图关卡完成")
+
+                    if(thisObj.missionRedPoint){
+                        event.smallMission(thisObj, eventIndex)
+                        idleClick(2)
                     }
+
+                    AddLog("任务流程完毕，复查")
+                    
+                    if(isHall()){
+                        AddLog("异常返回大厅，重新进入当前活动")
+                        continue
+                    }
+                    
+                    event.checkRedPoint(thisObj, eventIndex)
+
+                    if(!thisObj.missionRedPoint && !thisObj.storyRedPoint && !thisObj.challengeRedPoint){
+                        break
+                    }
+
                 }
 
-                event.smallMission(thisObj, eventIndex)
                 if((eventIndex + 1) <= thisObj.eventNum){
                     AddLog("尝试进入下一个小活动")
                 }
@@ -390,7 +439,7 @@ class event extends baseFunc{
             Sleep 1000
             AddLog("已进入任务界面")
             count := 0
-            while (count <= 1 || selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.550 * nikkePosW . " ", nikkePosY + 0.864 * nikkePosH . " ", nikkePosX + 0.550 * nikkePosW + 0.09 * nikkePosW . " ", nikkePosY + 0.864 * nikkePosH + 0.068 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 *   PicTolerance, FindText().PicLib("小活动·全部领取"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            while (count <= 1 && ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.550 * nikkePosW . " ", nikkePosY + 0.864 * nikkePosH . " ", nikkePosX + 0.550 * nikkePosW + 0.09 * nikkePosW . " ", nikkePosY + 0.864 * nikkePosH + 0.068 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 *   PicTolerance, FindText().PicLib("小活动·全部领取"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
                 loop 3 {
                     FindText().Click(X + 50 * zoomW, Y, "L")
                     Sleep 1000
