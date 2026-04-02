@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include <3rd\FindText>
+#Include <3rd\PicLib>
 #Include <3rd\OCR>
 #Include <helper>
 #Include <mainFunc>
@@ -63,11 +63,14 @@ mainGui.Show()
 }
 
 ^2:: {
-
-
+    clickBtn(true, 1000, 1091, 1288, 1155)
 }
 
 ^3::{
     global outlineDebug
     outlineDebug := !outlineDebug
-}   
+}
+
+^4::{
+    MsgBox "暂停"
+}

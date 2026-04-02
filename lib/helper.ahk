@@ -3,6 +3,7 @@
 #Include <log>
 #Include "Nikke\processcatch.ahk"
 #Include "3rd\Gdip_Toolbox.ahk"
+#Include "3rd\PicLib.ahk"
 
 picLibClientW := 3840
 picLibClientH := 2160
@@ -27,7 +28,7 @@ isHall(){
     text := ret ? "在" : "不在"
 
     AddLog("当前" text "大厅")
-    return 
+    return ret
 }
 
 changeServer(guiObj,event){
@@ -122,16 +123,16 @@ refuseSale() {
     return false
 }
 
-clickBtn(abs, x1, y1, x2, y2){
+clickBtn(abs, x1, y1, x2, y2, count := 1){
     if(abs){
         if(outlineDebug)
             AddLog("X:" nikkePosX  ",W:" (x1 + (x2 - x1) / 2) / zoomW - nikkePosX ",Y:" nikkePosY ",H:" (y1 + (y2 - y1) / 2) / zoomH - nikkePosY)
-        scaledClick((x1 + (x2 - x1) / 2 - nikkePosX) / zoomW, (y1 + (y2 - y1) / 2- nikkePosY) / zoomH )
+        scaledClick((x1 + (x2 - x1) / 2 - nikkePosX) / zoomW, (y1 + (y2 - y1) / 2- nikkePosY) / zoomH, count )
     }
     else{
         if(outlineDebug)
             AddLog("X:" nikkePosX  ",W:" nikkePosX + (x1 + (x2 - x1) / 2) * nikkePosW ",Y:" nikkePosY ",H:" nikkePosY + (y1 + (y2 - y1) / 2) * nikkePosH)
-        scaledClick(((x1 + (x2 - x1) / 2) * nikkePosW) / zoomW, ((y1 + (y2 - y1) / 2) * nikkePosH) / zoomH)
+        scaledClick(((x1 + (x2 - x1) / 2) * nikkePosW) / zoomW, ((y1 + (y2 - y1) / 2) * nikkePosH) / zoomH, count)
     }
 }
 
@@ -198,12 +199,10 @@ backHall(ad := false){
             Send "{ESC}"
             AddLog("判断返回中。。。")
             count := 0
-            while (!isHall() && count < 6) {
-                Sleep 500
-                scaledClick(333, 2041)
-                count++
+            if(!isHall()){
+                scaledClick(333, 2041, 3)
             }
-            if !isHall() {
+            if (!isHall()) {
                 AddLog("返回失败，尝试点掉推销")
                 refuseSale()
             }

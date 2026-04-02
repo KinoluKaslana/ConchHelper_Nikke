@@ -50,7 +50,7 @@ class award extends baseFunc{
         }
         AddLog("已返回前哨基地主页面")            
         award.AwardOutpostDispatch()
-        backHall
+        backHall(true)
     }
     ;tag 派遣
     static AwardOutpostDispatch() {
@@ -275,8 +275,15 @@ class award extends baseFunc{
 
     static AwardFriendPoint() {
         failCount := 0
+        Y_Offset := 0  ; 默认偏移量为 0
+        ; 1. 检测节日特殊活动图标
+        ; 如果检测到图标，说明 UI 发生了整体下移
+        if (ok := selfFindText(&X, &Y, nikkePosX + 0.968 * nikkePosW, nikkePosY + 0.121 * nikkePosH, nikkePosX + 0.968 * nikkePosW + 0.030 * nikkePosW, nikkePosY + 0.121 * nikkePosH + 0.048 * nikkePosH, 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("节日特殊活动的图标"), , , , , , , zoomW, zoomH)) {
+            AddLog("检测到节日特殊活动，启用坐标偏移模式", "MAROON")
+            Y_Offset := 0.043  ; 根据预估值推算的纵坐标偏移比例
+        }
         AddLog("开始任务：好友点数", "Fuchsia")
-        while (ok := selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + 0.130 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH)) {
+        while (ok := selfFindText(&X, &Y, nikkePosX + 0.957 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH . " ", nikkePosX + 0.957 * nikkePosW + 0.032 * nikkePosW . " ", nikkePosY + 0.216 * nikkePosH + (0.130 + Y_Offset) * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("好友的图标"), , , , , , , zoomW, zoomH)) {
             AddLog("点击好友")
             selfFindText().Click(X, Y, "L")
             Sleep 4000
@@ -432,6 +439,13 @@ class award extends baseFunc{
             idleClick
         }
     }
+    static isSpPass(){
+        scanRange := [1500,1330,1535,1365]
+        if(selfFindText(&X,&Y, nikkePosX + scanRange[1]/2560 * nikkePosW . "", nikkePosY + scanRange[2]/1440 * nikkePosH . "", nikkePosX + scanRange[3]/2560 * nikkePosW . "", nikkePosY + scanRange[4]/1440 * nikkePosH . "", 0.3 * PicTolerance, 0.3 * PicTolerance, "|<SP通信证特征>*146$39.zzw0zzzzs00zzzw001zzz0003zzU3z0Dzs3zy0zy1zzw3zUTzzsDw7zzzUz1zzzy7kTz3zkS7zsTz1kzz3zwADzszzVVzzzzw4Dzzzzk1zzzzy0Tzzzzk3zz3zy0TzsTzk3zz3zy0TzsTzk3zz3zy4DzsTzkVzz3zy4DzsTzUUzz3zwC7zsTz1kTz3zsT1zvzy3w7zzzUzUTzzsDy1zzy1zs3zz0zzU7zU7zy0003zzw000zzzs00Tzzzs0Tzw", , , , , , , zoomW, zoomH)){
+            return true
+        }
+        return false 
+    }
     ;tag 执行一次通行证
     static OneAwardPass() {
         Sleep 3000
@@ -444,15 +458,24 @@ class award extends baseFunc{
                 scaledClick(1642, 670) ;点奖励
                 Sleep 1000
             }
-            while !(ok := selfFindText(&X, &Y, nikkePosX + 0.429 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH . " ", nikkePosX + 0.429 * nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("灰色的全部"), , , , , , , zoomW, zoomH)) and !(ok := selfFindText(&X, &Y, nikkePosX + 0.429 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH . " ", nikkePosX + 0.429 * nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("SP灰色的全部"), , , , , , , zoomW, zoomH)) {
-                loop 3 {
-                    scaledClick(2168, 2020) ;点领取
-                    Sleep 500
+            if(award.isSpPass()){ 
+                    loop 3 {
+                        scaledClick(1275 * 1.5, 1265 * 1.5) ;点领取
+                        Sleep 500
+                    }
                 }
+            else{
+                while !(ok := selfFindText(&X, &Y, nikkePosX + 0.429 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH . " ", nikkePosX + 0.429 * nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.903 * nikkePosH + 0.050 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("灰色的全部"), , , , , , , zoomW, zoomH)) {
+                    loop 3 {
+                        scaledClick(2168, 2020) ;点领取
+                        Sleep 500
+                    }
+                }   
             }
         }
         back()
     }
+
     ;endregion 通行证收取
     ;region 每日免费招募
     static AwardFreeRecruit() {
