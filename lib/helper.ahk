@@ -64,11 +64,11 @@ scaledMove(x, y, n := 1){
 }
 
 scaledClick(x, y, n := 1){
-    scaledMove(x, y, 2)
+    scaledMove(x , y, 2)
     loop n {
         Click
         if(n > 1){
-            Sleep 500
+            Sleep Random(642, 945)
         }
     }
 }
@@ -77,7 +77,7 @@ idleClick(times := 1){
     global processHWND
     ;点击左下角 280 1360处
     WinActivate processHWND
-    scaledClick(420, 2040, times)
+    scaledClick(420 + 50 * Random(), 2040 - 50 * Random(), times)
 }
 
 selfFindText(params*){
@@ -194,14 +194,17 @@ backHall(ad := false){
         else {
             ; 点左下角的小房子的位置
             scaledClick(333, 2041)
-            Sleep 500
-            Send "{]}"
-            Send "{ESC}"
+            Sleep Random(3573,4738)
             AddLog("判断返回中。。。")
             count := 0
             if(!isHall()){
-                scaledClick(333, 2041, 3)
+                scaledClick(333, 2041)
+                Sleep Random(361,593)
+                Send "{]}"
+                Sleep Random(259,351)
+                Send "{ESC}"
             }
+            Sleep Random(1572,2028)
             if (!isHall()) {
                 AddLog("返回失败，尝试点掉推销")
                 refuseSale()
@@ -216,7 +219,7 @@ backHall(ad := false){
             Pause
         }
         if A_Index < 2{
-            Sleep 1500
+            Sleep Random(1572,2028)
         }
     }
     Sleep 1000

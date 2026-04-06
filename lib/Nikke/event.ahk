@@ -13,12 +13,19 @@ class event extends baseFunc{
 
     isStory2Open := false
 
+    ;活动数量
     eventNum := 0
+    ;活动类型 1小 2中 3大
     eventTypeSet := Array()
+    ;活动开始了几天
+    eventDate := Array()
 
+    ;故事切换按钮
     storySwitchBtnSet := Array()
+    ;故事2按钮
     story2RangeSet := Array()
 
+    ;挑战区域
     challengeBtnSet := Array()
     missionBtnSet := Array()
     enterBtnSet := Array()
@@ -100,7 +107,7 @@ class event extends baseFunc{
             AddLog("读取小活动" A_IndeX "配置信息")
             section := (valueName, isString:=false) => _section(A_IndeX, valueName, isString)
             eventPosScale := section("Scale") == 4 ? 1 : 1.5
-            thisObj.enrtYTeXtSet.push(section("TeXt", true))
+            thisObj.enrtYTeXtSet.push(section("Text", true))
             thisObj.eventTypeSet.push(section("EventType"))
             thisObj.challengeBtnSet.push([section("cX1") / 3840 * eventPosScale, section("cY1") / 2160  * eventPosScale, section("cX2") / 3840 * eventPosScale, section("cY2") / 2160  *eventPosScale])
             thisObj.missionBtnSet.push([section("mX1") / 3840 * eventPosScale, section("mY1") / 2160  * eventPosScale, section("mX2") / 3840 * eventPosScale, section("mY2") / 2160  *eventPosScale])
@@ -117,6 +124,10 @@ class event extends baseFunc{
                 thisObj.storySwitchBtnSet.push([])
                 thisObj.story2RangeSet.push([])
             }
+            date := section("date", true)
+            dateNu := DateDiff(A_Now, date, "days")
+            thisObj.eventDate.push(dateNu)
+            AddLog("小活动" . A_Index . "已经开始了" . dateNu . "天。")
         }
     }
 
@@ -141,7 +152,7 @@ class event extends baseFunc{
         
         btnEnter := thisObj.enterBtnSet[eventIndex]
         
-        if(selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY +btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)){
+        if(selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY +btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH) && selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY + btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点白边"), , , , , , , zoomW, zoomH)){
             thisObj.storyRedPoint := true
         }
         else{
@@ -155,7 +166,7 @@ class event extends baseFunc{
 
         btnMission := thisObj.missionBtnSet[eventIndex]
         
-        if(selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)){
+        if(selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH) && selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点白边"), , , , , , , zoomW, zoomH)){
             thisObj.missionRedPoint := true
         }
         else{
@@ -197,23 +208,26 @@ class event extends baseFunc{
                     if(!retry){
                         AddLog("找到小活动" eventIndex "图标，进入")
                         selfFindText().Click(X,Y,"L")
-                        Send "{]}"
-                        Sleep 200
+                        Sleep Random(749, 1374)
                         idleClick
-                        Sleep 200
+                        Sleep Random(532, 2054)
                         Send "{]}"
-                        Sleep 200
-                        idleClick
-                        Sleep 4000
-                        if(thisObj.eventTypeSet[eventIndex] >= 2){
-                            thisObj.isStory2Open := event.checkLoop(thisObj.storySwitchBtnSet[eventIndex], true)
-                        }
-                        if(thisObj.isStory2Open){
-                            AddLog("进入当前活动Story 2")
-                        }
-                        else if(thisObj.eventTypeSet[eventIndex] >= 2){
-                            AddLog("当前活动Story 2未开放")
-                        }
+                        ;Sleep Random(729, 2054)
+                        ;idleClick
+                        ;Sleep 200
+                        ;Send "{]}"
+                        ;Sleep 200
+                        ;idleClick
+                        Sleep Random(3045, 5054)
+                        ;if(thisObj.eventTypeSet[eventIndex] >= 2){
+                        ;    thisObj.isStory2Open := event.checkLoop(thisObj.storySwitchBtnSet[eventIndex], true)
+                        ;}
+                        ;if(thisObj.isStory2Open){
+                        ;    AddLog("进入当前活动Story 2")
+                        ;}
+                        ;else if(thisObj.eventTypeSet[eventIndex] >= 2){
+                        ;    AddLog("当前活动Story 2未开放")
+                        ;}
                     }
                     
                     event.checkRedPoint(thisObj, eventIndex)
@@ -421,87 +435,105 @@ class event extends baseFunc{
                 Sleep 300
                 Send "{]}"
             }
-            if(thisObj.eventTypeSet[index] >= 2 && thisObj.isStory2Open){
-                AddLog("进入活动推图关卡, 尝试进入困难关卡")
-                if(event.checkLoop(thisObj.hardBtnSet[index], true)){
-                    clickBtn(false, thisObj.hardBtnSet[index] *)
-                    loop 3 {
-                        idleClick
-                        Sleep 300
-                        Send "{]}"
-                        Sleep 300
-                    }
-                    AddLog("进入活动困难关")
-                }
-                else{
-                    AddLog("困难关卡未开放")
-                }
-            }
-            Sleep 2000
-            AddLog("正在检查关卡开放情况")
-            AddLog("检查前6关开放情况")
-            scaledMove(1920, 1080)
-            storyStatusB := Array()
-            loop 20{
-                Click "WheelUp"
-            }
-            storyStatusA := event.eventStoryCheck(thisObj.storyRangeSet[index][1])
-            if(storyStatusA[6] != 0){
-                scaledMove(1920, 1080)
-                loop 20{
-                    Click "WheelDown"
-                }
-                storyStatusB := event.eventStoryCheck(thisObj.storyRangeSet[index][2], 6)
-            }
-
+            ;if(thisObj.eventTypeSet[index] >= 2 && thisObj.isStory2Open){
+            ;    AddLog("进入活动推图关卡, 尝试进入困难关卡")
+            ;    if(event.checkLoop(thisObj.hardBtnSet[index], true)){
+            ;        clickBtn(false, thisObj.hardBtnSet[index] *)
+            ;        loop 3 {
+            ;            idleClick
+            ;            Sleep 300
+            ;            Send "{]}"
+            ;            Sleep 300
+            ;        }
+            ;        AddLog("进入活动困难关")
+            ;    }
+            ;    else{
+            ;        AddLog("困难关卡未开放")
+            ;    }
+            ;}
+            ;Sleep 2000
+            ;AddLog("正在检查关卡开放情况")
+            ;AddLog("检查前6关开放情况")
+            ;scaledMove(1920, 1080)
+            ;storyStatusB := Array()
+            ;loop 20{
+            ;    Click "WheelUp"
+            ;}
+            ;storyStatusA := event.eventStoryCheck(thisObj.storyRangeSet[index][1])
+            ;if(storyStatusA[6] != 0){
+            ;    scaledMove(1920, 1080)
+            ;    loop 20{
+            ;        Click "WheelDown"
+            ;    }
+            ;    storyStatusB := event.eventStoryCheck(thisObj.storyRangeSet[index][2], 6)
+            ;}
             lastStage := -1
             lastRrtry := -1
-
-            loop 6{
-                ;第7关未开放
-                if(storyStatusB.Length && !storyStatusB[1]){
-                    lastRrtry := 4
+            switch(thisObj.eventDate[index]){
+                case 0:
+                    lastStage := 1
+                    lastRrtry := -1
+                case 1:
                     lastStage := 6
-                    break
-                }
-                switch(storyStatusA[A_Index]){
-                    case 1:
-                        if(lastRrtry < A_Index)
-                            lastStage := A_Index
-                    case 2:
-                        if(lastStage < A_Index)
-                            lastRrtry := A_Index
-                    default: 
-                }
-                if(storyStatusB.Length)
-                switch(storyStatusB[A_Index]){
-                    case 1:
-                        lastStage := A_Index + 6
-                    case 2:
-                        lastRrtry := A_Index + 6
-                    default: 
+                    lastRrtry := -1
+                case 2:
+                    lastStage := 10
+                    lastRrtry := -1
+            }
+            
+
+            if(lastStage < 0 && lastRrtry < 0 && thisObj.eventDate[index] < 7){
+                if(thisObj.eventDate[index] >= 3){
+                    lastStage := 13
+                    lastRrtry := 11
                 }
             }
-            if(lastStage == -1){
-                lastStage := 13
-            }
+
+            ;loop 6{
+            ;    ;第7关未开放
+            ;    if(storyStatusB.Length && !storyStatusB[1]){
+            ;        lastRrtry := 4
+            ;        lastStage := 6
+            ;        break
+            ;    }
+            ;    switch(storyStatusA[A_Index]){
+            ;        case 1:
+            ;            if(lastRrtry < A_Index)
+            ;                lastStage := A_Index
+            ;        case 2:
+            ;            if(lastStage < A_Index)
+            ;                lastRrtry := A_Index
+            ;        default: 
+            ;    }
+            ;    if(storyStatusB.Length)
+            ;    switch(storyStatusB[A_Index]){
+            ;        case 1:
+            ;            lastStage := A_Index + 6
+            ;        case 2:
+            ;            lastRrtry := A_Index + 6
+            ;        default: 
+            ;    }
+            ;}
+            ;if(lastStage == -1){
+            ;    lastStage := 13
+            ;}
 
             Sleep 2000
             scaledMove(1920, 1080)
 
             if(lastStage > 6 && lastStage <= 12){
-                loop 20{
+                loop Random(15,23){
                     Click "WheelDown"
                 }
             }
             else if(lastStage <= 6){
-                loop 20{
+                loop Random(15,23){
                     Click "WheelUp"
                 }
             }
 
             ;第12关已挑战，并且第11关状态可挑战
-            if(lastStage > 12 && storyStatusB[5] == 2){
+            if(lastStage > 12){
                 clickBtn(false, getSubRange(1, 6, 1, 5, thisObj.storyRangeSet[index][2]*) *)
             } 
             else if(lastStage > 6 && lastStage <= 12){
@@ -558,7 +590,7 @@ class event extends baseFunc{
         }
         loop 3 {
             scaledClick(1500 * 1.5, 1280 * 1.5)
-            Sleep 1000
+            Sleep Random(503,1463)
             AddLog("点击全部领取")
         }
         idleClick(3)

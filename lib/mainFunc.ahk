@@ -51,6 +51,7 @@ class mainFunc extends baseFunc{
 
     static mainFuncActionBegin(){
         AddLog("DORO!!!!!")
+        backHall()
         ;loop 4 {
         ;    idleClick()
         ;    Sleep 500
