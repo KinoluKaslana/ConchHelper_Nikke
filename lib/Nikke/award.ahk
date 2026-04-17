@@ -272,8 +272,76 @@ class award extends baseFunc{
             }
         }
     }
+    
+    static AwardCooperate() {
+        backHall
+        AddLog("开始任务：协同作战", "Fuchsia")
+        
+        moreClick := true
+        if(ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH + 0.350 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("主页更多箭头"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            moreClick := false
+        }
+
+        if(moreClick && ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH . " ", nikkePosX + 0.003* nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH + 0.350 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("主页更多"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            selfFindText().Click(X, Y, "L")
+        }
+        if (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW+ 0.143 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH + 0.350 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("协作图标"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            selfFindText().Click(X, Y, "L")
+        } else {
+            AddLog("未发现协作图标", "MAROON")
+            return
+        }
+
+        award.AwardCooperateBattle()
+        backHall
+    }
+    
+
+    static AwardCooperateBattle() {
+        OuterLoop:
+        while true {
+            if (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.851 * nikkePosW . " ", nikkePosY + 0.750 * nikkePosH . " ", nikkePosX + 0.851 * nikkePosW + 0.134 * nikkePosW . " ", nikkePosY + 0.750 * nikkePosH + 0.068 * nikkePosH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, selfFindText().PicLib("开始匹配的开始"), , , , , , , zoomW, zoomH)) {
+                AddLog("开始匹配")
+                selfFindText().Click(X, Y, "L")
+                Sleep 500
+            }
+            else {
+                AddLog("协同作战次数已耗尽或未在开放时间", "MAROON")
+                return
+            }
+            if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.508 * nikkePosW . " ", nikkePosY + 0.600 * nikkePosH . " ", nikkePosX + 0.508 * nikkePosW + 0.120 * nikkePosW . " ", nikkePosY + 0.600 * nikkePosH + 0.053 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
+                AddLog("协同作战次数已耗尽", "MAROON")
+                return
+            }
+            if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.373 * nikkePosW . " ", nikkePosY + 0.644 * nikkePosH . " ", nikkePosX + 0.373 * nikkePosW + 0.253 * nikkePosW . " ", nikkePosY + 0.644 * nikkePosH + 0.060 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("确认"), , , , , , , zoomW, zoomH)) {
+                AddLog("确认匹配")
+                selfFindText().Click(X, Y, "L")
+                Sleep 500
+            }
+            while true {
+                if (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.511 * nikkePosW . " ", nikkePosY + 0.640 * nikkePosH . " ", nikkePosX + 0.511 * nikkePosW + 0.106 * nikkePosW . " ", nikkePosY + 0.640 * nikkePosH + 0.06 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
+                    selfFindText().Click(X, Y, "L")
+                    Sleep 500
+                }
+                if (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.439 * nikkePosW . " ", nikkePosY + 0.597 * nikkePosH . " ", nikkePosX + 0.439 * nikkePosW + 0.123 * nikkePosW . " ", nikkePosY + 0.597 * nikkePosH + 0.058 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
+                    AddLog("网络连接中断，重新开始匹配")
+                    selfFindText().Click(X, Y, "L")
+                    Sleep 500
+                    continue OuterLoop
+                }
+                if (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.444 * nikkePosW . " ", nikkePosY + 0.915 * nikkePosH . " ", nikkePosX + 0.444 * nikkePosW + 0.112 * nikkePosW . " ", nikkePosY + 0.915 * nikkePosH + 0.052 * nikkePosH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, selfFindText().PicLib("准备"), , , , , , , zoomW, zoomH)) {
+                    selfFindText().Click(X, Y, "L")
+                    break
+                }
+            }
+            BattleSettlement
+            sleep 5000
+        }
+    }
 
     static AwardSoloRaid(stage7 := True, moreClick := true) {
+        backHall
+
         if stage7 {
             AddLog("开始任务：单人突击", "Fuchsia")
         }
@@ -605,6 +673,7 @@ class award extends baseFunc{
     }
     init(mainGui, optStr) {
         this.addCheckRow(this, mainGui,"个人突破", optStr,award.AwardSoloRaid)
+        this.addCheckRow(this, mainGui, "协同作战", "", award.AwardCooperate)
         this.addCheckRow(this, mainGui, "前哨基地防御奖励领取", "", award.AwardOutpost)
         this.addCheckRow(this, mainGui,"咨询Nikke","",award.AwardAdvise)
         this.addCheckRow(this, mainGui,"好友点数收发","",award.AwardFriendPoint)
