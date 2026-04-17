@@ -19,6 +19,8 @@ class event extends baseFunc{
     eventTypeSet := Array()
     ;活动开始了几天
     eventDate := Array()
+    ;配置文件类型(临时增加，后全面迁移)
+    eventConfigType := Array()
 
     ;故事切换按钮
     storySwitchBtnSet := Array()
@@ -112,9 +114,17 @@ class event extends baseFunc{
             thisObj.challengeBtnSet.push([section("cX1") / 3840 * eventPosScale, section("cY1") / 2160  * eventPosScale, section("cX2") / 3840 * eventPosScale, section("cY2") / 2160  *eventPosScale])
             thisObj.missionBtnSet.push([section("mX1") / 3840 * eventPosScale, section("mY1") / 2160  * eventPosScale, section("mX2") / 3840 * eventPosScale, section("mY2") / 2160  *eventPosScale])
             thisObj.enterBtnSet.push([section("eX1") / 3840 * eventPosScale, section("eY1") / 2160  * eventPosScale, section("eX2") / 3840 * eventPosScale, section("eY2") / 2160  *eventPosScale])
-            thisObj.storYRangeSet.push([[section("range1_6X1") / 3840 * eventPosScale, section("range1_6Y1") / 2160 * eventPosScale, section("range1_6X2") / 3840 * eventPosScale, section("range1_6Y2") / 2160 * eventPosScale],
-                [section("range6_EX1") / 3840 * eventPosScale, section("range6_EY1") / 2160 * eventPosScale, section("range6_EX2") / 3840 * eventPosScale, section("range6_EY2") / 2160 * eventPosScale]])
-            thisObj.hardBtnSet.push([section("hardX1") / 3840 * eventPosScale, section("hardY1") / 2160  * eventPosScale, section("hardX2") / 3840 * eventPosScale, section("hardY2") / 2160  * eventPosScale])
+            isNew := section("new")
+            thisObj.eventConfigType.push(isNew)
+            if(isNew){
+                thisObj.storyRangeSet.push([[section("story1X") * eventPosScale, section("story1Y") * eventPosScale, section("s1Wheel")],
+                [section("story6X") * eventPosScale, section("story6Y") * eventPosScale, section("s6Wheel")],
+                [section("story11X") * eventPosScale, section("story11Y") * eventPosScale, section("s11Wheel")]])
+            }
+            else{
+                thisObj.storyRangeSet.push([[section("range1_6X1") / 3840 * eventPosScale, section("range1_6Y1") / 2160 * eventPosScale, section("range1_6X2") / 3840 * eventPosScale, section("range1_6Y2") / 2160 * eventPosScale],
+                    [section("range6_EX1") / 3840 * eventPosScale, section("range6_EY1") / 2160 * eventPosScale, section("range6_EX2") / 3840 * eventPosScale, section("range6_EY2") / 2160 * eventPosScale]])
+            }
             if(thisObj.eventTypeSet[-1] >= 2){
                 thisObj.storySwitchBtnSet.push([section("swX1") / 3840 * eventPosScale, section("swY1") / 2160  * eventPosScale, section("swX2") / 3840 * eventPosScale, section("swY2") / 2160  * eventPosScale])
                 thisObj.story2RangeSet.push([[section("s2range1_6X1") / 3840 * eventPosScale, section("s2range1_6Y1") / 2160 * eventPosScale, section("s2range1_6X2") / 3840 * eventPosScale, section("s2range1_6Y2") / 2160 * eventPosScale],
@@ -259,26 +269,52 @@ class event extends baseFunc{
 
                     if(thisObj.storyRedPoint){
                         AddLog("开始小活动推图")
-                        switch(event.smallEventStory(thisObj, eventIndex)){
-                            case 0:
-                            {
-                                AddLog("小活动推图未完成", "red")
-                                Sleep 4000
-                                scaledMove(147,2047,3)
-                                Sleep 500
-                                scaledClick(147,2047)
+                        if(thisObj.eventConfigType[eventIndex]){
+                            switch(event.newsmallEventStory(thisObj, eventIndex)){
+                                case 0:
+                                {
+                                    AddLog("小活动推图未完成", "red")
+                                    Sleep 4000
+                                    scaledMove(147,2047,3)
+                                    Sleep 500
+                                    scaledClick(147,2047)
+                                }
+                                case 1:
+                                {
+                                    AddLog("推图完成，返回活动页面")
+                                    Sleep 4000
+                                    scaledMove(147,2047,3)
+                                    Sleep 500
+                                    scaledClick(147,2047)
+                                }
+                                case 2:
+                                {
+                                    AddLog("推图关卡完成")
+                                }
                             }
-                            case 1:
-                            {
-                                AddLog("推图完成，返回活动页面")
-                                Sleep 4000
-                                scaledMove(147,2047,3)
-                                Sleep 500
-                                scaledClick(147,2047)
-                            }
-                            case 2:
-                            {
-                                AddLog("推图关卡完成")
+                        }
+                        else{
+                            switch(event.smallEventStory(thisObj, eventIndex)){
+                                case 0:
+                                {
+                                    AddLog("小活动推图未完成", "red")
+                                    Sleep 4000
+                                    scaledMove(147,2047,3)
+                                    Sleep 500
+                                    scaledClick(147,2047)
+                                }
+                                case 1:
+                                {
+                                    AddLog("推图完成，返回活动页面")
+                                    Sleep 4000
+                                    scaledMove(147,2047,3)
+                                    Sleep 500
+                                    scaledClick(147,2047)
+                                }
+                                case 2:
+                                {
+                                    AddLog("推图关卡完成")
+                                }
                             }
                         }
                         curStoryRedPoint := false
@@ -568,14 +604,75 @@ class event extends baseFunc{
         return 2
     }
 
+    static newsmallEventStory(thisObj, index){
+        btnEnter := thisObj.enterBtnSet[index]
+        thisObj.missionAutoForm := thisObj.getCheckStatus("推图自动编队")
+        storyRangeSet := thisObj.storyRangeSet[index]
+        eventDate := thisObj.eventDate[index]
+
+        if(thisObj.storyRedPoint){
+            clickBtn(false, btnEnter *)
+            While(!(ok := FindText(&X, &Y, nikkePosX + 0.004 * nikkePosW . " ", nikkePosY + 0.022 * nikkePosH . " ", nikkePosX + 0.004 * nikkePosW + 0.038 * nikkePosW . " ", nikkePosY + 0.022 * nikkePosH + 0.027 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , zoomW, zoomH))){
+                idleClick
+                Sleep 300
+                Send "{]}"
+            }
+
+            if(eventDate >= 7){
+                eventDate -= 7
+            }
+
+            scaledMove(1920, 1080)
+
+            switch(eventDate){
+                case 0:
+                {
+                    wheel(storyRangeSet[1][3], "WheelDown")
+                    scaledClick(storyRangeSet[1][1], storyRangeSet[1][2])
+                }
+                case 1:
+                {
+                    wheel(30, "WheelUp", true, true)
+                    Sleep((Random(523, 847)))
+                    wheel(storyRangeSet[2][3], "WheelDown")
+                    scaledClick(storyRangeSet[2][1], storyRangeSet[2][2])
+                }
+                case 2:
+                {
+                    wheel(50, "WheelUp", true, true)
+                    Sleep((Random(523, 847)))
+                    wheel(storyRangeSet[3][3], "WheelDown")
+                    scaledClick(storyRangeSet[3][1], storyRangeSet[3][2])
+                    eventFormation(thisObj.missionAutoForm ? 1 : 2)
+                    enterBattle()
+                    battleSettlement(0, "EventStory")
+                    wheel(50, "WheelUp", true, true)
+                    Sleep((Random(523, 847)))
+                    wheel(storyRangeSet[3][3], "WheelDown")
+                    scaledClick(storyRangeSet[3][1], storyRangeSet[3][2])
+                }
+                default: 
+                {
+                    wheel(50, "WheelUp", true, true)
+                    Sleep((Random(523, 847)))
+                    wheel(storyRangeSet[3][3], "WheelDown")
+                    scaledClick(storyRangeSet[3][1], storyRangeSet[3][2])
+                }
+            }
+
+            eventFormation(thisObj.missionAutoForm ? 1 : 2)
+            enterBattle()
+            battleSettlement(0, "EventStory")
+            return 1
+        }
+    }
     static smallMission(thisObj, index){
         btnMission := thisObj.missionBtnSet[index]
         AddLog("开始任务：小活动·任务领取", "Fuchsia")
         Sleep 1000
-        clickBtn(false, btnMission *)
         count := 0
         while count <= 3{
-            if(ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.423 * nikkePosW . " ", nikkePosY + 0.2673 * nikkePosH . " ", nikkePosX + 0.4375 * nikkePosW . " ", nikkePosY + 0.302 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 *   PicTolerance, "|<活动任务窗口>*159$33.zzkTzzzz3zzzzsTzzsz3w0y7sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y00TU7k03w0y00TU7k03w0y00TU7k03w0y00Tzrk03zyyTsTzrnz3zyyTsTzrnz3w0yTsTU7kz3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kz3w0y7sTU7zz3zzzzsTzw", , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            if(selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.394 * nikkePosW . " ", nikkePosY + 0.208 * nikkePosH . " ", nikkePosX + 0.447 * nikkePosW . " ", nikkePosY + 0.302 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 *  PicTolerance, "|<活动任务窗口>*159$33.zzkTzzzz3zzzzsTzzsz3w0y7sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y00TU7k03w0y00TU7k03w0y00TU7k03w0y00Tzrk03zyyTsTzrnz3zyyTsTzrnz3w0yTsTU7kz3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kT3w0y3sTU7kz3w0y7sTU7zz3zzzzsTzw", , , , , , , zoomW * 1.5, zoomH * 1.5)) {
                 AddLog("已进入任务界面")
                 break
             }

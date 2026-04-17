@@ -136,6 +136,40 @@ clickBtn(abs, x1, y1, x2, y2, count := 1){
     }
 }
 
+wheel(times, direction, quick := false, uperTimes := false){
+    time := Random(2,7)
+    if(quick){
+        time := time * 2
+    }
+    i := 0
+    if(uperTimes){
+        times := times + Random(3, 6)
+    }
+    loop times{
+        Click direction
+        if(i < time){
+            sleepTime := Random(5, 32)
+            if(quick){
+                sleepTime := sleepTime / 3
+            }
+            Sleep(sleepTime)
+            i++
+        }
+        else if(i >= time){
+            sleepTime := Random(243,421)
+            if(quick){
+                sleepTime := sleepTime / 3
+            }
+            Sleep(sleepTime)
+            i := 0
+            time := Random(2,7)
+            if(quick){
+                time := time * 2
+            }
+        }
+    }
+}
+
 getSubRange(nx, ny, x, y, x1, y1, x2, y2){
     x--
     y--
@@ -400,14 +434,14 @@ battleSettlement(currentVictory := 0, modes*) {
     RedCircle := false
     Exit7 := false
     EventStory := false
-    if (BattleActive = 0 or BattleActive = 2) {
-        AddLog("由于无法战斗，跳过战斗结算")
-        if BattleActive = 2 {
-            Send "{Esc}"
-        }
-        LastVictoryCount := currentVictory ; 更新全局变量
-        return
-    }
+    ;if (BattleActive = 0 or BattleActive = 2) {
+    ;    AddLog("由于无法战斗，跳过战斗结算")
+    ;    if BattleActive = 2 {
+    ;        Send "{Esc}"
+    ;    }
+    ;    LastVictoryCount := currentVictory ; 更新全局变量
+    ;    return
+    ;}
     for mode in modes {
         switch mode {
             case "Screenshot":

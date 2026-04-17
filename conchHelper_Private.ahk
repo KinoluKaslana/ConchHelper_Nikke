@@ -63,7 +63,7 @@ mainGui.Show()
 }
 
 ^2:: {
-    clickBtn(true, 1000, 1091, 1288, 1155)
+    
 }
 
 ^3::{
@@ -73,4 +73,8 @@ mainGui.Show()
 
 ^4::{
     MsgBox "暂停"
+}
+
+^5::{
+    Click "WheelDown"
 }

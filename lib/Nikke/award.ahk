@@ -273,6 +273,104 @@ class award extends baseFunc{
         }
     }
 
+    static AwardSoloRaid(stage7 := True, moreClick := true) {
+        if stage7 {
+            AddLog("开始任务：单人突击", "Fuchsia")
+        }
+
+        if(ok := selfFindText(&X := "wait", &Y := 2, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH + 0.350 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("主页更多箭头"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            moreClick := false
+        }
+
+
+        if(moreClick && ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH + 0.350 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("主页更多"), , , , , , , zoomW * 1.5, zoomH * 1.5)) {
+            selfFindText().Click(X, Y, "L")
+        }
+
+        if (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.143 * nikkePosW . " ", nikkePosY + 0.172 * nikkePosH + 0.350 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("RAID"), , , , , , , zoomW, zoomH)) {
+            selfFindText().Click(X, Y, "L")
+        } else {
+            AddLog("不在单人突击活动时间", "MAROON")
+            return
+        }
+        while !(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("圈中的感叹号"), , 0, , , , , zoomW, zoomH)) {
+            idleClick
+            if A_Index > 3 {
+                AddLog("未能找到单人突击活动", "MAROON")
+                return
+            }
+        }
+        idleClick
+        if (ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.417 * nikkePosW . " ", nikkePosY + 0.806 * nikkePosH . " ", nikkePosX + 0.417 * nikkePosW + 0.164 * nikkePosW . " ", nikkePosY + 0.806 * nikkePosH + 0.073 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("灰色的挑战"), , , , , , , zoomW, zoomH)) {
+            AddLog("不在单人突击活动时间", "MAROON")
+            backHall
+            return
+        }
+        if stage7 {
+            AddLog("选中第七关")
+            scaledClick(2270, 231)
+            Sleep 1000
+        }
+        while True {
+            if (ok := selfFindText(&X, &Y, nikkePosX + 0.519 * nikkePosW . " ", nikkePosY + 0.618 * nikkePosH . " ", nikkePosX + 0.519 * nikkePosW + 0.043 * nikkePosW . " ", nikkePosY + 0.618 * nikkePosH + 0.037 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("红色的MODE"), , , , , , , zoomW, zoomH)) {
+                AddLog("挑战模式")
+                backHall
+                return
+            }
+            AddLog("检测快速战斗")
+            if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.504 * nikkePosW . " ", nikkePosY + 0.728 * nikkePosH . " ", nikkePosX + 0.504 * nikkePosW + 0.144 * nikkePosW . " ", nikkePosY + 0.728 * nikkePosH + 0.074 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("快速战斗的图标"), , , , , , , zoomW, zoomH)) {
+                AddLog("快速战斗已激活", "GREEN")
+                selfFindText().Click(X + 50 * zoomW, Y, "L")
+                Sleep 500
+                if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.553 * nikkePosW . " ", nikkePosY + 0.683 * nikkePosH . " ", nikkePosX + 0.553 * nikkePosW + 0.036 * nikkePosW . " ", nikkePosY + 0.683 * nikkePosH + 0.040 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("MAX"), , , , , , , zoomW, zoomH)) {
+                    selfFindText().Click(X, Y, "L")
+                    Sleep 1000
+                }
+                if (ok := selfFindText(&X, &Y, nikkePosX + 0.470 * nikkePosW . " ", nikkePosY + 0.733 * nikkePosH . " ", nikkePosX + 0.470 * nikkePosW + 0.157 * nikkePosW . " ", nikkePosY + 0.733 * nikkePosH + 0.073 * nikkePosH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, selfFindText().PicLib("进行战斗的进"), , , , , , , zoomW, zoomH)) {
+                    selfFindText().Click(X, Y, "L")
+                    BattleActive := 1
+                    Sleep 1000
+                }
+                BattleSettlement
+                backHall
+                return
+            }
+            if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.413 * nikkePosW . " ", nikkePosY + 0.800 * nikkePosH . " ", nikkePosX + 0.413 * nikkePosW + 0.176 * nikkePosW . " ", nikkePosY + 0.800 * nikkePosH + 0.085 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("单人突击·挑战"), , , , , , , zoomW, zoomH)) {
+                AddLog("快速战斗未激活，尝试普通战斗")
+                selfFindText().Click(X, Y, "L")
+                Sleep 1000
+                if (ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.518 * nikkePosW . " ", nikkePosY + 0.609 * nikkePosH . " ", nikkePosX + 0.518 * nikkePosW + 0.022 * nikkePosW . " ", nikkePosY + 0.609 * nikkePosH + 0.033 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("带圈白勾"), , , , , , , zoomW, zoomH)) {
+                    selfFindText().Click(X, Y, "L")
+                    Sleep 1000
+                }
+                if (ok := selfFindText(&X := "wait", &Y := 5, nikkePosX + 0.512 * nikkePosW . " ", nikkePosY + 0.818 * nikkePosH . " ", nikkePosX + 0.512 * nikkePosW + 0.142 * nikkePosW . " ", nikkePosY + 0.818 * nikkePosH + 0.086 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("个人突击·进入战斗的进"), , , , , , , zoomW, zoomH)) {
+                    selfFindText().Click(X, Y, "L")
+                    Sleep 1000
+                    if BattleSettlement() = false {
+                        AddLog("战斗结算失败，尝试返回大厅", "red")
+                        backHall
+                        return
+                    }
+                    sleep 5000
+                    while !(ok := selfFindText(&X := "wait", &Y := 3, nikkePosX + 0.003 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH . " ", nikkePosX + 0.003 * nikkePosW + 0.089 * nikkePosW . " ", nikkePosY + 0.007 * nikkePosH + 0.054 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("圈中的感叹号"), , 0, , , , , zoomW, zoomH)) {
+                        idleClick
+                    }
+                }
+            }
+            if stage7 {
+                AddLog("第七关未开放", "MAROON")
+                backHall
+                award.AwardSoloRaid(stage7 := false, false)
+                return
+            }
+            if !(ok := selfFindText(&X := "wait", &Y := 1, nikkePosX + 0.413 * nikkePosW . " ", nikkePosY + 0.800 * nikkePosH . " ", nikkePosX + 0.413 * nikkePosW + 0.176 * nikkePosW . " ", nikkePosY + 0.800 * nikkePosH + 0.085 * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, selfFindText().PicLib("单人突击·挑战"), , , , , , , zoomW, zoomH)) {
+                AddLog("已无挑战次数，返回", "MAROON")
+                backHall
+                return
+            }
+        }
+    }
+
     static AwardFriendPoint() {
         failCount := 0
         Y_Offset := 0  ; 默认偏移量为 0
@@ -506,7 +604,8 @@ class award extends baseFunc{
         backHall
     }
     init(mainGui, optStr) {
-        this.addCheckRow(this, mainGui, "前哨基地防御奖励领取", optStr, award.AwardOutpost)
+        this.addCheckRow(this, mainGui,"个人突破", optStr,award.AwardSoloRaid)
+        this.addCheckRow(this, mainGui, "前哨基地防御奖励领取", "", award.AwardOutpost)
         this.addCheckRow(this, mainGui,"咨询Nikke","",award.AwardAdvise)
         this.addCheckRow(this, mainGui,"好友点数收发","",award.AwardFriendPoint)
         this.addCheckRow(this, mainGui,"邮箱收取","",award.AwardMail)
