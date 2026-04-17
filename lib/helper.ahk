@@ -8,6 +8,7 @@
 picLibClientW := 3840
 picLibClientH := 2160
 PicTolerance := 1
+BattleActive := 1
 
 zoomW := 1
 zoomH := 1
@@ -434,14 +435,14 @@ battleSettlement(currentVictory := 0, modes*) {
     RedCircle := false
     Exit7 := false
     EventStory := false
-    ;if (BattleActive = 0 or BattleActive = 2) {
-    ;    AddLog("由于无法战斗，跳过战斗结算")
-    ;    if BattleActive = 2 {
-    ;        Send "{Esc}"
-    ;    }
-    ;    LastVictoryCount := currentVictory ; 更新全局变量
-    ;    return
-    ;}
+    if (BattleActive = 0 or BattleActive = 2) {
+        AddLog("由于无法战斗，跳过战斗结算")
+        if BattleActive = 2 {
+            Send "{Esc}"
+        }
+        LastVictoryCount := currentVictory ; 更新全局变量
+        return
+    }
     for mode in modes {
         switch mode {
             case "Screenshot":
