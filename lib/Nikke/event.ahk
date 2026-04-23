@@ -19,8 +19,9 @@ class event extends baseFunc{
     eventTypeSet := Array()
     ;活动开始了几天
     eventDate := Array()
-    ;配置文件类型(临时增加，后全面迁移)
-    eventConfigType := Array()
+
+    eventStoryRedPointScal := Array()
+    eventStoryRedPointStrictCheck := Array()
 
     ;故事切换按钮
     storySwitchBtnSet := Array()
@@ -108,23 +109,26 @@ class event extends baseFunc{
         while (A_Index <= thisObj.eventNum){
             AddLog("读取小活动" A_IndeX "配置信息")
             section := (valueName, isString:=false) => _section(A_IndeX, valueName, isString)
-            eventPosScale := section("Scale") == 4 ? 1 : 1.5
+            eventPosScale := Integer(section("Scale")) == 4 ? 1 : 1.5
             thisObj.enrtYTeXtSet.push(section("Text", true))
-            thisObj.eventTypeSet.push(section("EventType"))
+            thisObj.eventTypeSet.push(Integer(section("EventType")))
             thisObj.challengeBtnSet.push([section("cX1") / 3840 * eventPosScale, section("cY1") / 2160  * eventPosScale, section("cX2") / 3840 * eventPosScale, section("cY2") / 2160  *eventPosScale])
             thisObj.missionBtnSet.push([section("mX1") / 3840 * eventPosScale, section("mY1") / 2160  * eventPosScale, section("mX2") / 3840 * eventPosScale, section("mY2") / 2160  *eventPosScale])
             thisObj.enterBtnSet.push([section("eX1") / 3840 * eventPosScale, section("eY1") / 2160  * eventPosScale, section("eX2") / 3840 * eventPosScale, section("eY2") / 2160  *eventPosScale])
-            isNew := section("new")
-            thisObj.eventConfigType.push(isNew)
-            if(isNew){
-                thisObj.storyRangeSet.push([[section("story1X") * eventPosScale, section("story1Y") * eventPosScale, section("s1Wheel")],
-                [section("story6X") * eventPosScale, section("story6Y") * eventPosScale, section("s6Wheel")],
-                [section("story11X") * eventPosScale, section("story11Y") * eventPosScale, section("s11Wheel")]])
+            isStoryRedCheckStrict := Integer(section("eRedStrict"))            
+            if(isStoryRedCheckStrict){
+                thisObj.eventStoryRedPointStrictCheck.push(true)
             }
             else{
-                thisObj.storyRangeSet.push([[section("range1_6X1") / 3840 * eventPosScale, section("range1_6Y1") / 2160 * eventPosScale, section("range1_6X2") / 3840 * eventPosScale, section("range1_6Y2") / 2160 * eventPosScale],
-                    [section("range6_EX1") / 3840 * eventPosScale, section("range6_EY1") / 2160 * eventPosScale, section("range6_EX2") / 3840 * eventPosScale, section("range6_EY2") / 2160 * eventPosScale]])
+                thisObj.eventStoryRedPointStrictCheck.push(false)
             }
+            stroyRedScal := section("eRedScal")
+            thisObj.eventStoryRedPointScal.push(stroyRedScal)     
+
+            thisObj.storyRangeSet.push([[section("story1X") * eventPosScale, section("story1Y") * eventPosScale, section("s1Wheel")],
+                [section("story6X") * eventPosScale, section("story6Y") * eventPosScale, section("s6Wheel")],
+                [section("story11X") * eventPosScale, section("story11Y") * eventPosScale, section("s11Wheel")]])
+
             if(thisObj.eventTypeSet[-1] >= 2){
                 thisObj.storySwitchBtnSet.push([section("swX1") / 3840 * eventPosScale, section("swY1") / 2160  * eventPosScale, section("swX2") / 3840 * eventPosScale, section("swY2") / 2160  * eventPosScale])
                 thisObj.story2RangeSet.push([[section("s2range1_6X1") / 3840 * eventPosScale, section("s2range1_6Y1") / 2160 * eventPosScale, section("s2range1_6X2") / 3840 * eventPosScale, section("s2range1_6Y2") / 2160 * eventPosScale],
@@ -148,6 +152,8 @@ class event extends baseFunc{
     static checkRedPoint(thisObj, eventIndex, logOutPut := true){
         AddLog("正在检查活动红点")
         btnChallenge := thisObj.challengeBtnSet[eventIndex]
+        storyRedScal := thisObj.eventStoryRedPointScal[eventIndex]
+        storyRedStrict := thisObj.eventStoryRedPointStrictCheck[eventIndex]
         if(selfFindText(&X,&Y, nikkePosX + btnChallenge[1] * nikkePosW . " ", nikkePosY + btnChallenge[2] * nikkePosH . " ", nikkePosX + btnChallenge[3] * nikkePosW . " ", nikkePosY +btnChallenge[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH)){
             thisObj.challengeRedPoint := true
         }
@@ -162,7 +168,7 @@ class event extends baseFunc{
         
         btnEnter := thisObj.enterBtnSet[eventIndex]
         
-        if(selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY +btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH) && selfFindText(&X,&Y, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY + btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点白边"), , , , , , , zoomW, zoomH)){
+        if(selfFindText(&X := "Wait",&Y := 3, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY + btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW * storyRedScal, zoomH * storyRedScal) && (!storyRedStrict || selfFindText(&X := "Wait",&Y := 3, nikkePosX + btnEnter[1] * nikkePosW . " ", nikkePosY + btnEnter[2] * nikkePosH . " ", nikkePosX + btnEnter[3] * nikkePosW . " ", nikkePosY + btnEnter[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点白边"), , , , , , , zoomW * storyRedScal, zoomH * storyRedScal))){
             thisObj.storyRedPoint := true
         }
         else{
@@ -176,7 +182,7 @@ class event extends baseFunc{
 
         btnMission := thisObj.missionBtnSet[eventIndex]
         
-        if(selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW, zoomH) && selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点白边"), , , , , , , zoomW, zoomH)){
+        if(selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , zoomW * storyRedScal, zoomH * storyRedScal) && (!storyRedStrict || selfFindText(&X,&Y, nikkePosX + btnMission[1] * nikkePosW . " ", nikkePosY + btnMission[2] * nikkePosH . " ", nikkePosX + btnMission[3] * nikkePosW . " ", nikkePosY + btnMission[4]  * nikkePosH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点白边"), , , , , , , zoomW * storyRedScal, zoomH * storyRedScal))){
             thisObj.missionRedPoint := true
         }
         else{
@@ -194,7 +200,7 @@ class event extends baseFunc{
         if(!StrLen(returnValue) && !isString){
             return 0
         }
-        return isString ? returnValue : Integer(returnValue)
+        return isString ? returnValue : Float(returnValue)
     }
 
     static smallEventEntry(thisObj){
@@ -269,56 +275,28 @@ class event extends baseFunc{
 
                     if(thisObj.storyRedPoint){
                         AddLog("开始小活动推图")
-                        if(thisObj.eventConfigType[eventIndex]){
-                            switch(event.newsmallEventStory(thisObj, eventIndex)){
-                                case 0:
-                                {
-                                    AddLog("小活动推图未完成", "red")
-                                    Sleep 4000
-                                    scaledMove(147,2047,3)
-                                    Sleep 500
-                                    scaledClick(147,2047)
-                                }
-                                case 1:
-                                {
-                                    AddLog("推图完成，返回活动页面")
-                                    Sleep 4000
-                                    scaledMove(147,2047,3)
-                                    Sleep 500
-                                    scaledClick(147,2047)
-                                }
-                                case 2:
-                                {
-                                    AddLog("推图关卡完成")
-                                }
+                        switch(event.newsmallEventStory(thisObj, eventIndex)){
+                            case 0:
+                            {
+                                AddLog("小活动推图未完成", "red")
+                                Sleep 4000
+                                scaledMove(147,2047,3)
+                                Sleep 500
+                                scaledClick(147,2047)
+                            }
+                            case 1:
+                            {
+                                AddLog("推图完成，返回活动页面")
+                                Sleep 4000
+                                scaledMove(147,2047,3)
+                                Sleep 500
+                                scaledClick(147,2047)
+                            }
+                            case 2:
+                            {
+                                AddLog("推图关卡完成")
                             }
                         }
-                        else{
-                            switch(event.smallEventStory(thisObj, eventIndex)){
-                                case 0:
-                                {
-                                    AddLog("小活动推图未完成", "red")
-                                    Sleep 4000
-                                    scaledMove(147,2047,3)
-                                    Sleep 500
-                                    scaledClick(147,2047)
-                                }
-                                case 1:
-                                {
-                                    AddLog("推图完成，返回活动页面")
-                                    Sleep 4000
-                                    scaledMove(147,2047,3)
-                                    Sleep 500
-                                    scaledClick(147,2047)
-                                }
-                                case 2:
-                                {
-                                    AddLog("推图关卡完成")
-                                }
-                            }
-                        }
-                        curStoryRedPoint := false
-                        Sleep 4500
                     }
 
                     if(thisObj.missionRedPoint){

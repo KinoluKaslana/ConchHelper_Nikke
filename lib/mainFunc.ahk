@@ -15,6 +15,9 @@ class mainFunc extends baseFunc{
     subFuncObjArray := Array()
     curShow :=""
 
+    smallEventObj := 0
+
+
     showSubFunc(funcDescribe){
         if(this.curShow != ""){
             this.curShow.hide()
@@ -83,15 +86,15 @@ class mainFunc extends baseFunc{
         this.subFuncObjArray.Push(towerObj)
         awardObj := award().regFunc(mainGui, "X280 Y35 W180 R1.2")
         this.subFuncObjArray.Push(awardObj)
-        smallEventObj := event().regFunc(mainGui, "X280 Y35 W150 R1.2")
-        this.subFuncObjArray.Push(smallEventObj)
+        this.smallEventObj := event().regFunc(mainGui, "X280 Y35 W150 R1.2")
+        this.subFuncObjArray.Push(this.smallEventObj)
         
         this.addCheckRow(mainGui, mainGuiWidth, shopObj, "商店", optStr)
         this.addCheckRow(mainGui, mainGuiWidth, simulationObj, "模拟室", "XS+5 YS+50 H30 W150")
         this.addCheckRow(mainGui, mainGuiWidth, arenajObj, "竞技场", "XS+5 YS+80 H30 W150")
         this.addCheckRow(mainGui, mainGuiWidth, towerObj, "爬塔", "XS+5 YS+110 H30 W150")
         this.addCheckRow(mainGui, mainGuiWidth, awardObj, "常规奖励", "XS+5 YS+140 H30 W150")
-        this.addCheckRow(mainGui, mainGuiWidth, smallEventObj, "小活动", "XS+5 YS+170 H30 W150")
+        this.addCheckRow(mainGui, mainGuiWidth, this.smallEventObj, "小活动", "XS+5 YS+170 H30 W150")
 
         this.onBegin := mainFunc.mainFuncActionBegin
 
